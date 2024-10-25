@@ -63,9 +63,10 @@ typedef enum{
     STRINGCON,
     INTCON,
     REALCON,
-    SINAL,
+    SNL,
     COMENTARIO,
-    PALAVRA_RESERVADA,
+    PLV_RSVD,
+    FINAL_EXP,
     FINAL_ARQ
 }CATEGORIA_TOKEN;
 
