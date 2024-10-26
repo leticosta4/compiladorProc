@@ -1,0 +1,11 @@
+no analex.h, no token
+    codigo é praqueles 2 mesmo?
+    lexema é id ou stringcon mesmo?
+    o c é p se for charcon?
+
+
+no analex.c
+    linha 65 => precisa tratar o ponto no AFD?
+    linha 92 => tirar duvida sobre o afd do comentario. 
+        linha 145, case 19
+        como fica a questão de qualquer caracter e do enteer e a questao de voltar p o estado inicial

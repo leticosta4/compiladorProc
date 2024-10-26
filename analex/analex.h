@@ -54,7 +54,8 @@ typedef enum{
     COMP_IGUALDADE,
     COMP_DIFERENTE,
     NEGACAO,
-    VIRGULA
+    VIRGULA,
+    PONTO
 }SINAL;
 
 typedef enum{
@@ -73,11 +74,11 @@ typedef enum{
 typedef struct {
     CATEGORIA_TOKEN categoria;
     union {
-        int codigo; //se for da categoria == SINAL
-        char lexema[TAM_MAX_LEXEMA]; //se for ID
+        int codigo; //se for da categoria sinal ou palavra reservada
+        char lexema[TAM_MAX_LEXEMA]; //se for ID ou stringcon
         int valor_inteiro; //se for INTCON
         float valor_real; //se for REALCON
-        char c; //ARMAZENAR O CARACTER/TOKEN
+        char c; //se for CHARCON
     };
 }TOKEN;
 
