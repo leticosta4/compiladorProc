@@ -5,7 +5,15 @@ no analex.h, no token
 
 
 no analex.c
-    linha 65 => precisa tratar o ponto no AFD?
-    linha 92 => tirar duvida sobre o afd do comentario. 
-        linha 145, case 19
+    linha 293 => tirar duvida sobre o afd do comentario. CASE 17 > case 19
+        linha 266, case 19
         como fica a questão de qualquer caracter e do enteer e a questao de voltar p o estado inicial
+    case realcon => tava no estado 14 eu preciso passar realmente para o estado 15?
+
+    duvida de charcon, precisa colocar aquele ++tamLexema?
+    cases 4, 5, 6, 7, 8 e 9
+
+    duvida de stringcon
+    cases 15 e 16 
+
+    EM LEXEMA PRECISA COLOCAR AS ASPAS??????????/
