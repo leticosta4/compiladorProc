@@ -52,54 +52,54 @@ TOKEN AnaLex(FILE *arquivo){
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
                 } else if(caracter == '+'){ //nesses assim sem o outro* já monta e retorna o token
-                    estado = 21;
+                    estado = 20;
                     token_base.categoria = SNL;
                     token_base.codigo = ADICAO;
                     return token_base;
                 } else if(caracter == '-'){ 
-                    estado = 22;
+                    estado = 21;
                     token_base.categoria = SNL;
                     token_base.codigo = SUBTRACAO;
                     return token_base;
                 } else if(caracter == '*'){ 
-                    estado = 23;
+                    estado = 22;
                     token_base.categoria = SNL;
                     token_base.codigo = MULTIPLICACAO;
                     return token_base;
                 } else if(caracter == ','){ 
-                    estado = 24;
+                    estado = 23;
                     token_base.categoria = SNL;
                     token_base.codigo = VIRGULA;
                     return token_base;
                 } else if(caracter == '('){ 
-                    estado = 25;
+                    estado = 24;
                     token_base.categoria = SNL;
                     token_base.codigo = ABRE_PAREN;
                     return token_base;
                 } else if(caracter == ')'){ 
-                    estado = 26;
+                    estado = 25;
                     token_base.categoria = SNL;
                     token_base.codigo = FECHA_PAREN;
                     return token_base;
                 } else if(caracter == '['){ 
-                    estado = 27;
+                    estado = 26;
                     token_base.categoria = SNL;
                     token_base.codigo = ABRE_COL;
                     return token_base;
                 } else if(caracter == ']'){ 
-                    estado = 28;
+                    estado = 27;
                     token_base.categoria = SNL;
                     token_base.codigo = FECHA_COL;
                     return token_base;
                 } 
                 //esses abaixo ainda dependem do proxio caracter que se segue => tratado em outros cases (outros estados)
                 else if(caracter == '/'){ estado = 17; } //TIRAR DUVIDA
-                else if(caracter == '|'){ estado = 29; }
-                else if(caracter == '!'){ estado = 31; }
-                else if(caracter == '='){ estado = 34; }
-                else if(caracter == '>'){ estado = 37; }
-                else if(caracter == '<'){ estado = 40; }
-                else if(caracter == '&'){ estado = 43; }
+                else if(caracter == '|'){ estado = 28; }
+                else if(caracter == '!'){ estado = 30; }
+                else if(caracter == '='){ estado = 33; }
+                else if(caracter == '>'){ estado = 36; }
+                else if(caracter == '<'){ estado = 39; }
+                else if(caracter == '&'){ estado = 42; }
                 else if(caracter == '\n'){
                     estado = 0;
                     token_base.categoria = FINAL_EXP;
@@ -320,11 +320,25 @@ TOKEN AnaLex(FILE *arquivo){
                 }
                 break;
             case 17: //comentario ou divisao
-                //?????
+                if(caracter == '/'){ //inicio de comentario - FILTRO
+                    estado = 19;
+                    // token_base.categoria = SNL;
+                    // token_base.codigo = OR_LOGICO;
+                    // return token_base;
+                } else{
+                    estado = 18;
+                    ungetc(caracter, arquivo);
+                    token_base.categoria = SNL;
+                    token_base.codigo = DIVISAO;
+                    return token_base;
+                }
                 break;
-            case 29:
+            case 19:
+                if(caracter != '\n'){ estado = 19; } else { estado = 0; }
+                break;
+            case 28:
                 if(caracter == '|'){
-                    estado = 30;
+                    estado = 29;
                     token_base.categoria = SNL;
                     token_base.codigo = OR_LOGICO;
                     return token_base;
@@ -332,42 +346,42 @@ TOKEN AnaLex(FILE *arquivo){
                     error("Erro no caracter após | => não identificado");
                 }
                 break;
-            case 31: //negação ou diferente
+            case 30: //negação ou diferente
                 if(caracter == '='){
-                    estado = 32;
+                    estado = 31;
                     token_base.categoria = SNL;
                     token_base.codigo = COMP_DIFERENTE;
                     return token_base;
                 } else {
-                    estado = 33;
+                    estado = 32;
                     ungetc(caracter, arquivo);
                     token_base.categoria = SNL;
                     token_base.codigo = NEGACAO;
                     return token_base;
                 }
                 break;
-            case 34: //igualdade ou atribuicao
+            case 33: //igualdade ou atribuicao
                 if(caracter == '='){
-                    estado = 35;
+                    estado = 34;
                     token_base.categoria = SNL;
                     token_base.codigo = COMP_IGUALDADE;
                     return token_base;
                 } else{
-                    estado = 36;
+                    estado = 35;
                     ungetc(caracter, arquivo); //devolver o outro* com ungetc
                     token_base.categoria = SNL;
                     token_base.codigo = ATRIBUICAO;
                     return token_base;
                 }
                 break;
-            case 37: //maior igual ou maior que
+            case 36: //maior igual ou maior que
                 if(caracter == '='){
-                    estado = 38;
+                    estado = 37;
                     token_base.categoria = SNL;
                     token_base.codigo = MAIOR_IGUAL;
                     return token_base;
                 } else {
-                    estado = 49;
+                    estado = 38;
                     ungetc(caracter, arquivo);
                     token_base.categoria = SNL;
                     token_base.codigo = MAIOR_QUE;
@@ -375,28 +389,28 @@ TOKEN AnaLex(FILE *arquivo){
                 }
                 break;
 
-            case 40: //menor igual ou menor que
+            case 39: //menor igual ou menor que
                 if(caracter == '='){
-                    estado = 41;
+                    estado = 40;
                     token_base.categoria = SNL;
                     token_base.codigo = MENOR_IGUAL;
                     return token_base;
                 } else{
-                    estado = 42;
+                    estado = 41;
                     ungetc(caracter, arquivo);
                     token_base.categoria = SNL;
                     token_base.codigo = MENOR_QUE;
                     return token_base;
                 }
                 break;
-            case 43: //endereco ou AND
+            case 42: //endereco ou AND
                 if(caracter == '&'){
-                    estado = 44;
+                    estado = 43;
                     token_base.categoria = SNL;
                     token_base.codigo = AND_LOGICO;
                     return token_base;
                 } else {
-                    estado = 45;
+                    estado = 44;
                     ungetc(caracter, arquivo);
                     token_base.categoria = SNL;
                     token_base.codigo = ACESSO_END;

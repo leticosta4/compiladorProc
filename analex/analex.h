@@ -65,7 +65,7 @@ typedef enum{
     INTCON,
     REALCON,
     SNL,
-    COMENTARIO,
+    //COMENTARIO,
     PLV_RSVD,
     FINAL_EXP,
     FINAL_ARQ

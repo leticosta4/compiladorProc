@@ -17,3 +17,6 @@ no analex.c
     cases 15 e 16 
 
     EM LEXEMA PRECISA COLOCAR AS ASPAS??????????/
+
+
+    GRAMATICA REGULAR
