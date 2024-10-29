@@ -322,9 +322,8 @@ TOKEN AnaLex(FILE *arquivo){
             case 17: //comentario ou divisao
                 if(caracter == '/'){ //inicio de comentario - FILTRO
                     estado = 19;
-                    // token_base.categoria = SNL;
-                    // token_base.codigo = OR_LOGICO;
-                    // return token_base;
+                    lexema[tam_lexema] = caracter;
+                    lexema[++tam_lexema] = '\0';
                 } else{
                     estado = 18;
                     ungetc(caracter, arquivo);
@@ -334,7 +333,10 @@ TOKEN AnaLex(FILE *arquivo){
                 }
                 break;
             case 19:
-                if(caracter != '\n'){ estado = 19; } else { estado = 0; }
+                if(caracter == '\n'){ estado = 0; } else {
+                    lexema[tam_lexema] = caracter;
+                    lexema[tam_lexema] = '\0';
+                }
                 break;
             case 28:
                 if(caracter == '|'){
