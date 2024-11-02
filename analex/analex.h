@@ -84,6 +84,6 @@ typedef struct {
 
 #endif
 
-int linha = 1;
+int contLinha = 1;
 
 //talvez, ver logica => verificacoes de tipo e chamada da funcao p leitura do arquivo e a de retorno do token ainda
