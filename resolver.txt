@@ -1,0 +1,5 @@
+\n => certo, mas n pega o \ só n (e mesma coisa p o '\0')
+
+alguma coisa estranha no stringcon quando passa de 30 no tamanho
+
+quando coloca só uma aspa ou só um apostrofo ele ta aceitando

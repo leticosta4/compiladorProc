@@ -6,7 +6,7 @@
 
 #include "analex.h" 
 
-#define TAM_LEXEMA 50 
+#define TAM_LEXEMA 100 
 #define TAM_NUM 20 
 
 void error(char msg[]){ 
@@ -428,8 +428,9 @@ int main(){
     TOKEN rcv_token;
 
     //if de abertura do arquivo com erro ou nao 
+    if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ error("Arquivo de entrada da expressao nao encontrado!"); }
 
-    printf("LINHA: %d", contLinha);
+    printf("LINHA: %d\n\n", contLinha);
 
     //fazer um ngcio de processador de tokens com print f quando receber o token
     while(1){
@@ -607,7 +608,7 @@ int main(){
                 break;
             case FINAL_EXP:
                 printf("<FINAL_EXP, %d>\n", 0);
-                printf("LINHA: %d", contLinha);
+                printf("LINHA: %d\n\n", contLinha);
                 break;
             case FINAL_ARQ:
                 printf("<FIM DO ARQUIVO ENCONTRADO>\n");
