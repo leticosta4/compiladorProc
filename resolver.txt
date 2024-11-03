@@ -5,3 +5,5 @@ alguma coisa estranha no stringcon quando passa de 30 no tamanho
 quando coloca só uma aspa ou só um apostrofo ele ta aceitando
 
 nao é p aceitar coisas do tipo "2oi" (sem as aspas) e ta aceitando
+
+quando pula a linha dps de um comentario e é string ele pega a ultima barra do comentario
