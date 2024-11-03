@@ -285,7 +285,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.categoria = INTCON;
                     token_base.valor_inteiro = atoi(digitos);
                     return token_base;
-                }
+                } 
                 break;
             case 12:
                 if(caracter >= '0' && caracter <= '9'){ 

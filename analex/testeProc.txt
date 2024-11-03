@@ -1,1 +1,23 @@
-int i = 0
+init
+    //Esse código n faz nada
+    int a = 10
+    int b = 34
+    int c = a + b
+    int arraySuper[20]
+    char _variavel = 'a'    
+    char dado = "eai"
+    real teste = 3.5
+
+    while (c >= a)
+        if b + a + 1 > c
+        getint 2
+        endi
+    endw
+
+    var loop from array to &outroArray by numero endv
+
+    //acho que isso n era p dar certo
+    2oi
+
+    //ta tendo algum problema aqui -> so ta indo a stringcon ate a pos 30, ent só vai printar até o 4
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
