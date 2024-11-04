@@ -10,7 +10,7 @@
 #define TAM_NUM 20 
 
 void error(char msg[]){ 
-    printf("%s\n", msg); 
+    printf("%s na linha %d\n", msg, contLinha); 
     exit(1); 
 } 
 
@@ -109,7 +109,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.categoria = FINAL_ARQ;
                     return token_base;
                 } else {
-                    error("Caracter invalido na expressao!");
+                    error("Caracter invalido");
                 }
                 break;
 
@@ -229,11 +229,12 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 6;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
-                } else {
+                } else if(caracter == '\''){ error("Erro no charcon"); } 
+                else if(isprint(caracter)){
                     estado = 5;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
-                }
+                } else{ error("Erro no charcon"); }
                 break;
             case 5:
                 if(caracter == '\''){ //inicio de CHARCON
@@ -244,14 +245,14 @@ TOKEN AnaLex(FILE *arquivo){
             case 6: //n ou 0 => quebra de linha ou espaço vazio
                 if(caracter == 'n'){
                     estado = 7;
-                    lexema[tam_lexema] = caracter;
+                    lexema[tam_lexema] = 10;//caracter;
                     lexema[++tam_lexema] = '\0';
                 } else if(caracter == '0'){
                     estado = 8;
-                    lexema[tam_lexema] = caracter;
+                    lexema[tam_lexema] = 0;//caracter;
                     lexema[++tam_lexema] = '\0';
                 } else {
-                    error("erro no char - não reconhecido");
+                    error("erro no charcon");
                 }
             case 7:
                 if(caracter == '\''){ 
@@ -312,6 +313,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 15;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
+                    if(tam_lexema > TAM_LEXEMA){ error("stringcon inválida"); }
                 } else {
                     estado = 16;
                     token_base.categoria = STRINGCON;
@@ -428,7 +430,7 @@ int main(){
     TOKEN rcv_token;
 
     //if de abertura do arquivo com erro ou nao 
-    if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ error("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("LINHA: %d\n\n", contLinha);
 
