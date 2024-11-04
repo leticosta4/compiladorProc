@@ -6,7 +6,7 @@
 
 #include "analex.h" 
 
-#define TAM_LEXEMA 100 
+#define TAM_LEXEMA 50 
 #define TAM_NUM 20 
 
 void error(char msg[]){ 

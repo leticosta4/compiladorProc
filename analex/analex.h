@@ -1,7 +1,7 @@
 #include <stdio.h>
 #ifndef ANALEX
 #define ANALEX
-#define TAM_MAX_LEXEMA 31
+#define TAM_MAX_LEXEMA 50
 
 typedef enum{
     CONST = 1,
