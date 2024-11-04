@@ -1,23 +1,54 @@
-init
-    //Esse código n faz nada
-    int a = 10
-    int b = 34
-    int c = a + b
-    int arraySuper[20]
-    char _variavel = 'a'    
-    char dado = "eai"
-    real teste = 3.5
+PALAVRAS RESERVADAS
 
-    while (c >= a)
-        if b + a + 1 > c
-        getint 2
-        endi
-    endw
+const
+pr
+init 
+int 
+real 
+char 
+endp 
+endi
+endw 
+endv 
+var 
+from 
+do 
+while 
+if 
+else 
+elif 
+dt 
+to 
+by 
+getint 
+getreal 
+getchar 
+putint 
+putreal 
+putchar 
+getout
 
-    var loop from array to &outroArray by numero endv
 
-    //acho que isso n era p dar certo
-    2oi
+SINAIS
 
-    //ta tendo algum problema aqui -> o stringcon ta pegando a ultima barra do comentario
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+adicao
+subtracao
+multiplicacao
+divisao
+abre_paren
+fecha_paren
+abre_col
+fecha_col
+acesso_end
+and_logico
+or_logico
+maior_igual
+maior_que
+menor_igual
+menor_que
+atribuicao
+comp_igualdade
+comp_diferente
+negacao
+virgula
+ponto
