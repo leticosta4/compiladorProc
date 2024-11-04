@@ -19,5 +19,5 @@ init
     //acho que isso n era p dar certo
     2oi
 
-    //ta tendo algum problema aqui -> so ta indo a stringcon ate a pos 30, ent só vai printar até o 4
+    //ta tendo algum problema aqui -> o stringcon ta pegando a ultima barra do comentario
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
