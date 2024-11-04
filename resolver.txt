@@ -1,10 +1,5 @@
 palavra reservada n é p aceitar letra maiuscula
 
-quando coloca só uma aspa ou só um apostrofo ele ta aceitando
-
-quando pula a linha dps de um comentario e é string ele pega a ultima barra do comentario
-
-
 DUVIDAS 
 
 isso é erro?
