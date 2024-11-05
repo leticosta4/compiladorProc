@@ -1,9 +1,0 @@
-ele deveria tratar o caso de um apostrofo ou uma aspa escada com o \? 
-'\''
-'\"'
-    nesse caso eu teria que adicionar 2 estados no meu afd (4 e 46)
-
-tratar: precisa mostrar o erro
-'c
-
-olhar os cases de 5 a 8 e depois adatar e descomentar os cases 45 e 46
