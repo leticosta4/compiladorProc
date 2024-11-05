@@ -49,8 +49,8 @@ TOKEN AnaLex(FILE *arquivo){
                     lexema[++tam_lexema] = '\0'; 
                 } else if(caracter == '"'){ //inicio de STRINGCON
                     estado = 15;
-                    lexema[tam_lexema] = caracter;
-                    lexema[++tam_lexema] = '\0';
+                    // lexema[tam_lexema] = caracter;
+                    // lexema[++tam_lexema] = '\0';
                 } else if(caracter == '+'){ //nesses assim sem o outro* já monta e retorna o token
                     estado = 20;
                     token_base.categoria = SNL;
@@ -93,7 +93,7 @@ TOKEN AnaLex(FILE *arquivo){
                     return token_base;
                 } 
                 //esses abaixo ainda dependem do proxio caracter que se segue => tratado em outros cases (outros estados)
-                else if(caracter == '/'){ estado = 17; } //TIRAR DUVIDA
+                else if(caracter == '/'){ estado = 17; } //inicio de COMENTARIO OU DIVISAO
                 else if(caracter == '|'){ estado = 28; }
                 else if(caracter == '!'){ estado = 30; }
                 else if(caracter == '='){ estado = 33; }
@@ -276,6 +276,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 10;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para intcon atingido\n"); }
                 } else if(caracter == '.'){ //INICIO DE REALCON
                     estado = 12;
                     digitos[tam_digito] = caracter;
@@ -293,6 +294,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
                 } 
                 break;
             case 13:
@@ -300,6 +302,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
                 } else { //REALCON
                     estado = 14; 
                     ungetc(caracter, arquivo);
@@ -324,8 +327,6 @@ TOKEN AnaLex(FILE *arquivo){
             case 17: //comentario ou divisao
                 if(caracter == '/'){ //inicio de comentario - FILTRO
                     estado = 19;
-                    lexema[tam_lexema] = caracter;
-                    lexema[++tam_lexema] = '\0';
                 } else{
                     estado = 18;
                     ungetc(caracter, arquivo);
@@ -335,11 +336,8 @@ TOKEN AnaLex(FILE *arquivo){
                 }
                 break;
             case 19:
-                if(caracter == '\n'){ estado = 0; } else {
-                    lexema[tam_lexema] = caracter;
-                    lexema[tam_lexema] = '\0';
-                }
-                break;
+                if(caracter == '\n' || caracter == EOF){ estado = 0; }
+                break; 
             case 28:
                 if(caracter == '|'){
                     estado = 29;

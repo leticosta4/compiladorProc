@@ -1,12 +1,3 @@
-palavra reservada n é p aceitar letra maiuscula
-
-quando coloca só uma aspa ou só um apostrofo ele ta aceitando
-
-quando pula a linha dps de um comentario e é string ele pega a ultima barra do comentario
-
-
-DUVIDAS 
-
 isso é erro?
 nao é p aceitar coisas do tipo "2oi" (sem as aspas) e ta aceitando
 
@@ -22,5 +13,15 @@ nao ler mais nada depois de encontrar algo invalido
 ele deveria tratar o caso de um apostrofo ou uma aspa escada com o \? 
 '\''
 '\"'
+    nesse caso eu teria que adicionar 2 estados no meu afd (4 e 46)
 
-nesse caso eu teria que adicionar 2 estados no meu afd (4 e 46)
+
+como isso deveria ser tratado?
+ 1234567890123a45.01
+
+    ele retorna assim: 
+    <INTCON, 1912276171>
+    <ID, a45>
+    Caracter invalido na linha 24
+
+seria bom colocar um limite p id?
