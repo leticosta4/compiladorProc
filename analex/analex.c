@@ -253,12 +253,12 @@ TOKEN AnaLex(FILE *arquivo){
                 }
             case 7:
                 if(caracter == '\''){ 
-                    estado = 9;
+                    estado = 9; //tem que mudar para 45
                 }
                 break;
             case 8:
                 if(caracter == '\''){ 
-                    estado = 9;
+                    estado = 9; //tem que mudar para 46
                 }
                 break;
             case 9: //CHARCON
@@ -413,7 +413,17 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.codigo = ACESSO_END;
                     return token_base;
                 }
-                break;   
+                break; 
+            // case 45: //CHARCON - \n RETORNAR O VALOR 13
+            //     token_base.categoria = CHARCON;
+            //     token_base.c = lexema[--tam_lexema];
+            //     return token_base;
+            //     break;
+            // case 46: //CHARCON - \0 RETORNAR O VALOR 0
+            //     token_base.categoria = CHARCON;
+            //     token_base.c = lexema[--tam_lexema];
+            //     return token_base;
+            //     break;  
         }
     }
 }
