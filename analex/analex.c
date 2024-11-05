@@ -49,8 +49,6 @@ TOKEN AnaLex(FILE *arquivo){
                     lexema[++tam_lexema] = '\0'; 
                 } else if(caracter == '"'){ //inicio de STRINGCON
                     estado = 15;
-                    // lexema[tam_lexema] = caracter;
-                    // lexema[++tam_lexema] = '\0';
                 } else if(caracter == '+'){ //nesses assim sem o outro* já monta e retorna o token
                     estado = 20;
                     token_base.categoria = SNL;
@@ -239,7 +237,6 @@ TOKEN AnaLex(FILE *arquivo){
             case 5:
                 if(caracter == '\''){ //inicio de CHARCON
                     estado = 9;
-                    // lexema[tam_lexema] = caracter;
                 }
                 break;
             case 6: //n ou 0 => quebra de linha ou espaço vazio
@@ -257,13 +254,11 @@ TOKEN AnaLex(FILE *arquivo){
             case 7:
                 if(caracter == '\''){ 
                     estado = 9;
-                    // lexema[tam_lexema] = caracter;
                 }
                 break;
             case 8:
                 if(caracter == '\''){ 
                     estado = 9;
-                    // lexema[tam_lexema] = caracter;
                 }
                 break;
             case 9: //CHARCON
@@ -430,7 +425,7 @@ int main(){
     //if de abertura do arquivo com erro ou nao 
     if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
-    printf("LINHA: %d\n\n", contLinha);
+    printf("\nLINHA: %d\n\n", contLinha);
 
     //fazer um ngcio de processador de tokens com print f quando receber o token
     while(1){
@@ -608,7 +603,7 @@ int main(){
                 break;
             case FINAL_EXP:
                 printf("<FINAL_EXP, %d>\n", 0);
-                printf("LINHA: %d\n\n", contLinha);
+                printf("\nLINHA: %d\n\n", contLinha);
                 break;
             case FINAL_ARQ:
                 printf("<FIM DO ARQUIVO ENCONTRADO>\n");
