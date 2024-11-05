@@ -30,3 +30,10 @@ init
     //123456789012345678900
     //123456789012345678.8767900
     //"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJLMNOPQRSTUVWXYZ"
+
+
+    //testando os novos estados 45 e 46 
+    '\n'
+    '\0'
+    'c'
+    '\x' //esse tem que dar erro

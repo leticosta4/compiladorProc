@@ -242,23 +242,23 @@ TOKEN AnaLex(FILE *arquivo){
             case 6: //n ou 0 => quebra de linha ou espaço vazio
                 if(caracter == 'n'){
                     estado = 7;
-                    lexema[tam_lexema] = 10;//caracter;
-                    lexema[++tam_lexema] = '\0';
+                    // lexema[tam_lexema] = 10;//caracter;
+                    // lexema[++tam_lexema] = '\0';
                 } else if(caracter == '0'){
                     estado = 8;
-                    lexema[tam_lexema] = 0;//caracter;
-                    lexema[++tam_lexema] = '\0';
+                    // lexema[tam_lexema] = 0;//caracter;
+                    // lexema[++tam_lexema] = '\0';
                 } else {
                     error("erro no charcon");
                 }
             case 7:
                 if(caracter == '\''){ 
-                    estado = 9; //tem que mudar para 45
+                    estado = 45; //tem que mudar para 45
                 }
                 break;
             case 8:
                 if(caracter == '\''){ 
-                    estado = 9; //tem que mudar para 46
+                    estado = 46; //tem que mudar para 46
                 }
                 break;
             case 9: //CHARCON
@@ -414,16 +414,16 @@ TOKEN AnaLex(FILE *arquivo){
                     return token_base;
                 }
                 break; 
-            // case 45: //CHARCON - \n RETORNAR O VALOR 13
-            //     token_base.categoria = CHARCON;
-            //     token_base.c = lexema[--tam_lexema];
-            //     return token_base;
-            //     break;
-            // case 46: //CHARCON - \0 RETORNAR O VALOR 0
-            //     token_base.categoria = CHARCON;
-            //     token_base.c = lexema[--tam_lexema];
-            //     return token_base;
-            //     break;  
+            case 45: //CHARCON - \n RETORNAR O VALOR 10
+                token_base.categoria = CHARCON;
+                token_base.c = 10;
+                return token_base;
+                break;
+            case 46: //CHARCON - \0 RETORNAR O VALOR 0
+                token_base.categoria = CHARCON;
+                token_base.c = 0;
+                return token_base;
+                break;  
         }
     }
 }

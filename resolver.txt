@@ -1,0 +1,4 @@
+tratar: precisa mostrar o erro
+'c
+
+o \n nao ta incrementando o contador de linha
