@@ -276,6 +276,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 10;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para intcon atingido\n"); }
                 } else if(caracter == '.'){ //INICIO DE REALCON
                     estado = 12;
                     digitos[tam_digito] = caracter;
@@ -293,6 +294,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
                 } 
                 break;
             case 13:
@@ -300,6 +302,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
+                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
                 } else { //REALCON
                     estado = 14; 
                     ungetc(caracter, arquivo);
