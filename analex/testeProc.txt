@@ -22,3 +22,5 @@ init
     //mais um teste
     "dkjdej"
     arraySuper = "kjkfkdjfjjd"
+
+    While

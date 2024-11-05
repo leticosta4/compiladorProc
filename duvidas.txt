@@ -1,7 +1,3 @@
-palavra reservada n é p aceitar letra maiuscula
-
-DUVIDAS 
-
 isso é erro?
 nao é p aceitar coisas do tipo "2oi" (sem as aspas) e ta aceitando
 
