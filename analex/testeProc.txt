@@ -34,4 +34,5 @@ init
     '\n'
     '\0'
     'c'
-    '\x' //esse tem que dar erro
+    //'\x' //esse tem que dar erro
+    'c //e esse tb

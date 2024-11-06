@@ -239,7 +239,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.categoria = CHARCON;
                     token_base.c = lexema[--tam_lexema];
                     return token_base;
-                }
+                } else{ error("Erro no charcon"); }
                 break;
             case 6: //n ou 0 => quebra de linha ou espaço vazio
                 if(caracter == 'n'){
