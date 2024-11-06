@@ -1,2 +1,0 @@
-tratar: precisa mostrar o erro
-'c
