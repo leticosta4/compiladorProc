@@ -22,7 +22,7 @@ TOKEN AnaLex(FILE *arquivo){
     int tam_digito = 0; 
     TOKEN token_base; 
 
-    estado = 0; //ja poderia colocar la em cima
+    estado = 0; 
 
     //começar processamento do afd
     while(true){
@@ -90,7 +90,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.codigo = FECHA_COL;
                     return token_base;
                 } 
-                //esses abaixo ainda dependem do proxio caracter que se segue => tratado em outros cases (outros estados)
+                //esses abaixo ainda dependem do proximo caracter que se segue => tratado em outros cases (outros estados)
                 else if(caracter == '/'){ estado = 17; } //inicio de COMENTARIO OU DIVISAO
                 else if(caracter == '|'){ estado = 28; }
                 else if(caracter == '!'){ estado = 30; }
@@ -236,35 +236,32 @@ TOKEN AnaLex(FILE *arquivo){
                 break;
             case 5:
                 if(caracter == '\''){ //inicio de CHARCON
-                    estado = 9;
+                    token_base.categoria = CHARCON;
+                    token_base.c = lexema[--tam_lexema];
+                    return token_base;
                 }
                 break;
             case 6: //n ou 0 => quebra de linha ou espaço vazio
                 if(caracter == 'n'){
-                    estado = 7;
-                    // lexema[tam_lexema] = 10;//caracter;
-                    // lexema[++tam_lexema] = '\0';
-                } else if(caracter == '0'){
                     estado = 8;
-                    // lexema[tam_lexema] = 0;//caracter;
-                    // lexema[++tam_lexema] = '\0';
+                } else if(caracter == '0'){
+                    estado = 7;
                 } else {
                     error("erro no charcon");
                 }
             case 7:
                 if(caracter == '\''){ 
-                    estado = 45; //tem que mudar para 45
-                }
+                    token_base.categoria = CHARCON;
+                    token_base.c = 0;
+                    return token_base;
+                } 
                 break;
             case 8:
                 if(caracter == '\''){ 
-                    estado = 46; //tem que mudar para 46
-                }
-                break;
-            case 9: //CHARCON
-                token_base.categoria = CHARCON;
-                token_base.c = lexema[--tam_lexema];
-                return token_base;
+                    token_base.categoria = CHARCON;
+                    token_base.c = 10; 
+                    return token_base;
+                } 
                 break;
             case 10:
                 if(caracter >= '0' && caracter <= '9'){ 
@@ -331,7 +328,10 @@ TOKEN AnaLex(FILE *arquivo){
                 }
                 break;
             case 19:
-                if(caracter == '\n' || caracter == EOF){ estado = 0; }
+                if(caracter == '\n' || caracter == EOF){
+                    estado = 0;
+                    contLinha++;
+                }
                 break; 
             case 28:
                 if(caracter == '|'){
@@ -414,16 +414,6 @@ TOKEN AnaLex(FILE *arquivo){
                     return token_base;
                 }
                 break; 
-            case 45: //CHARCON - \n RETORNAR O VALOR 10
-                token_base.categoria = CHARCON;
-                token_base.c = 10;
-                return token_base;
-                break;
-            case 46: //CHARCON - \0 RETORNAR O VALOR 0
-                token_base.categoria = CHARCON;
-                token_base.c = 0;
-                return token_base;
-                break;  
         }
     }
 }
@@ -432,7 +422,6 @@ int main(){
     FILE *arqivoProc;
     TOKEN rcv_token;
 
-    //if de abertura do arquivo com erro ou nao 
     if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("\nLINHA: %d\n\n", contLinha);
