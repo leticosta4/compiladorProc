@@ -8,11 +8,19 @@
 
 #define TAM_LEXEMA 50 
 #define TAM_NUM 20 
+#define NUM_PLV_RSVD 28
 
 void error(char msg[]){ 
     printf("%s na linha %d\n", msg, contLinha); 
     exit(1); 
 } 
+
+int verifica_plv_rsvd(const char lexema[]){
+    for(int i = 1; i <= NUM_PLV_RSVD; i++){
+        if(strcmp(lexema, palavras_reservadas[i-1]) == 0){ return i; } //retorna o cod da plv_rsvd p associar no enum
+    }
+    return -1;
+}
 
 TOKEN AnaLex(FILE *arquivo){
     int estado; 
@@ -20,6 +28,7 @@ TOKEN AnaLex(FILE *arquivo){
     int tam_lexema = 0; 
     char digitos[TAM_NUM] = ""; 
     int tam_digito = 0; 
+    int codigo_enum_pal_rsvd = 0;
     TOKEN token_base; 
 
     estado = 0; 
@@ -130,92 +139,11 @@ TOKEN AnaLex(FILE *arquivo){
                 } else{
                     estado = 3;
                     ungetc(caracter, arquivo);
-                    //ver se é uma PALAVRA RESERVADA
-                    if(strcmp(lexema, "const") == 0){
+                    codigo_enum_pal_rsvd = verifica_plv_rsvd(lexema);
+                    if(codigo_enum_pal_rsvd != -1){
                         token_base.categoria = PLV_RSVD;
-                        token_base.codigo = CONST;
-                    } else if(strcmp(lexema, "pr") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = PR;
-                    } else if(strcmp(lexema, "init") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = INIT;
-                    } else if(strcmp(lexema, "int") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = INT;
-                    } else if(strcmp(lexema, "real") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = REAL;
-                    } else if(strcmp(lexema, "bool") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = BOOL;
-                    } else if(strcmp(lexema, "char") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = CHAR;
-                    }  else if(strcmp(lexema, "endp") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ENDP;
-                    } else if(strcmp(lexema, "endw") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ENDW;
-                    } else if(strcmp(lexema, "endi") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ENDI;
-                    } else if(strcmp(lexema, "endv") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ENDV;
-                    } else if(strcmp(lexema, "var") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = VAR;
-                    } else if(strcmp(lexema, "from") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = FROM;
-                    } else if(strcmp(lexema, "do") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = DO;
-                    } else if(strcmp(lexema, "while") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = WHILE;
-                    } else if(strcmp(lexema, "if") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = IF;
-                    } else if(strcmp(lexema, "elif") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ELIF;
-                    } else if(strcmp(lexema, "else") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = ELSE;
-                    } else if(strcmp(lexema, "dt") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = DT;
-                    } else if(strcmp(lexema, "to") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = TO;
-                    } else if(strcmp(lexema, "by") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = BY;
-                    } else if(strcmp(lexema, "getint") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = GETINT;
-                    } else if(strcmp(lexema, "getreal") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = GETREAL;
-                    } else if(strcmp(lexema, "getchar") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = GETCHAR;
-                    } else if(strcmp(lexema, "putint") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = PUTINT;
-                    } else if(strcmp(lexema, "putreal") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = PUTREAL;
-                    } else if(strcmp(lexema, "putchar") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = PUTCHAR;
-                    } else if(strcmp(lexema, "getout") == 0){
-                        token_base.categoria = PLV_RSVD;
-                        token_base.codigo = GETOUT;
-                    } else{
+                        token_base.codigo = codigo_enum_pal_rsvd;
+                    } else {
                         token_base.categoria = ID;
                         strcpy(token_base.lexema, lexema);
                     }
@@ -426,7 +354,7 @@ int main(){
 
     printf("\nLINHA: %d\n\n", contLinha);
 
-    //fazer um ngcio de processador de tokens com print f quando receber o token
+    //processamento de tokens
     while(1){
         rcv_token = AnaLex(arqivoProc);
         switch (rcv_token.categoria){
