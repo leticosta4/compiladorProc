@@ -2,6 +2,7 @@
 #ifndef ANALEX
 #define ANALEX
 #define TAM_MAX_LEXEMA 50
+#define NUM_PLV_RSVD 28
 
 typedef enum{
     CONST = 1,
@@ -84,5 +85,4 @@ typedef struct {
 #endif
 
 int contLinha = 1;
-
-//talvez, ver logica => verificacoes de tipo e chamada da funcao p leitura do arquivo e a de retorno do token ainda
+const char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "pr", "init", "int", "real", "bool", "char", "endp", "endw", "endi", "endv", "var", "from", "do", "while", "if", "elif", "else", "dt", "to", "by", "getint", "getreal", "getchar", "putint", "putreal", "putchar", "getout"};
