@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #ifndef ANALEX
 #define ANALEX
 #define TAM_MAX_LEXEMA 50
@@ -82,7 +83,10 @@ typedef struct {
     };
 }TOKEN;
 
-#endif
+extern TOKEN rcv_token;
+extern FILE *arqivoProc;
+extern int contLinha;  
+extern char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA];
+TOKEN AnaLex(FILE *);
 
-int contLinha = 1;
-const char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "pr", "init", "int", "real", "bool", "char", "endp", "endw", "endi", "endv", "var", "from", "do", "while", "if", "elif", "else", "dt", "to", "by", "getint", "getreal", "getchar", "putint", "putreal", "putchar", "getout"};
+#endif
