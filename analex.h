@@ -80,6 +80,7 @@ typedef struct {
         int valor_inteiro; //se for INTCON
         float valor_real; //se for REALCON
         char c; //se for CHARCON
+        bool processado;
     };
 }TOKEN;
 

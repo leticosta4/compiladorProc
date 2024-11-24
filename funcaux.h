@@ -1,17 +1,22 @@
 #ifndef FUNC_AUX
 #define FUNC_AUX
 
-#include <stdbool.h>
+#include <stdlib.h> 
+#include <stdbool.h> 
 
-// enum MOVIM {AVANCA, MANTEM, RETROCEDE};
+typedef enum{
+    AVANCA,
+    MANTEM,
+    RETROCEDE
+}MOVIMENTO_ARVORE;
 
-// extern bool mostraArvore;
-// extern char TABS[200];
+extern bool mostra_arvore;
+extern char TABS[200];
 extern int contLinha; //extern para garantir que a mesma variavel global sendo usada em arquivos diferentes
 
 void error(char msg[]);
 int verifica_plv_rsvd(const char lexema[]);
-// void PrintNodo(char info[], int movim);
-// void PrintNodoInt(int val, int movim);
+void print_nodo_char(char info[], int mov);
+void print_nodo_int(char val, int mov);
 
 #endif
