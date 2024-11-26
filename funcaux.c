@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <ctype.h> 
+#include <string.h> 
+#include <stdbool.h> 
 #include "analex.h"
 #include "funcaux.h"
 
@@ -17,11 +18,20 @@ int verifica_plv_rsvd(const char lexema[]){
     return -1;
 }
 
-// void PrintNodo(char info[], int movim) {
+void print_nodo_char(char info[], int mov){
+    if(mov == AVANCA){
+        printf("%s%s\n", TABS, info);
+        strcat(TABS, "\t");
+    } else if(mov == MANTEM){
+
+    }
+}
+// void print_nodo_char(char info[], int movim){
  
-//     if (movim == AVANCA) { printf("%s%s\n", TABS, info); strcat(TABS, "\t"); }
-//     else if (movim == MANTEM) { printf("%s%s\n", TABS, info); }
-//     else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
+//     if(movim )
+//     // if (movim == AVANCA) { printf("%s%s\n", TABS, info); strcat(TABS, "\t"); }
+//     // else if (movim == MANTEM) { printf("%s%s\n", TABS, info); }
+//     // else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
 // }
 
 // void PrintNodoInt(int val, int movim) {

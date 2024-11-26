@@ -12,14 +12,14 @@ char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "pr", "init",
 FILE *arqivoProc;
 TOKEN rcv_token;
 int contLinha;
-bool mostraArvore;
-// char TABS[200] = "";
+bool mostra_arvore;
+char TABS[200] = "";
 
 void testaAnalex();
 void testaAnasint();
 
 void testaAnalex(){
-    if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("fatorial-iter.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("\nLINHA: %d\n\n", contLinha);
 
@@ -215,7 +215,7 @@ void testaAnalex(){
 void testaAnasint(){
     if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
-    printf("\nLINHA: %d\n\n", contLinha);
+    //printf("\nLINHA: %d\n\n", contLinha);
 
     while(true){
         rcv_token = AnaLex(arqivoProc);
@@ -223,7 +223,9 @@ void testaAnasint(){
             printf("\nFim do arquivo fonte encontrado!\n");
             break;
         }
-        //chamar função atrib do anasint => no caso vai ser a prog
+        
+        prog(); //iniciando a chamada do analisador sintatico
+        
         if(rcv_token.categoria == FINAL_EXP){
             printf("\nLINHA %d: Expressão sintaticamente correta!\n\n", contLinha - 1);
         } else{
@@ -242,7 +244,7 @@ int main(){
     testaAnalex();
 
     // contLinha = 1;
-    // mostraArvore = false;
+    // mostra_arvore = false;
     // printf("\n\n[Análise Sintática ----------------]\n");
     // testaAnasint();
     

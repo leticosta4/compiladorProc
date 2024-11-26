@@ -1,0 +1,19 @@
+// calcular fatorial recursivo
+
+pr fatorial (&int, int)
+
+pr init
+    int n, fat
+    getint n
+    do fatorial(fat, n)
+    putint fat
+endp
+
+pr fatorial(&int f, int n)
+    if (n <= 1) f = 1
+    else
+        do fatorial(f, n-1)
+        f = f*n
+    endi
+    getout
+endp
