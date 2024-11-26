@@ -8,7 +8,7 @@
 #include "anasint.h"
 #include "funcaux.h"
 
-char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "pr", "init", "int", "real", "bool", "char", "endp", "endw", "endi", "endv", "var", "from", "do", "while", "if", "elif", "else", "dt", "to", "by", "getint", "getreal", "getchar", "putint", "putreal", "putchar", "getout"};
+char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "prot", "def", "init", "int", "real", "bool", "char", "endp", "endw", "endi", "endv", "var", "from", "do", "while", "if", "elif", "else", "dt", "to", "by", "getint", "getreal", "getchar", "getstr", "putint", "putreal", "putchar", "putstr", "getout"};
 FILE *arqivoProc;
 TOKEN rcv_token;
 int contLinha;
@@ -114,8 +114,11 @@ void testaAnalex(){
                     case CONST:
                         printf("<PLV_RSVD, CONST>\n");
                         break;
-                    case PR:
-                        printf("<PLV_RSVD, PR>\n");
+                    case PROT:
+                        printf("<PLV_RSVD, PROT>\n");
+                        break;
+                    case DEF:
+                        printf("<PLV_RSVD, DEF>\n");
                         break;
                     case INIT:
                         printf("<PLV_RSVD, INIT>\n");
@@ -183,6 +186,9 @@ void testaAnalex(){
                     case GETCHAR:
                         printf("<PLV_RSVD, GETCHAR>\n");
                         break;
+                    case GETSTR:
+                        printf("<PLV_RSVD, GETSTR>\n");
+                        break;
                     case PUTINT:
                         printf("<PLV_RSVD, PUTINT>\n");
                         break;
@@ -191,6 +197,9 @@ void testaAnalex(){
                         break;
                     case PUTCHAR:
                         printf("<PLV_RSVD, PUTCHAR>\n");
+                        break;
+                    case PUTSTR:
+                        printf("<PLV_RSVD, PUTSTR>\n");
                         break;
                     case GETOUT:
                         printf("<PLV_RSVD, GETOUT>\n");

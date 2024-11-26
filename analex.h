@@ -3,11 +3,12 @@
 #ifndef ANALEX
 #define ANALEX
 #define TAM_MAX_LEXEMA 50
-#define NUM_PLV_RSVD 28
+#define NUM_PLV_RSVD 31
 
 typedef enum{
     CONST = 1,
-    PR,
+    PROT,
+    DEF,
     INIT,
     INT,
     REAL,
@@ -30,9 +31,11 @@ typedef enum{
     GETINT,
     GETREAL,
     GETCHAR,
+    GETSTR,
     PUTINT,
     PUTREAL,
     PUTCHAR,
+    PUTSTR,
     GETOUT
 }PALAVRA_RESERVADA;
 

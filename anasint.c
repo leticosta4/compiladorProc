@@ -10,30 +10,30 @@
 
 void prog(){
     //iniciar a tabrla de simbolos
-    if(mostra_arvore){ print_nodo_char("<prog>", AVANCA); }
+    //if(mostra_arvore){ print_nodo_char("<prog>", AVANCA); }
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL )){
         decl_list_var();
     }  
-    if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
+    //if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
 
-    while(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == PR){
-        decl_proc_prot();
+    while(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == PROT){
+        decl_def_proc();
     }  
-    if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
+    //if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
 
 
     if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT)){
         error("Declaração no bloco init esperada");
-    } init();
+    } 
 
 
-    while (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == PR) {
+    while (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == DEF) {
         proc_def();
     }  
-    if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
+    //if(mostra_arvore){ print_nodo_char("< %s >", palavras_reservadas[rcv_token.codigo], MANTEM); }
 
-    if(rcv_token != FINAL_ARQ){ error("Fim do arquivo esperado"); }
+    if(rcv_token.codigo != FINAL_ARQ){ error("Fim do arquivo esperado"); }
 
     printf("\n\nexpressao linha %d foi\n\n", contLinha);
 
@@ -62,7 +62,7 @@ void decl_list_var(){
 }
 
 
-void decl_proc_prot(){}
+void decl_def_proc(){}
 void init(){}
 void proc_def(){}
 //vindas do decl_lis_var:
