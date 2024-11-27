@@ -18,7 +18,7 @@ extern char TABS[200];
 
 void prog();
 void decl_list_var();
-void decl_proc_prot();
+void decl_def_proc();
 void init();
 void proc_def();
 //vindas do decl_lis_var:

@@ -9,7 +9,7 @@
 
 #define TAM_LEXEMA 50 
 #define TAM_NUM 20 
-#define NUM_PLV_RSVD 28
+#define NUM_PLV_RSVD 31
 
 TOKEN AnaLex(FILE *arquivo){
     int estado; 
