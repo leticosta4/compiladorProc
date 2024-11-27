@@ -29,9 +29,9 @@ void print_nodo_char(char info[], int mov){
 // void print_nodo_char(char info[], int movim){
  
 //     if(movim )
-//     // if (movim == AVANCA) { printf("%s%s\n", TABS, info); strcat(TABS, "\t"); }
-//     // else if (movim == MANTEM) { printf("%s%s\n", TABS, info); }
-//     // else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
+//     if (movim == AVANCA) { printf("%s%s\n", TABS, info); strcat(TABS, "\t"); }
+//     else if (movim == MANTEM) { printf("%s%s\n", TABS, info); }
+//     else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
 // }
 
 // void PrintNodoInt(int val, int movim) {
