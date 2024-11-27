@@ -19,7 +19,7 @@ void testaAnalex();
 void testaAnasint();
 
 void testaAnalex(){
-    if ((arqivoProc = fopen("fatorial-iter.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("\nLINHA: %d\n\n", contLinha);
 
