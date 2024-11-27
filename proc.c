@@ -227,19 +227,13 @@ void testaAnasint(){
     //printf("\nLINHA: %d\n\n", contLinha);
 
     while(true){
-        rcv_token = AnaLex(arqivoProc);
-        if(rcv_token.categoria == FINAL_ARQ){
-            printf("\nFim do arquivo fonte encontrado!\n");
-            break;
-        }
-        
         prog(); //iniciando a chamada do analisador sintatico
         
-        if(rcv_token.categoria == FINAL_EXP){
-            printf("\nLINHA %d: Expressão sintaticamente correta!\n\n", contLinha - 1);
-        } else{
-            error("Erro de sintaxe!\n");
-        }
+        // if(rcv_token.categoria == FINAL_EXP){
+        //     printf("\nLINHA %d: Expressão sintaticamente correta!\n\n", contLinha - 1);
+        // } else{
+        //     error("Erro de sintaxe!\n");
+        // }
     }
 
     fclose(arqivoProc);

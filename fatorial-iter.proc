@@ -1,17 +1,19 @@
-// Calcular fatorial iterativo
+def init 
+  int fat, n, z 
 
-pr init
-	int fat = 1, n = 1, z
-	getint n
-	if (n <= 1)
-		fat = 1
-	else
-		fat = n
-		z = n
-		while (z > 2)
-			z = z - 1
-			fat = fat * z
-		endw
-	endi
-	putint fat
-endp
+  getint n 
+
+  if (n <= 1) 
+    fat = 1 
+  else 
+    fat = n 
+    z = n 
+
+    while (z > 2) 
+      z = z - 1 
+      fat = fat * z 
+    endw 
+  endi 
+
+  putint fat 
+endp 
