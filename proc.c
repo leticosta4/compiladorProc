@@ -224,16 +224,13 @@ void testaAnalex(){
 void testaAnasint(){
     if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
-    //printf("\nLINHA: %d\n\n", contLinha);
-
     while(true){
+        rcv_token = AnaLex(arqivoProc); 
+        if(rcv_token.categoria == FINAL_ARQ){
+            printf("\nfim do arquivo fonte encontrado!\n");
+            break;
+        }
         prog(); //iniciando a chamada do analisador sintatico
-        
-        // if(rcv_token.categoria == FINAL_EXP){
-        //     printf("\nLINHA %d: Expressão sintaticamente correta!\n\n", contLinha - 1);
-        // } else{
-        //     error("Erro de sintaxe!\n");
-        // }
     }
 
     fclose(arqivoProc);
@@ -247,7 +244,7 @@ int main(){
     testaAnalex();
 
     // contLinha = 1;
-    // mostra_arvore = false;
+
     // printf("\n\n[Análise Sintática ----------------]\n");
     // testaAnasint();
     
