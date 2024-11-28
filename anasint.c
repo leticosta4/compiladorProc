@@ -16,13 +16,11 @@ void valor_var(){
         rcv_token.processado = true;
         rcv_token = AnaLex(arqivoProc);
         //adicionar na tabela de simb?
-    } else {
-        error("era esperado valor charcon ou intcont ou realcon ou stringcon");
-    }
+    } 
 }
 
 void prog(){
-    iniciar_tabsimb();
+    // iniciar_tabsimb();
 
     printf("inicio do programa: < prog >\n\n");
     if(rcv_token.categoria == PLV_RSVD){
@@ -60,6 +58,7 @@ void decl_list_var(){
         rcv_token = AnaLex(arqivoProc);
         decl_var();   
     }
+    printf("fim da declaração da lista de variaveis\n\n");
 }
 
 
@@ -93,6 +92,7 @@ void decl_var(){
     //fazer verificação na tabela de simbolos p ver se o identificador ja foi usado p inicializar ou nao - semantico?
     rcv_token.processado = true;
     rcv_token = AnaLex(arqivoProc);
+    iniciar_tabsimb();
     //adicionar na tabela de simb? 
 
     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){ //vetor ou matriz
@@ -119,10 +119,26 @@ void decl_var(){
         rcv_token.processado = true;
         rcv_token = AnaLex(arqivoProc);
         valor_var();
-        if(rcv_token.categoria = SNL && rcv_token.codigo == VIRGULA){ //agora p o caso de vetor ou matriz especificamente
-            rcv_token.processado = true;
+
+        if(rcv_token.categoria = SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente
+            rcv_token.processado = true; 
             rcv_token = AnaLex(arqivoProc);
-            valor_var();
+            do{
+                valor_var();
+                if(rcv_token.categoria = SNL && rcv_token.codigo == VIRGULA){ 
+                    rcv_token.processado = true;
+                    rcv_token = AnaLex(arqivoProc);
+                } else { break; }
+            }while(1);
+
+            if(rcv_token.categoria = SNL && rcv_token.codigo == FECHA_CHAVE){
+                rcv_token.processado = true; 
+                rcv_token = AnaLex(arqivoProc);
+            } else { error("erra esperado fechamento do '{' com '}'"); }
+        } else {
+            error("era esperado um identificador após '='");
         }
     } 
+
+    printf("fim da declaração da variavel\n\n");
 }

@@ -48,6 +48,8 @@ typedef enum{
     FECHA_PAREN,
     ABRE_COL,
     FECHA_COL,
+    ABRE_CHAVE,
+    FECHA_CHAVE,
     ACESSO_END,
     AND_LOGICO,
     OR_LOGICO,

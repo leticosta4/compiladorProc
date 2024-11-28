@@ -87,6 +87,16 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.categoria = SNL;
                     token_base.codigo = FECHA_COL;
                     return token_base;
+                } else if(caracter == '{'){ 
+                    estado = 47;
+                    token_base.categoria = SNL;
+                    token_base.codigo = ABRE_CHAVE;
+                    return token_base;
+                } else if(caracter == '}'){ 
+                    estado = 48;
+                    token_base.categoria = SNL;
+                    token_base.codigo = FECHA_CHAVE;
+                    return token_base;
                 } 
                 //esses abaixo ainda dependem do proximo caracter que se segue => tratado em outros cases (outros estados)
                 else if(caracter == '/'){ estado = 17; } //inicio de COMENTARIO OU DIVISAO
