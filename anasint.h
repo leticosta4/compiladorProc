@@ -16,7 +16,7 @@ extern char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA];
 extern bool mostra_arvore;
 extern char TABS[200];
 
-void valor_var();
+int valor_var();
 void prog();
 void decl_list_var();
 void decl_def_proc();

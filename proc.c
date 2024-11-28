@@ -19,7 +19,7 @@ void testaAnalex();
 void testaAnasint();
 
 void testaAnalex(){
-    if ((arqivoProc = fopen("./files/testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("\nLINHA: %d\n\n", contLinha);
 
@@ -222,10 +222,9 @@ void testaAnalex(){
 }
 
 void testaAnasint(){
-    if ((arqivoProc = fopen("testeProc.txt", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
-
+    if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
-        rcv_token = AnaLex(arqivoProc); 
+        rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
             break;
@@ -243,10 +242,10 @@ int main(){
     printf("\n\n[Análise Léxica -------------------]\n");
     testaAnalex();
 
-    // contLinha = 1;
+    contLinha = 1;
 
-    // printf("\n\n[Análise Sintática ----------------]\n");
-    // testaAnasint();
+    printf("\n\n[Análise Sintática ----------------]\n");
+    testaAnasint();
     
     return 0;
 }
