@@ -9,7 +9,7 @@
 #define TAM_MAX_TAB 100
 
 typedef enum{EXTERNO_PROC, INTERNO_PROC}ESCOPO;
-typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;
+//typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;
 typedef enum{VAR_GLOBAL, VAR_LOCAL, PROCEDIMENTO, PARAMETRO, PROTOTIPO}CATEGORIA;
 typedef enum{VALOR, REFERENCIA, NAO_APLICA_PARAM}PASSAGEM;
 typedef enum{VIVO, VIROU_ZUMBI, NAO_APLICA_ZUMBI}ZUMBI;
@@ -34,6 +34,10 @@ typedef struct{
 }tipo_tab_simb;
 
 extern tipo_tab_simb tabela_simbolos;
-extern TOKEN tk;
+extern TOKEN rcv_token;
 
+void iniciar_tabsimb();
+void inserir_tabsimb();
+void buscar_token_tabsimb();
+void remover_tabsimb();
 #endif

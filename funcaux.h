@@ -15,8 +15,9 @@ extern char TABS[200];
 extern int contLinha; //extern para garantir que a mesma variavel global sendo usada em arquivos diferentes
 
 void error(char msg[]);
+void processa_token_add_tabela(int codigo_token);
 int verifica_plv_rsvd(const char lexema[]);
-void print_nodo_char(char info[], int mov);
-void print_nodo_int(char val, int mov);
+// void print_nodo_char(char info[], int mov);
+// void print_nodo_int(char val, int mov);
 
 #endif
