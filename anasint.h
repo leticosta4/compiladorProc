@@ -20,7 +20,6 @@ int valor_var();
 void prog();
 void decl_list_var();
 void decl_def_proc();
-void init();
 void proc_def();
 //vindas do decl_lis_var:
 void tipo();

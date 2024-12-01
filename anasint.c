@@ -41,7 +41,7 @@ void decl_list_var(){
     printf("inicio da declaração da lista de variaveis: < decl_list_var >\n\n");
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == CONST){
         printf("em decl list var: %d (tem que ser 1)\n", rcv_token.codigo);
-        rcv_token.processado = true; //talvez isso de erro
+        rcv_token.processado = true; 
         rcv_token = AnaLex(arqivoProc);
     }
 
@@ -64,7 +64,6 @@ void decl_def_proc(){
     
 }
 
-void init(){}
 void proc_def(){}
 
 //vindas do decl_lis_var:
@@ -110,17 +109,14 @@ void decl_var(){
                 error("era esperado o fechamento do colchete");
             } else {
                 printf("foi um array\n");
-                // rcv_token.processado = true;
-                // rcv_token = AnaLex(arqivoProc);
+                rcv_token.processado = true;
+                rcv_token = AnaLex(arqivoProc);
             }
         }
     }
 
     if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){ //pode ocorrer sendo vetor ou matriz ou variavel normal tb
-        rcv_token.processado = true;
-        rcv_token = AnaLex(arqivoProc);
         int cat = valor_var();
-        
         if (cat != 9 && cat != 8){
             if(rcv_token.categoria = SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente
                 rcv_token.processado = true; 
