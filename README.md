@@ -1,11 +1,28 @@
 # compiladorProc
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
+## gramática + outros p fazer
+- [x] prog
+- [x] decl_list_var
+- [ ] decl_def_prot
+- [x] decl_var
+- [x] tipo
+- [x] prot
+- [ ] def
+- [ ] cmd
+- [ ] atrib
+- [ ] expr
+- [ ] expr_simp
+- [ ] termo
+- [ ] fator
+- [ ] op_rel
+- [ ] limpar prints e comentarios
+- [ ] tabela de simbolos
+- [ ] talvez tirar a função `printa_valor_token()`
+
 
 ## dúvidas
 - esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
-- no caso de funcao ou procedimento, ja consumo o token em `prog` ou so em `decl_def_proc`, ja que preciso fazer essa verificação la em baixo tb?
+- acho que depois posso tirar todas as linhas com `rcv_token.processado = true;` pq meio que to controlando onde chamr analex
 
 ## resolver
-- [ ] teste
-- [x] teste1

@@ -28,11 +28,8 @@ void prog(){
         decl_list_var();
     } 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
-        //aqui talvez nao seja bom ja consumir o token pq eu preciso fazer uma verificacao na funcao que é chamada, logo ainda é o mesmo token nao o prox
-        //rcv_token.processado = true;
-        //rcv_token = AnaLex(arqivoProc);
         printf("em prog: %d (tem que ser 2 ou 3)\n", rcv_token.codigo);
-        decl_def_proc();
+        decl_def_proc(); 
     }
     //algo da tabela de simbolos 
 }
@@ -59,14 +56,20 @@ void decl_list_var(){
 
 
 void decl_def_proc(){
-    printf("inicio da declaração de funcoes ou procedimentos: < decl_def_proc >\n\n");
-
-    
+    printf("inicio da declaração de funcoes ou prototipos de procedimentos: < decl_def_proc >\n\n");
+    switch (rcv_token.codigo){
+        case PROT:
+            prot();
+            break;
+        case DEF:
+            def();
+            break;
+    }
+    printf("fim da declaração de procedimentos\n\n");
 }
 
-void proc_def(){}
 
-//vindas do decl_lis_var:
+//vindas do decl_list_var:
 void tipo(){
     printf("tipo de variaveis: < tipo >\n\n");
     if(rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL){
@@ -118,7 +121,7 @@ void decl_var(){
     if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){ //pode ocorrer sendo vetor ou matriz ou variavel normal tb
         int cat = valor_var();
         if (cat != 9 && cat != 8){
-            if(rcv_token.categoria = SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente
+            if(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente
                 rcv_token.processado = true; 
                 rcv_token = AnaLex(arqivoProc);
                 do{
@@ -133,11 +136,77 @@ void decl_var(){
                     rcv_token.processado = true; 
                     rcv_token = AnaLex(arqivoProc);
                 } else { error("erra esperado fechamento do '{' com '}'"); }
-            } else {
-                error("era esperado um identificador após '='");
-            }
+            } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
+                //salvar na tabela de simbolos
+                printa_valor_token();
+                rcv_token.processado = true;
+                rcv_token = AnaLex(arqivoProc);
+            } else{ error("era esperado um identificador após '='"); }
         } else { printf("\naqui!!!!!!\n");}
     } 
     
     printf("fim da declaração da variavel\n\n");
+}
+
+//vindas do decl_def_prot
+void prot(){
+    printf("inicio da declaração de prototipos de procedimentos: < prot >\n\n");
+    rcv_token.processado = true;
+    rcv_token = AnaLex(arqivoProc);
+
+    if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
+        error("declaração do bloco init não permitida");
+    } else if(rcv_token.categoria = ID){ //idproc
+        //salvar na tabela
+        rcv_token.processado = true;
+        rcv_token = AnaLex(arqivoProc);
+
+        if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
+            error("era esperado abertura do parenteses na declaração de prototipo de procedimento");
+        } else {
+            rcv_token.processado = true;
+            rcv_token = AnaLex(arqivoProc);
+            while(1){ //enquanto estiver na condicao do else - ABRE_PAREN
+                parametro();
+                while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
+                    rcv_token.processado = true;
+                    rcv_token = AnaLex(arqivoProc);
+                    if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
+                        error("era esperado o fechamento do colchetes");
+                    } else {
+                        printf("vetor de algo no parametro\n");
+                        rcv_token.processado = true;
+                        rcv_token = AnaLex(arqivoProc);
+                    }
+                }
+                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
+                    error("era esperado o fechamento do parenteses");
+                } else {
+                    printf("foi uma declaração de prototipo de procedimento\n");
+                    rcv_token.processado = true;
+                    rcv_token = AnaLex(arqivoProc);
+                    break;
+                }
+            }
+        }
+    } else {
+        error("era esperando um identificador após 'prot'");
+    }
+}
+
+void def(){
+    printf("inicio da declaração de funcoes: < def >\n\n");
+    rcv_token.processado = true;
+    rcv_token = AnaLex(arqivoProc);
+    //salvar na tabela
+}
+
+void parametro(){
+    if(rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END){
+        printf("endereco\n");
+        rcv_token.processado = true;
+        rcv_token = AnaLex(arqivoProc); 
+        //talvez tenha que guardar a informação na tabela
+    }
+    tipo();
 }

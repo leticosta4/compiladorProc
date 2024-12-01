@@ -20,8 +20,11 @@ int valor_var();
 void prog();
 void decl_list_var();
 void decl_def_proc();
-void proc_def();
-//vindas do decl_lis_var:
+//vindas do decl_list_var:
 void tipo();
 void decl_var();
+//vindas do decl_def_prot:
+void def();
+void prot();
+void parametro();
 #endif 

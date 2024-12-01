@@ -36,7 +36,7 @@ void printa_valor_token(){
             printf("valor do identificador: %s\n", rcv_token.lexema);
             break;
         case PLV_RSVD:
-            printf("valor da palavra reservada: %s\n", palavras_reservadas[rcv_token.codigo]);
+            printf("valor da palavra reservada: %s\n", palavras_reservadas[(rcv_token.codigo - 1)]);
             break;
     }
 }
