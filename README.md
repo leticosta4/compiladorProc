@@ -4,12 +4,19 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ## gramática + outros p fazer
 - [x] prog
 - [x] decl_list_var
-- [ ] decl_def_prot
+- [x] decl_def_prot
 - [x] decl_var
 - [x] tipo
 - [x] prot
-- [ ] def
+- [x] def
 - [ ] cmd
+    - [x] do
+    - [ ] while
+    - [ ] if
+    - [ ] var
+    - [ ] gets
+    - [ ] puts
+    - [] getout
 - [ ] atrib
 - [ ] expr
 - [ ] expr_simp
@@ -26,9 +33,11 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - acho que depois posso tirar todas as linhas com `rcv_token.processado = true;` pq meio que to controlando onde chamr analex
 - precisa salvar a palavra reservada `init` na tabela de simbolos?
 
-## resolver
+## resolver/pensar sobre
 - <b>talvez</b> aquilo do lexema na analise sintatica
- <b>talvez</b> aquilo do final de expressao nao estar pulando linha
+- <b>talvez</b> aquilo do final de expressao nao estar pulando linha
+- em `cmd()`, nos cases do switch talvez tirar o final do processamento do token e resumir no final quando sair do switch
+- bug nos contadores da linha aparentemente
 
 ### bom para debug
 
