@@ -24,5 +24,12 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ## dúvidas
 - esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
 - acho que depois posso tirar todas as linhas com `rcv_token.processado = true;` pq meio que to controlando onde chamr analex
+- precisa salvar a palavra reservada `init` na tabela de simbolos?
 
 ## resolver
+- <b>talvez</b> aquilo do lexema na analise sintatica
+ <b>talvez</b> aquilo do final de expressao nao estar pulando linha
+
+### bom para debug
+
+    printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);
