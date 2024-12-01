@@ -21,6 +21,8 @@ void prog();
 void decl_list_var();
 void decl_def_proc();
 void cmd();
+void atrib();
+void expr();
 //vindas do decl_list_var:
 void tipo();
 void decl_var();

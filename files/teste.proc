@@ -5,7 +5,9 @@ prot soma(&int[], int)
 def init
 int tchau, hey
 char c = 'a'
-//while
+do soma(tchau, hey)
+while(yeah)
+endw
 endp
 
 def soma(int n, int m)
