@@ -1,1 +1,9 @@
+//int oi = 2
+
 prot soma(&int[])
+
+def init
+int tchau, hey
+char c = 'a'
+//while
+endp

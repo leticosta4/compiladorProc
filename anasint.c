@@ -85,7 +85,6 @@ void decl_var(){
     printf("inicio da declaração da variavel: < decl_var >\n\n");
 
     //aqui acho que o escopo do token p tabsimb vai ser sempre EXTERNO_PROC
-    printf("%d\n", rcv_token.categoria);
     if(rcv_token.categoria != ID){ error("era esperado identificador"); }
 
     //fazer verificação na tabela de simbolos p ver se o identificador ja foi usado p inicializar ou nao - semantico?
@@ -198,7 +197,47 @@ void def(){
     printf("inicio da declaração de funcoes: < def >\n\n");
     rcv_token.processado = true;
     rcv_token = AnaLex(arqivoProc);
-    //salvar na tabela
+    //salvar na tabela - deixar aqui se for para salvar o INIT só
+
+    if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
+        printf("inicio do bloco principal do programa proc < init >\n\n");
+        rcv_token.processado = true;
+        rcv_token = AnaLex(arqivoProc);
+
+        if(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+
+        while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
+            printf("em init: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
+            decl_list_var();
+            rcv_token.processado = true;
+            rcv_token = AnaLex(arqivoProc); 
+        } 
+
+        while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
+            // printf("ANTES: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
+            // rcv_token.processado = true;
+            // rcv_token = AnaLex(arqivoProc);
+            // printf("DEPOIS: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
+            
+            if(rcv_token.codigo == ENDP){ break; }
+            cmd();
+        }
+
+        if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
+            error("era esperado o término do bloco init com 'endp'");
+        } else {
+            printf("fim da implementação do bloco init\n");
+            // rcv_token.processado = true;
+            // rcv_token = AnaLex(arqivoProc);
+        }
+    } else if(rcv_token.categoria == ID){
+        //alguma outra funcao
+
+    } else{
+        error("era esperado o identificador 'init' ou um de função qualquer após 'def'");
+    }
+
+    printf("fim do uso de def\n");    
 }
 
 void parametro(){
@@ -210,3 +249,5 @@ void parametro(){
     }
     tipo();
 }
+
+void cmd(){}
