@@ -1,9 +1,13 @@
 //int oi = 2
 
-prot soma(&int[])
+prot soma(&int[], int)
 
 def init
 int tchau, hey
 char c = 'a'
 //while
+endp
+
+def soma(int n, int m)
+char result
 endp

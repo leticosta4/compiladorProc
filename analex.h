@@ -5,7 +5,7 @@
 #define TAM_MAX_LEXEMA 50
 #define NUM_PLV_RSVD 31
 
-typedef enum{
+typedef enum palavra_reservada{
     CONST = 1,
     PROT,
     DEF,
@@ -39,7 +39,7 @@ typedef enum{
     GETOUT
 }PALAVRA_RESERVADA;
 
-typedef enum{
+typedef enum sinal{
     ADICAO = 1,
     SUBTRACAO,
     MULTIPLICACAO,
@@ -65,7 +65,7 @@ typedef enum{
     PONTO
 }SINAL;
 
-typedef enum{
+typedef enum categoria_token{
     ID = 1,
     CHARCON,
     STRINGCON,
@@ -77,7 +77,7 @@ typedef enum{
     FINAL_ARQ
 }CATEGORIA_TOKEN;
 
-typedef struct {
+typedef struct token{
     CATEGORIA_TOKEN categoria;
     union {
         int codigo; //se for da categoria sinal ou palavra reservada
