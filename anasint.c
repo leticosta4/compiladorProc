@@ -82,6 +82,8 @@ void cmd(){
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 break;
+                rcv_token.processado = true;
+                rcv_token = AnaLex(arqivoProc);
             case GETINT:
             case GETREAL:
             case GETCHAR:
@@ -89,32 +91,35 @@ void cmd(){
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID){ error("era esperado um identificador para input com get"); }
+                rcv_token.processado = true;
+                rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTINT:
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
-                if(!(rcv_token.categoria == ID && (rcv_token.categoria == INTCON))){ error("era esperado um identificador ou constante inteiro para output do intcon com put"); }
+                //printf("\n\nPROCESSOU: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);
+                if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("era esperado um identificador ou constante inteiro para output do intcon com put"); }
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTREAL:
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
-                if(!(rcv_token.categoria == ID && (rcv_token.categoria == REALCON))){ error("era esperado um identificador ou constante real para output do realcon com put"); }
+                if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("era esperado um identificador ou constante real para output do realcon com put"); }
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTCHAR:
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
-                if(!(rcv_token.categoria == ID && (rcv_token.categoria == CHARCON))){ error("era esperado um identificador ou constante char para output do charcon com put"); }
+                if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("era esperado um identificador ou constante char para output do charcon com put"); }
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTSTR:
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
-                if(!(rcv_token.categoria == ID && (rcv_token.categoria == STRINGCON))){ error("era esperado um identificador ou constante literal para output do stringcon com put"); }
+                if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("era esperado um identificador ou constante literal para output do stringcon com put"); }
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
                 break;
