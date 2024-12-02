@@ -12,7 +12,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] cmd
     - [x] do
     - [x] while
-    - [ ] if
+    - [x] if
     - [ ] var
     - [x] gets
     - [x] puts
@@ -36,9 +36,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ## resolver/pensar sobre
 - <b>talvez</b> aquilo do lexema na analise sintatica
 - <b>talvez</b> aquilo do final de expressao nao estar pulando linha
-- bug nos contadores da linha aparentemente
-- testar os if/elif/else
-- testar os puts e os gets
+- bug nos contadores da linha aparentemente (so alguns casos)
+
 ### bom para debug
 
     printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);

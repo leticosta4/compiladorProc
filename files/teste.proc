@@ -8,19 +8,27 @@ char c = 'a'
 do soma(tchau, hey)
 while(yeah)
 endw
+
+if(ola)
 getint a
 getreal b
 getchar c
 getstr d
 getout
+
+elif(bye)
 putint a
 putreal b
 putchar c
 putstr d
+
+else
 putint 2
 putreal 2.2
 putchar 's'
 putstr "oi"
+endi
+
 endp
 
 def soma(int n, int m)
