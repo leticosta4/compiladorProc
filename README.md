@@ -12,7 +12,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] cmd
     - [x] do
     - [x] while
-    - [x] if
+    - [ ] if, elif, else
     - [ ] var
     - [x] gets
     - [x] puts
@@ -34,10 +34,17 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - precisa salvar a palavra reservada `init` na tabela de simbolos?
 
 ## resolver/pensar sobre
+- loop infinito sem condicao de parada para IF/ELIF/ELSE e VAR
+- testar o bloco var
 - <b>talvez</b> aquilo do lexema na analise sintatica
 - <b>talvez</b> aquilo do final de expressao nao estar pulando linha
 - bug nos contadores da linha aparentemente (so alguns casos)
 
+
 ### bom para debug
 
     printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);
+
+### útil para algumas pts do código
+
+    while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }

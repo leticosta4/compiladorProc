@@ -287,8 +287,50 @@ void cmd(){
                 }
                 break;
             case VAR:
+            printf("início de um bloco var\n\n");
                 rcv_token.processado = true;
                 rcv_token = AnaLex(arqivoProc);
+                if(rcv_token.categoria != ID || (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == VAR)){ error("era esperado identificador para expressao após o 'var'");}
+                else{
+                    rcv_token.processado = true;
+                    rcv_token = AnaLex(arqivoProc);
+                    if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == FROM)){ error("era esperada a palavra reservada 'from' após o identificados"); }
+                    else{
+                        expr();
+                        while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+                        if(!(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == TO || rcv_token.codigo == DT))){
+                            error("eram esperadas as palavras reservadas 'to' ou 'dt' após a expressão");
+                        } else{
+                            expr();
+                            while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+                            if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == BY){
+                                rcv_token.processado = true;
+                                rcv_token = AnaLex(arqivoProc);
+                                if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){ error("era esperado um valor inteiro ou identificador após 'by'"); }
+                                else{
+                                    rcv_token.processado = true;
+                                    rcv_token = AnaLex(arqivoProc);
+                                    while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+                                }
+                            } 
+                            if(!(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID)){ error("eram esperados identificador ou palavra reservada para chamada do cmd"); }
+                            else{
+                                //if(rcv_token.codigo == ENDV){ error("era esperado corpo para bloco var com chamada de cmd"); } //talvez de p tirar isso
+                                while(1){
+                                    if(rcv_token.codigo == ENDV){ printf("fim do bloco var1"); break;}
+                                    cmd();
+                                    while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+                                }
+                                if(rcv_token.codigo != ENDV){ error("era esperado fechamento do bloco var com 'endv'"); }
+                                else{
+                                    printf("fim do bloco var");
+                                    rcv_token.processado = true;
+                                    rcv_token = AnaLex(arqivoProc);
+                                }
+                            }
+                        }
+                    }
+                }
                 break;
         }
     } else if(rcv_token.categoria == ID) {
