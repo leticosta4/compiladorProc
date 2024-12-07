@@ -12,8 +12,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] cmd
     - [x] do
     - [x] while
-    - [ ] if, elif, else
-    - [ ] var
+    - [x] if, elif, else
+    - [x] var
     - [x] gets
     - [x] puts
     - [x] getout
@@ -26,8 +26,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] limpar prints e comentarios
 - [ ] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
-- [ ] ajeitar dimensao array
+- [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
+- [ ] ends/cmds aninhados
 
 
 ## dúvidas
@@ -39,13 +40,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - bug nos contadores da linha aparentemente (so alguns casos)
 - aplicar tabela de simbolos
 - testar `op_rel()`
+- chaves estranhas
 - continuar implementação:
     - fator 
     - termo
     - expr_simp
     - expr
-
-
-### bom para debug
-
-    printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);
+    - atrib

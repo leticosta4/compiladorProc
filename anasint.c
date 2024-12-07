@@ -161,8 +161,6 @@ void cmd(){
                     if(rcv_token.categoria != ID){ error("era esperado identificador para expressao após o '('");}
                     else {
                         expr(); //o processamento de token ta no final dentro de expr
-
-                        //o processamento de token ta no final dentro de expr
                         if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                             error("era esperado o fechamento do parenteses");
                         } else{
@@ -302,19 +300,13 @@ void cmd(){
             case FINAL_ARQ:
                 error("final do arquivo inesperadamente encontrado durante CMD - faltou fechamento de algum bloco [endi | endw | endi]");
         }
-    } else if(rcv_token.categoria == ID) {
-        
+    } else if(rcv_token.categoria == ID){
         rcv_token = AnaLex(arqivoProc);
         //atrib();
-    } else if(rcv_token.categoria == FINAL_EXP){ //isso aqui é só um teste
-        
+    } else if(rcv_token.categoria == FINAL_EXP){ //isso aqui é só um teste 
         rcv_token = AnaLex(arqivoProc);
     }
     else { error("era esperado um identificador ou palavra reservada para o cmd"); }
-    if(rcv_token.categoria == FINAL_EXP){
-        
-        rcv_token = AnaLex(arqivoProc);
-    }
     printf("fim do cmd\n\n");
 }
 
