@@ -225,22 +225,21 @@ void testaAnasint(){
     if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
+        prog(); //iniciando a chamada do analisador sintatico
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
             break;
-        }
-        prog(); //iniciando a chamada do analisador sintatico
+        } else { error("fim do arquivo não encontrado na definição de prog"); }
+        
     }
 
     fclose(arqivoProc);
 }
 
-int main(){
-    //system("chcp 65001");  // Troca a página de códigos de caracteres da console para UTF-8 na execução
-    
-    contLinha = 1;
-    printf("\n\n[Análise Léxica -------------------]\n");
-    testaAnalex();
+int main(){    
+    // contLinha = 1;
+    // printf("\n\n[Análise Léxica -------------------]\n");
+    // testaAnalex();
 
     contLinha = 1;
 

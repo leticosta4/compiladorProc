@@ -17,6 +17,8 @@ extern int contLinha; //extern para garantir que a mesma variavel global sendo u
 void error(char msg[]);
 int verifica_plv_rsvd(const char lexema[]);
 void printa_valor_token();
+void consome_fim_exp();
+void debug(char onde[]);
 // void print_nodo_char(char info[], int mov);
 // void print_nodo_int(char val, int mov);
 

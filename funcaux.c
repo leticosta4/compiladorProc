@@ -41,6 +41,14 @@ void printa_valor_token(){
     }
 }
 
+void consome_fim_exp(){
+    while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+}
+
+void debug(char onde[]){
+    printf("\n\nACABOU ENTRAR %s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
+}
+
 void print_nodo_char(char info[], int mov){
     if(mov == AVANCA){
         printf("%s%s\n", TABS, info);
