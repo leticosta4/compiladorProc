@@ -46,7 +46,7 @@ void consome_fim_exp(){
 }
 
 void debug(char onde[]){
-    printf("\n\nACABOU ENTRAR %s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
+    printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
 }
 
 void print_nodo_char(char info[], int mov){

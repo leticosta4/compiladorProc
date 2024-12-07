@@ -29,6 +29,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [ ] ends/cmds aninhados
+- chamada em excesso do analex com as novas funcoes - aparentemente consumindo 2 vezes a mais
 
 
 ## dúvidas
