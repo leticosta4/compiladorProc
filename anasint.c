@@ -14,7 +14,6 @@ int escopo_atual;
 
 int valor_var(){
     printa_valor_token();
-
     //adicionar na tabela de simb?
     rcv_token = AnaLex(arqivoProc);
     return rcv_token.categoria;
@@ -452,43 +451,43 @@ void tipo(){
 }
 
 void decl_var(){
+    int cont_dim = 1;
     printf("inicio da declaração da variavel: < decl_var >\n\n");
 
     //aqui acho que o escopo do token p tabsimb vai ser sempre EXTERNO_PROC
     if(rcv_token.categoria != ID){ error("era esperado identificador"); }
 
-    //fazer verificação na tabela de simbolos p ver se o identificador ja foi usado p inicializar ou nao - semantico?
     printf("variavel declarada: %s\n", rcv_token.lexema);
     //adicionar na tabela de simb? 
     
     rcv_token = AnaLex(arqivoProc);
 
     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){ //vetor ou matriz
-        int cat = valor_var();
-
-        if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
-            error("era esperado intcon ou um identificador");
-        } else {
-            printa_valor_token();
-            //adicionar na tabela de simb
-            
-            rcv_token = AnaLex(arqivoProc);
-
-            if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
-                error("era esperado o fechamento do colchete");
+        if(cont_dim < 2){
+            int cat = valor_var();
+            if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
+                error("era esperado intcon ou um identificador");
             } else {
-                printf("foi um array\n");
-                
+                printa_valor_token();
+                //adicionar na tabela de simb
                 rcv_token = AnaLex(arqivoProc);
+
+                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
+                    error("era esperado o fechamento do colchete");
+                } else {
+                    cont_dim++;
+                    printf("foi um array\n");
+                    
+                    rcv_token = AnaLex(arqivoProc);
+                }
             }
-        }
+        } else { error("foi encontrado array com número de dimensões superior a 2"); }
     }
 
     if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){ //pode ocorrer sendo vetor ou matriz ou variavel normal tb
         int cat = valor_var();
         if (cat != 9 && cat != 8){
-            if(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente
-                 
+            if(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente   
                 rcv_token = AnaLex(arqivoProc);
                 do{
                      cat = valor_var();
@@ -499,16 +498,17 @@ void decl_var(){
                 }while(1);
 
                 if(rcv_token.categoria = SNL && rcv_token.codigo == FECHA_CHAVE){
-                     
                     rcv_token = AnaLex(arqivoProc);
                 } else { error("erra esperado fechamento do '{' com '}'"); }
             } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
                 //salvar na tabela de simbolos
                 printa_valor_token();
-                
                 rcv_token = AnaLex(arqivoProc);
             } else{ error("era esperado um identificador após '='"); }
-        } else { if(cat == 9){error("fim do arquivo inesperado"); } printf("\naqui!!!!!!\n"); }
+        } else {
+            if(cat == 9){ error("fim do arquivo inesperado"); }
+            printf("\naqui!!!!!!\n");
+        }
     } 
     
     printf("fim da declaração da variavel\n\n");
@@ -615,17 +615,14 @@ void def(){
                 if(rcv_token.categoria != ID){ error("era esperado um identificador após a declaração do tipo"); }
                 else{
                     //salvar na tabela
-                    
                     rcv_token = AnaLex(arqivoProc);
 
                     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
-                        
                         rcv_token = AnaLex(arqivoProc);
 
                         if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
                             error("era esperado inteiro após '['");
                         } else{
-                            
                             rcv_token = AnaLex(arqivoProc);
                             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
                                 error("era esperado o fechamento do colchetes");
@@ -653,7 +650,6 @@ void def(){
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     printf("em def > prot: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
                     decl_list_var();
-                    //rcv_token = AnaLex(arqivoProc); 
                 } 
 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
@@ -661,19 +657,19 @@ void def(){
                     cmd();
                     consome_fim_exp();
                 }
-                
                 if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
                     error("era esperado o término do procedimento com 'endp'");
-                } else { printf("fim da implementação do procedimento\n"); }
+                } else {
+                    printf("fim da implementação do procedimento\n");
+                    rcv_token = AnaLex(arqivoProc);
+                }
             }
         }
         //alguma outra funcao
-
     } else{
         error("era esperado o identificador 'init' ou um de função qualquer após 'def'");
     }
-
-    printf("fim do uso de def\n");    
+    printf("fim do uso de def\n");  
 }
 
 void parametro(){

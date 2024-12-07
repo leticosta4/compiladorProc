@@ -1,5 +1,5 @@
-int oi = 2
-
+const int oi = 2
+bool a = 1
 prot soma(&int[], int)
 
 def init
@@ -41,4 +41,5 @@ endp
 
 def soma(int n, int m)
 char result
+//int array[2][3][4]
 endp

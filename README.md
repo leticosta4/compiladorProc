@@ -27,7 +27,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
 - [ ] ajeitar dimensao array
-- [ ] ajeitar coisa do bool
+- [x] ajeitar coisa do bool
 
 
 ## dúvidas
@@ -38,10 +38,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - tirar stringcon
 - bug nos contadores da linha aparentemente (so alguns casos)
 - aplicar tabela de simbolos
-- testar const
-- logicas referentes de quando a variavel é uma constante => idconst
 - testar `op_rel()`
-- erro de final de aquivo que não é encontrado
 - continuar implementação:
     - fator 
     - termo

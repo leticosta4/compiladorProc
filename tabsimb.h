@@ -10,10 +10,10 @@
 #define TAM_MAX_DIM 3
 
 typedef enum escopo{EXTERNO_PROC, INTERNO_PROC}ESCOPO;
-//typedef enum tipo{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;
+typedef enum tipo{_INT, _REAL, _CHAR, _BOOL, _NAO_APLICA_TIPO}TIPO;
 typedef enum categoria{VAR_GLOBAL, VAR_LOCAL, PROCEDIMENTO, PARAMETRO, PROTOTIPO}CATEGORIA;
 typedef enum passagem{VALOR, REFERENCIA, NAO_APLICA_PARAM}PASSAGEM;
-typedef enum zumbi {VIVO, VIROU_ZUMBI, NAO_APLICA_ZUMBI}ZUMBI;
+typedef enum zumbi {VIVO, EH_ZUMBI, NAO_APLICA_ZUMBI}ZUMBI;
 typedef enum array{VAR_SIMPLES, ID_VETOR, ID_MATRIZ}ARRAY;
 
 typedef struct{
@@ -24,9 +24,9 @@ typedef struct{
     int passagem;
     int zumbi;
     int array;
-    char dimensao1[TAM_MAX_DIM], dimensao2[TAM_MAX_DIM];
+    char dimensao1, dimensao2;
     int endereco;
-    //rotulo
+    //rotulo;
 }registro_tabsimb;
 
 typedef struct{
