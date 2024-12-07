@@ -1,4 +1,4 @@
-//int oi = 2
+int oi = 2
 
 prot soma(&int[], int)
 

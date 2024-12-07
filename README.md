@@ -32,10 +32,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 ## dúvidas
 - esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
-- acho que depois posso tirar todas as linhas com `rcv_token.processado = true;` pq meio que to controlando onde chamr analex
 
 ## resolver/pensar sobre
-- loop infinito com ENDs aninhados ????? wtf
+- loop infinito com ENDs aninhados ????? wtf - n faço ideia de como resolver
 - tirar stringcon
 - bug nos contadores da linha aparentemente (so alguns casos)
 - aplicar tabela de simbolos

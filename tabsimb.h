@@ -7,6 +7,7 @@
 #include "analex.h"
 
 #define TAM_MAX_TAB 100
+#define TAM_MAX_DIM 3
 
 typedef enum escopo{EXTERNO_PROC, INTERNO_PROC}ESCOPO;
 //typedef enum tipo{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;
@@ -23,8 +24,8 @@ typedef struct{
     int passagem;
     int zumbi;
     int array;
-    int dimensao1, dimensao2;
-    //endereco
+    char dimensao1[TAM_MAX_DIM], dimensao2[TAM_MAX_DIM];
+    int endereco;
     //rotulo
 }registro_tabsimb;
 

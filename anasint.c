@@ -27,7 +27,7 @@ void prog(){
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
         printf("em prog: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
         decl_list_var();
-    } 
+    }
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
         printf("em prog: %d (tem que ser 2 ou 3)\n", rcv_token.codigo);
         decl_def_proc(); 
@@ -50,6 +50,7 @@ void decl_list_var(){
         rcv_token = AnaLex(arqivoProc);
         decl_var();   
     }
+    consome_fim_exp();
     printf("fim da declaração da lista de variaveis\n\n");
 }
 
@@ -65,7 +66,12 @@ void decl_def_proc(){
             def();
             break;
     }
-    printf("fim da declaração de procedimentos\n\n");
+    consome_fim_exp();
+    if(rcv_token. categoria == PLV_RSVD && rcv_token.codigo == ENDP){
+        rcv_token = AnaLex(arqivoProc);
+        printf("fim da declaração de procedimentos\n\n");
+    } 
+    //a falta do ENDP ja foi tratada em def()
 }
 
 
@@ -310,7 +316,7 @@ void cmd(){
         
         rcv_token = AnaLex(arqivoProc);
     }
-    printf("fim do cmd\n");
+    printf("fim do cmd\n\n");
 }
 
 // void atrib(){
@@ -453,7 +459,6 @@ void decl_var(){
 
     //fazer verificação na tabela de simbolos p ver se o identificador ja foi usado p inicializar ou nao - semantico?
     printf("variavel declarada: %s\n", rcv_token.lexema);
-    iniciar_tabsimb();
     //adicionar na tabela de simb? 
     
     rcv_token = AnaLex(arqivoProc);
@@ -466,7 +471,6 @@ void decl_var(){
         } else {
             printa_valor_token();
             //adicionar na tabela de simb
-            
             
             rcv_token = AnaLex(arqivoProc);
 
@@ -580,16 +584,9 @@ void def(){
         while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
             printf("em init: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
             decl_list_var();
-            
-            rcv_token = AnaLex(arqivoProc); 
         } 
 
         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
-            // printf("ANTES: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
-            // 
-            // rcv_token = AnaLex(arqivoProc);
-            // printf("DEPOIS: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
-            
             if(rcv_token.codigo == ENDP){ break; }
             cmd();
             consome_fim_exp();
@@ -598,7 +595,10 @@ void def(){
 
         if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
             error("era esperado o término do bloco init com 'endp'");
-        } else { printf("fim da implementação do bloco init\n"); }
+        } else {
+            rcv_token = AnaLex(arqivoProc);
+            printf("fim da implementação do bloco init\n");
+        }
     } else if(rcv_token.categoria == ID){
         //salvar na tabela -- deixar so aqui se nao precisar guardar o INIT
         
@@ -653,16 +653,10 @@ void def(){
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     printf("em def > prot: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
                     decl_list_var();
-                    
-                    rcv_token = AnaLex(arqivoProc); 
+                    //rcv_token = AnaLex(arqivoProc); 
                 } 
 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
-                    // printf("ANTES: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
-                    // 
-                    // rcv_token = AnaLex(arqivoProc);
-                    // printf("DEPOIS: cat: %d | codigo: %d\n", rcv_token.categoria, rcv_token.codigo);
-                    
                     if(rcv_token.codigo == ENDP){ break; }
                     cmd();
                     consome_fim_exp();
