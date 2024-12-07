@@ -26,25 +26,30 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] limpar prints e comentarios
 - [ ] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
+- [ ] ajeitar dimensao array
+- [ ] ajeitar coisa do bool
 
 
 ## dúvidas
 - esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
 - acho que depois posso tirar todas as linhas com `rcv_token.processado = true;` pq meio que to controlando onde chamr analex
-- precisa salvar a palavra reservada `init` na tabela de simbolos?
 
 ## resolver/pensar sobre
-- loop infinito sem condicao de parada para IF/ELIF/ELSE e VAR
-- testar o bloco var
-- <b>talvez</b> aquilo do lexema na analise sintatica
-- <b>talvez</b> aquilo do final de expressao nao estar pulando linha
+- loop infinito com ENDs aninhados ????? wtf
+- tirar stringcon
 - bug nos contadores da linha aparentemente (so alguns casos)
+- aplicar tabela de simbolos
+- testar const
+- logicas referentes de quando a variavel é uma constante => idconst
+- testar `op_rel()`
+- erro de final de aquivo que não é encontrado
+- continuar implementação:
+    - fator 
+    - termo
+    - expr_simp
+    - expr
 
 
 ### bom para debug
 
     printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d\n\n", rcv_token.categoria, rcv_token.codigo);
-
-### útil para algumas pts do código
-
-    while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }

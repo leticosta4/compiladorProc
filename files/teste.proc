@@ -30,7 +30,12 @@ putreal 2.2
 putchar 's'
 putstr "oi"
 endi
-var hola from dt 
+
+var hola from 1 dt 2 by me
+if(ola)
+getint a
+getreal b
+endi
 endv
 endp
 

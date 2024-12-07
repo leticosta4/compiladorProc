@@ -225,11 +225,12 @@ void testaAnasint(){
     if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
+        prog(); //iniciando a chamada do analisador sintatico
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
             break;
-        }
-        prog(); //iniciando a chamada do analisador sintatico
+        } else { error("fim do arquivo não encontrado na definição de prog"); }
+        
     }
 
     fclose(arqivoProc);
