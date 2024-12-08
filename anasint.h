@@ -23,10 +23,10 @@ void decl_def_proc();
 void cmd();
 void atrib();
 void expr();
-void expr_simp();
+void expr_simples();
 void termo();
 void fator();
-void op_rel();
+int op_rel();
 //vindas do decl_list_var:
 void tipo();
 void decl_var();

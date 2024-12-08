@@ -1,6 +1,9 @@
 # compiladorProc
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
+
+<b>TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
+
 ## gramática + outros p fazer
 - [x] prog
 - [x] decl_list_var
@@ -9,7 +12,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] tipo
 - [x] prot
 - [x] def
-- [ ] cmd
+- [x] cmd
     - [x] do
     - [x] while
     - [x] if, elif, else
@@ -17,33 +20,23 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] gets
     - [x] puts
     - [x] getout
-- [ ] atrib
-- [ ] expr
-- [ ] expr_simp
-- [ ] termo
-- [ ] fator
-- [ ] op_rel
+- [x] atrib
+- [x] expr
+- [x] expr_simp
+- [x] termo
+- [x] fator
+- [x] op_rel
 - [ ] limpar prints e comentarios
 - [ ] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
-- [ ] ends/cmds aninhados
-
+- [ ] limitar dimensao de array no parametro de funcao/procedimento
 
 ## dúvidas
-- esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
+- por enquanto dboa, só confirmar como tirar stringcon
 
 ## resolver/pensar sobre
-- loop infinito com ENDs aninhados ????? wtf - n faço ideia de como resolver
 - tirar stringcon
-- bug nos contadores da linha aparentemente (so alguns casos)
 - aplicar tabela de simbolos
-- testar `op_rel()`
-- chaves estranhas
-- continuar implementação:
-    - fator 
-    - termo
-    - expr_simp
-    - expr
-    - atrib
+- tratamentos chatos

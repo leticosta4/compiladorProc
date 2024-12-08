@@ -1,6 +1,8 @@
 const int oi = 2
 bool a = 1
+
 prot soma(&int[], int)
+prot fatorial (&int, int) 
 
 def init
 int tchau, hey
