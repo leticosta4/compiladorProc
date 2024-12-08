@@ -31,7 +31,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
-- [ ] limitar dimensao de array no parametro de funcao/procedimento
+- [x] limitar dimensao de array no parametro com def e prot
 
 ## dúvidas
 - por enquanto dboa, só confirmar como tirar stringcon
