@@ -595,7 +595,7 @@ void decl_var(){
 
 //vindas do decl_def_prot
 void prot(){
-    int ca; 
+    int ca, _cd = 1; 
     printf("inicio da declaração de prototipos de procedimentos: < prot > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc);
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
@@ -611,13 +611,16 @@ void prot(){
             do{
                 parametro();
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
-                    rcv_token = AnaLex(arqivoProc);
-                    if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
-                        error("ERRO SINTATICO > era esperado o fechamento do colchetes");
-                    } else {
-                        printf("vetor de algo no parametro\n");
-                        ca = valor_var();
-                    }
+                    if(_cd < 3){
+                        rcv_token = AnaLex(arqivoProc);
+                        if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
+                            error("ERRO SINTATICO > era esperado o fechamento do colchetes");
+                        } else {
+                            _cd++;
+                            printf("vetor de algo no parametro\n");
+                            ca = valor_var();
+                        }
+                    } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
                 } 
                 if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                     rcv_token = AnaLex(arqivoProc);
@@ -642,7 +645,7 @@ void prot(){
 
 void def(){
     printf("inicio da declaração de funcoes: < def > | LINHA: %d\n\n", contLinha);
-    int cate;
+    int cate, cd = 1;
     rcv_token = AnaLex(arqivoProc);
     //salvar na tabela - o INIT tb vai p a tabela
     
@@ -683,18 +686,21 @@ void def(){
                     rcv_token = AnaLex(arqivoProc);
 
                     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
-                        rcv_token = AnaLex(arqivoProc);
-                        if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
-                            error("ERRO SINTATICO > era esperado inteiro após '['");
-                        } else{
+                        if(cd < 3){
                             rcv_token = AnaLex(arqivoProc);
-                            if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
-                                error("ERRO SINTATICO > era esperado o fechamento do colchetes");
-                            } else {
-                                printf("vetor de algo no parametro\n");
-                                cate = valor_var();
+                            if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
+                                error("ERRO SINTATICO > era esperado inteiro após '['");
+                            } else{
+                                rcv_token = AnaLex(arqivoProc);
+                                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
+                                    error("ERRO SINTATICO > era esperado o fechamento do colchetes");
+                                } else {
+                                    cd++;
+                                    printf("vetor de algo no parametro\n");
+                                    cate = valor_var();
+                                }
                             }
-                        }
+                        } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
                     }
 
                     if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
