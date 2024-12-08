@@ -7,6 +7,7 @@ prot fatorial (&int, int)
 def init
 int tchau, hey
 char c = 'a'
+int teste[2][2] = {1, 2, 3, 4}
 
 int n, fat 
 getint n 
@@ -16,8 +17,17 @@ putint fat
 //do soma(tchau, hey)
 
 while(yeah)
-putstr "hello world"
-putstr "help"
+    putstr "hello world"
+    putstr "help"
+
+    var hola from 1 to 10 by me
+    endv
 endw
+
+var hola from 1 to 10
+    while(yeah)
+        //algo = 2 + 2
+    endw
+endv
 
 endp

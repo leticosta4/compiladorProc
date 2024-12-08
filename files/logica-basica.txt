@@ -1,0 +1,23 @@
+LOGICA
+
+o token já chega processado para:
+CMD
+ATRIB
+EXPR
+EXPR_SIMPLES
+TERMO
+FATOR
+OP_REL
+
+essas dai ^, pelo token JA CHEGAR PROCESSADO, sempre, antes da chamada delas é necessário CHAMAR O ANALEX e CONSUMIR PULA LINHA. 
+- em alguns casos é mais explícito como em CMD  e EXPR (quando o EXPR for opcional colocar dentro daquele if de categoria do token)
+- em outros nem tanto pq já é proveniente de alguma função de cima que a chamou
+
+
+os que possuem processamento de token no final de sua função
+CMD
+ATRIB
+FATOR E OP_REL
+(basicamente só FATOR pq esse processamento final é retornado para as funções que o chamam - sucessivamente de baixo para cima)
+
+
