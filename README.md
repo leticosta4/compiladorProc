@@ -1,6 +1,8 @@
 # compiladorProc
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
+
+<b>TEM ALGUMA CHAMADA A MAIS ENVOLVENDO O DO TALVEZ</b>
 ## gramática + outros p fazer
 - [x] prog
 - [x] decl_list_var
@@ -10,14 +12,14 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] prot
 - [x] def
 - [ ] cmd
-    - [x] do
+    - [ ] do
     - [x] while
     - [ ] if, elif, else
-    - [ ] var
+    - [x] var
     - [x] gets
     - [x] puts
     - [x] getout
-- [ ] atrib
+- [x] atrib
 - [x] expr
 - [x] expr_simp
 - [x] termo

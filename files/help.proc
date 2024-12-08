@@ -30,4 +30,32 @@ var hola from 1 to 10
     endw
 endv
 
+if(ola)
+getint a
+getreal b
+getchar c
+getstr d
+getout
+
+elif(bye)
+putint a
+putreal b
+putchar c
+putstr d
+
+else
+putint 2
+putreal 2.2
+putchar 's'
+putstr "oi"
+endi
+
 endp
+
+def fatorial(&int f, int n) 
+    if (n <= 1) f = 1 
+    else 
+        do fatorial(f, n-1) 
+        f = f * n  //erro aqui por causa do 'do' anteriormente
+    endi 
+endp 

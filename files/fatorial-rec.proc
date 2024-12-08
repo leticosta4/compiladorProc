@@ -11,6 +11,6 @@ def fatorial(&int f, int n)
     if (n <= 1) f = 1 
     else 
         do fatorial(f, n-1) 
-        f = f*n 
+        f = f * n //erro aqui por causa do 'do' anteriormente
     endi 
 endp 

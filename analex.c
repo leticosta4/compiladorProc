@@ -115,7 +115,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.categoria = FINAL_ARQ;
                     return token_base;
                 } else {
-                    error("Caracter invalido");
+                    error("ERRO LEXICO >  Caracter invalido");
                 }
                 break;
 
@@ -154,19 +154,19 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 6;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
-                } else if(caracter == '\''){ error("Erro no charcon"); } 
+                } else if(caracter == '\''){ error("ERRO LEXICO >  Erro no charcon"); } 
                 else if(isprint(caracter)){
                     estado = 5;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
-                } else{ error("Erro no charcon"); }
+                } else{ error("ERRO LEXICO > Erro no charcon"); }
                 break;
             case 5:
                 if(caracter == '\''){ //inicio de CHARCON
                     token_base.categoria = CHARCON;
                     token_base.c = lexema[--tam_lexema];
                     return token_base;
-                } else{ error("Erro no charcon"); }
+                } else{ error("ERRO LEXICO > Erro no charcon"); }
                 break;
             case 6: //n ou 0 => quebra de linha ou espaço vazio
                 if(caracter == 'n'){
@@ -174,7 +174,7 @@ TOKEN AnaLex(FILE *arquivo){
                 } else if(caracter == '0'){
                     estado = 7;
                 } else {
-                    error("erro no charcon");
+                    error("ERRO LEXICO > erro no charcon");
                 }
             case 7:
                 if(caracter == '\''){ 
@@ -195,7 +195,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 10;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
-                    if(tam_digito > TAM_NUM){ error("numero maximo para intcon atingido\n"); }
+                    if(tam_digito > TAM_NUM){ error("ERRO LEXICO > numero maximo para intcon atingido\n"); }
                 } else if(caracter == '.'){ //INICIO DE REALCON
                     estado = 12;
                     digitos[tam_digito] = caracter;
@@ -213,7 +213,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
-                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
+                    if(tam_digito > TAM_NUM){ error("ERRO LEXICO > numero maximo para realcon atingido"); }
                 } 
                 break;
             case 13:
@@ -221,7 +221,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 13;
                     digitos[tam_digito] = caracter;
                     digitos[++tam_digito] = '\0'; 
-                    if(tam_digito > TAM_NUM){ error("numero maximo para realcon atingido"); }
+                    if(tam_digito > TAM_NUM){ error("ERRO LEXICO > numero maximo para realcon atingido"); }
                 } else { //REALCON
                     estado = 14; 
                     ungetc(caracter, arquivo);
@@ -235,7 +235,7 @@ TOKEN AnaLex(FILE *arquivo){
                     estado = 15;
                     lexema[tam_lexema] = caracter;
                     lexema[++tam_lexema] = '\0';
-                    if(tam_lexema > TAM_LEXEMA){ error("stringcon inválida"); }
+                    if(tam_lexema > TAM_LEXEMA){ error("ERRO LEXICO > stringcon inválida"); }
                 } else {
                     estado = 16;
                     token_base.categoria = STRINGCON;
@@ -267,7 +267,7 @@ TOKEN AnaLex(FILE *arquivo){
                     token_base.codigo = OR_LOGICO;
                     return token_base;
                 } else {
-                    error("Erro no caracter após | => não identificado");
+                    error("ERRO LEXICO > Erro no caracter após | => não identificado");
                 }
                 break;
             case 30: //negação ou diferente
