@@ -1,0 +1,23 @@
+const int oi = 2
+bool a = 1
+
+prot soma(&int[], int)
+prot fatorial (&int, int) 
+
+def init
+int tchau, hey
+char c = 'a'
+
+int n, fat 
+getint n 
+do fatorial(fat, n) 
+putint fat 
+
+//do soma(tchau, hey)
+
+while(yeah)
+putstr "hello world"
+putstr "help"
+endw
+
+endp

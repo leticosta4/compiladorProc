@@ -1,6 +1,8 @@
 const int oi = 2
 bool a = 1
+
 prot soma(&int[], int)
+prot fatorial (&int, int) 
 
 def init
 int tchau, hey
@@ -43,3 +45,11 @@ def soma(int n, int m)
 char result
 //int array[2][3][4]
 endp
+
+def fatorial(&int f, int n) 
+    if (n <= 1) f = 1 
+    else 
+        do fatorial(f, n-1) 
+        f = f*n 
+    endi 
+endp 
