@@ -47,7 +47,7 @@ void decl_list_var(){
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
         printf("em decl list var: %d (tem que ser 22)\n", rcv_token.codigo);
         rcv_token = AnaLex(arqivoProc);
-        consome_fim_exp(); //vai que pulou linha
+        consome_fim_exp(); 
         decl_var();   
     }
     consome_fim_exp();
@@ -55,7 +55,6 @@ void decl_list_var(){
 }
 
 void decl_def_proc(){
-    printf("\n\nACABOU ENTRAR: cat: %d | codigo: %d | LINHA: %d\n\n", rcv_token.categoria, rcv_token.codigo, contLinha);
     printf("inicio da declaração de funcoes ou prototipos de procedimentos: < decl_def_proc >\n\n");
     switch (rcv_token.codigo){
         case PROT:
@@ -178,14 +177,12 @@ void cmd(){
                             
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
-                                consome_fim_exp();
+                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
                                 if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
                                     printf("SAINDO while\n\n");
                                     break;
                                 }
-                                //isso tava dando um erro antes que afetava o nao funcionamento em todos os arquivos
-                                // rcv_token = AnaLex(arqivoProc);
-                                // consome_fim_exp();
+                                //analex é chamado de novo no final da função - n precisa chamar aqui
                             }
                             if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
                                 error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
@@ -220,12 +217,12 @@ void cmd(){
                             
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
+                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
                                 if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
                                     printf("SAINDO if\n\n");
                                     break;
                                 }
-                                rcv_token = AnaLex(arqivoProc);
-                                consome_fim_exp();
+                                //analex é chamado de novo no final da função - n precisa chamar aqui
                             }
 
                             while(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ELIF){
@@ -251,12 +248,12 @@ void cmd(){
                                         
                                         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                             cmd();
+                                            consome_fim_exp(); //chamar se n afeta o processamento do prox token
                                             if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
                                                 printf("SAINDO elif\n\n");
                                                 break;
                                             }
-                                            rcv_token = AnaLex(arqivoProc);
-                                            consome_fim_exp();
+                                            //analex é chamado de novo no final da função - n precisa chamar aqui
                                         }
                                     }
                                 }
@@ -269,12 +266,13 @@ void cmd(){
                                 
                                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                     cmd();
+                                    consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                    debug("DEPOIS CMD NO ELSE");
                                     if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDI){
                                         printf("SAINDO else\n\n");
                                         break;
                                     }
-                                    rcv_token = AnaLex(arqivoProc);
-                                    consome_fim_exp();
+                                    //analex é chamado de novo no final da função - n precisa chamar aqui
                                 }
                             }
 
@@ -325,12 +323,12 @@ void cmd(){
 
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
+                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
                                 if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDV){
                                     printf("SAINDO var\n\n");
                                     break;
                                 }
-                                rcv_token = AnaLex(arqivoProc);
-                                consome_fim_exp();
+                                //analex é chamado de novo no final da função - n precisa chamar aqui
                             }
 
                             if(!(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDV || rcv_token.codigo == ENDW || rcv_token.codigo == ENDI))){
@@ -496,7 +494,7 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 fator();
-                rcv_token = AnaLex(arqivoProc); //sera?
+                rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             } else { error("ERRO SINTATICO > sinal invalido encontrado em fator"); }
             break;
@@ -576,7 +574,7 @@ void decl_var(){
                      cat = valor_var();
                     if(rcv_token.categoria = SNL && rcv_token.codigo == VIRGULA){ 
                         rcv_token = AnaLex(arqivoProc);
-                        consome_fim_exp(); //vai que pulou linha
+                        consome_fim_exp(); 
                     } else { break; }
                 }while(1);
 
@@ -590,7 +588,6 @@ void decl_var(){
             } else{ error("ERRO SINTATICO > era esperado um identificador após '='"); }
         } else {
             if(cat == 9){ error("ERRO SINTATICO > fim do arquivo inesperado"); }
-            printf("\naqui!!!!!!\n");
         }
     } 
     printf("fim da declaração da variavel\n\n");
@@ -624,7 +621,7 @@ void prot(){
                 } 
                 if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                     rcv_token = AnaLex(arqivoProc);
-                    consome_fim_exp(); //vai que pulou linha
+                    consome_fim_exp(); 
                 } else {
                     break;
                 }
@@ -647,7 +644,7 @@ void def(){
     printf("inicio da declaração de funcoes: < def > | LINHA: %d\n\n", contLinha);
     int cate;
     rcv_token = AnaLex(arqivoProc);
-    //salvar na tabela - deixar aqui se for para salvar o INIT só
+    //salvar na tabela - o INIT tb vai p a tabela
     
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         printf("inicio do bloco principal do programa proc < init >\n\n");
@@ -672,8 +669,6 @@ void def(){
             printf("fim da implementação do bloco init\n");
         }
     } else if(rcv_token.categoria == ID){
-        //salvar na tabela -- deixar so aqui se nao precisar guardar o INIT
-        
         rcv_token = AnaLex(arqivoProc);
     
         if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
@@ -704,7 +699,7 @@ void def(){
 
                     if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                         rcv_token = AnaLex(arqivoProc);
-                        consome_fim_exp(); //vai que pulou linha
+                        consome_fim_exp(); 
                     } else { break; }
                 }
             } while(1);
@@ -734,7 +729,6 @@ void def(){
                 }
             }
         }
-        //alguma outra funcao
     } else{
         error("ERRO SINTATICO > era esperado o identificador 'init' ou um de função qualquer após 'def'");
     }

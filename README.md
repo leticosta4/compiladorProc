@@ -2,7 +2,8 @@
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 
-<b>TEM ALGUMA CHAMADA A MAIS ENVOLVENDO O DO TALVEZ</b>
+<b>TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
+
 ## gramática + outros p fazer
 - [x] prog
 - [x] decl_list_var
@@ -11,10 +12,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] tipo
 - [x] prot
 - [x] def
-- [ ] cmd
-    - [ ] do
+- [x] cmd
+    - [x] do
     - [x] while
-    - [ ] if, elif, else
+    - [x] if, elif, else
     - [x] var
     - [x] gets
     - [x] puts
@@ -30,14 +31,12 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
-- [ ] ends/cmds aninhados
+- [ ] limitar dimensao de array no parametro de funcao/procedimento
 
 ## dúvidas
-- esse enum: `typedef enum{INT, REAL, CHAR, BOOL, NAO_APLICA}TIPO;` ta dando erro de redefinicao
+- por enquanto dboa, só confirmar como tirar stringcon
 
 ## resolver/pensar sobre
-- loop infinito com ENDs aninhados ????? wtf - n faço ideia de como resolver
 - tirar stringcon
 - aplicar tabela de simbolos
-- testar `op_rel()`
-- chaves estranhas
+- tratamentos chatos
