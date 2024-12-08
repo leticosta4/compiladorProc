@@ -26,7 +26,7 @@ endw
 
 var hola from 1 to 10
     while(yeah)
-        //algo = 2 + 2
+        algo = 2 + 2
     endw
 endv
 

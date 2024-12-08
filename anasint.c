@@ -322,7 +322,7 @@ void cmd(){
     } else if(rcv_token.categoria == ID){
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
-        //atrib();
+        atrib();
         //esse atrib ja faz o cmd terminar com processamento de token
     } 
 
@@ -335,49 +335,48 @@ void cmd(){
     printf("fim do cmd\n\n");
 }
 
-// void atrib(){ //ja chega processado
-//     int d_cont = 1;
-//     printf("início de uma atribuição: < atrib >\n\n");
+void atrib(){ //ja chega processado
+    int d_cont = 1;
+    printf("início de uma atribuição: < atrib >\n\n");
     
-//     if(rcv_token.categoria != SNL){ debug("erro"); error("termo inválido após identificador para atribuição"); }
+     if(rcv_token.categoria != SNL){ error("termo inválido após identificador para atribuição"); }
 
-//     else{
-//         while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
-//             if(d_cont < 3){
-//                 rcv_token = AnaLex(arqivoProc);
-//                 consome_fim_exp();
+     else{
+        while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
+            if(d_cont < 3){
+                rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
 
-//                 if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
-//                     error("era esperado termo para inicio de epressão");
-//                 }
-//                 expr();
+                if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
+                    error("era esperado termo para inicio de epressão");
+                }
+                expr();
 
-//                 //ja veio processado do final de fator < final de termo < final de expr_simples
-//                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){ error("era esperado um ']' após a expressão na atribuição"); }
-//                 else{
-//                     d_cont++;
-//                     rcv_token = AnaLex(arqivoProc);
-//                 }
-//             }
-//         }
+                //ja veio processado do final de fator < final de termo < final de expr_simples
+                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){ error("era esperado um ']' após a expressão na atribuição"); }
+                else{
+                    d_cont++;
+                    rcv_token = AnaLex(arqivoProc);
+                }
+            }
+        }
+         //ja vem processado do cmd ou do final desse de cima
+        if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){
+            rcv_token = AnaLex(arqivoProc);
+            consome_fim_exp();
 
-//         //ja vem processado do cmd ou do final desse while de cima
-//         if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){
-//             rcv_token = AnaLex(arqivoProc);
-//             consome_fim_exp();
+            if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
+                error("era esperado termo para inicio de epressão");
+            }
+            expr();
+            //ja finaliza processado
+        } else {
+            error("era esperado um '=' para atribuição");
+        }
+     }
 
-//             if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
-//                 error("era esperado termo para inicio de epressão");
-//             }
-//             expr();
-//             //ja finaliza processado
-//         } else {
-//             error("era esperado um '=' para atribuição");
-//         }
-//     }
-
-//     printf("fim de uma atribuição\n\n");
-// }
+     printf("fim de uma atribuição\n\n");
+}
 
 void expr(){ //ja chega processado
     int seguir;
