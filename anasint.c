@@ -9,7 +9,8 @@
 #include "funcaux.h"
 #include "tabsimb.h"
 
-tipo_tab_simb tabela_simbolos;
+//tipo_tab_simb tabela_simbolos;
+registro_tabsimb info_token;
 int escopo_atual;
 
 int valor_var(){
@@ -22,7 +23,10 @@ int valor_var(){
 void prog(){
     escopo_atual = EXTERNO_PROC;  //p a tabela de simbolos
     printf("inicio do programa: < prog > | LINHA: %d\n\n", contLinha);
+    iniciar_tabsimb();
+    
     consome_fim_exp();
+
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
         printf("em prog: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
         decl_list_var();
