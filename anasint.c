@@ -595,7 +595,6 @@ void tipo(){
 
         rcv_token = AnaLex(arqivoProc);
     } else {
-        debug("TESTANDO");
         error("ERRO SINTATICO > era esperado a declaração do tipo de variável");
     }
 }
@@ -792,59 +791,62 @@ void def(){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
+            if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN) &&
+                !(rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) &&
+                !(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){
+                    error("era esperado ')', ou '&', ou algum tipo de variável após '('");
+                } else if((rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) ||
+                          (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){
+                            do {
+                                parametro();
 
-            do {
-                parametro();
+                                if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
+                                else{
+                                    //salvar na tabela se for ID
+                                    rcv_token = AnaLex(arqivoProc);
 
-                if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
-                else{
-                    //salvar na tabela se for ID
-                    rcv_token = AnaLex(arqivoProc);
+                                    while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
+                                        if(cd < 3){
+                                            rcv_token = AnaLex(arqivoProc);
+                                            if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
+                                                error("ERRO SINTATICO > era esperado inteiro após '['");
+                                            } else{
+                                                printa_valor_token();
 
-                    while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
-                        if(cd < 3){
-                            rcv_token = AnaLex(arqivoProc);
-                            if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
-                                error("ERRO SINTATICO > era esperado inteiro após '['");
-                            } else{
-                                printa_valor_token();
+                                                if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro; }
+                                                else if(rcv_token.categoria == ID){
+                                                    registro_tabsimb temp_tk = verifica_declaracao(info_token); //fazer a busca do identificador previamente inserido na tabela
 
-                                if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro; }
-                                else if(rcv_token.categoria == ID){
-                                    registro_tabsimb temp_tk = verifica_declaracao(info_token); //fazer a busca do identificador previamente inserido na tabela
+                                                    if(temp_tk.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
+                                                    if(temp_tk.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
 
-                                    if(temp_tk.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
-                                    if(temp_tk.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
+                                                    info_token.dimensoes_array[cd - 1] = temp_tk.valor_constante.inteiro;
+                                                }
+                                                rcv_token = AnaLex(arqivoProc);
+                                                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
+                                                    error("ERRO SINTATICO > era esperado o fechamento do colchetes");
+                                                } else {
+                                                    cd++;
+                                                    printf("array de algo no parametro\n");
+                                                    
+                                                    if(cd == 1){ info_token.array = VAR_SIMPLES; }
+                                                    else if(cd == 2){ info_token.array = ID_VETOR; }
+                                                    else{ info_token.array = ID_MATRIZ; }
 
-                                    info_token.dimensoes_array[cd - 1] = temp_tk.valor_constante.inteiro;
+                                                    cate = valor_var();
+                                                }
+                                            }
+                                        } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
+                                    }
+
+                                    if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
+                                        rcv_token = AnaLex(arqivoProc);
+                                        consome_fim_exp(); 
+                                    } else { break; }
                                 }
-
-                                
-
-                                rcv_token = AnaLex(arqivoProc);
-                                if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
-                                    error("ERRO SINTATICO > era esperado o fechamento do colchetes");
-                                } else {
-                                    cd++;
-                                    printf("array de algo no parametro\n");
-                                    
-                                    if(cd == 1){ info_token.array = VAR_SIMPLES; }
-                                    else if(cd == 2){ info_token.array = ID_VETOR; }
-                                    else{ info_token.array = ID_MATRIZ; }
-
-                                    cate = valor_var();
-                                }
-                            }
-                        } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
-                    }
-
-                    if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
-                        rcv_token = AnaLex(arqivoProc);
-                        consome_fim_exp(); 
-                    } else { break; }
+                            } while(1);
                 }
-            } while(1);
-            
+
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
             } else {
@@ -888,8 +890,8 @@ void parametro(){
         printf("endereco\n");
         info_token.passagem = REFERENCIA;
         rcv_token = AnaLex(arqivoProc); 
-    }
+        tipo();
+    } 
 
     if(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){ tipo(); }
-    //tipo();
 }

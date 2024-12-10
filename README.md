@@ -58,6 +58,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
+- [ ] no final apagar a funcao debug
 
 ## dúvidas
 - por enquanto dboa, só confirmar stringcon
