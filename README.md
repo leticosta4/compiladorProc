@@ -30,17 +30,25 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] termo
 - [x] fator
 - [x] op_rel
+- [ ] tirar obrigatoriedade de parametro em def em `anasint.c`
 
 
 ## tabela de símbolos
 - [ ] iniciar tabela - base ok
 - [ ] inserir tabela - base ok
-- [ ] buscar redeclaração tabela - base ok
-- [ ] buscar posicao tabela
+- [ ] buscar redeclaração (var_local || var_global || procedimento || prototipo) - base ok
+- [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
+- [ ] limpar/resetar o info_token p n acumular a cada insercao
 - [ ] remover tabela - base ok
 - [ ] printar tabela - base ok
-- [ ] questão lá do valor da constante: union, enum, char... > e ver como fazer p printar
-- [ ] chamadas no anasint.c
+- [x] questão lá do valor da constante: `union`, `enum`, `char`... > e ver como fazer p printar
+- [ ] chamadas no `anasint.c`
+- [ ] resetar o `info_token` antes des ser preenchido com as infos do prox token a ser processadp no `anasint.c`
+- [ ] tratar dimensoes dos arrays como vetor - base ok
+- [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
+- [x] colocar opcoes que nao aplica no inicio dos enums ? - bom p zerar tabela
+- [ ] a bagunca da `verifica_declaracao()`
+- [ ] ver melhor onde usar `confere_atrib_constante()`
 
 
 ## outros
@@ -52,8 +60,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] limitar dimensao de array no parametro com def e prot
 
 ## dúvidas
-- por enquanto dboa, só confirmar como tirar stringcon
+- por enquanto dboa, só confirmar stringcon
 - a coisa la do valor da constante p a tabela de simbolos
+- verificacao da variavel em atrib? como lidar?
 
 ## resolver/pensar sobre
 - tirar stringcon

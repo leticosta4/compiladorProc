@@ -12,8 +12,6 @@ char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "prot", "def"
 FILE *arqivoProc;
 TOKEN rcv_token;
 int contLinha;
-bool mostra_arvore;
-char TABS[200] = "";
 
 void testaAnalex();
 void testaAnasint();

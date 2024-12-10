@@ -48,26 +48,3 @@ void consome_fim_exp(){
 void debug(char onde[]){
     printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
 }
-
-void print_nodo_char(char info[], int mov){
-    if(mov == AVANCA){
-        printf("%s%s\n", TABS, info);
-        strcat(TABS, "\t");
-    } else if(mov == MANTEM){
-
-    }
-}
-// void print_nodo_char(char info[], int movim){
- 
-//     if(movim )
-//     if (movim == AVANCA) { printf("%s%s\n", TABS, info); strcat(TABS, "\t"); }
-//     else if (movim == MANTEM) { printf("%s%s\n", TABS, info); }
-//     else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
-// }
-
-// void PrintNodoInt(int val, int movim) {
- 
-//     if (movim == AVANCA) { printf("%s%d\n", TABS, val); strcat(TABS, "\t"); }
-//     else if (movim == MANTEM) { printf("%s%d\n", TABS, val); }
-//     else if (movim == RETROCEDE) { TABS[strlen(TABS)-1] = '\0'; }
-// }
