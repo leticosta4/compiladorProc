@@ -49,11 +49,13 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] ver melhor onde usar `confere_atrib_constante()`
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
-- [x] printar o tipo certo do valor da cnstante
-- [ ] inserir nos parametros de procedimento - <b>IMPORTANTE</b>
-- [ ] inserir sem lexema nos parametros de prototipo - <b>IMPORTANTE</b>
+- [x] printar o tipo certo do valor da constante
+- [ ] inserir nos parametros de procedimento e de prototipo - <b>IMPORTANTE</b>
+    - [x] pegar e jogar na tabela
+    - [ ] pegar os dois dps da virgula
 - [x] bug da variavel vir como parametro em vez de var_local
-- [ ] aplicar os zumbis
+- [x] deixar os parametros de def vivos
+- [x] transformar os parametros de def em zumbis
 - [ ] quando apagar da tabela?
 
 

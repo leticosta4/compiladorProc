@@ -83,6 +83,53 @@ void remover_tabsimb(){
     printf("fim da remoção TS\n\n");
 }
 
+int procura_posicao_proc(char nome_def[]){
+    printf("buscando a posição de um procedimento\n");
+    
+    int i;
+    for(i = 0; i < tabela_simbolos.topo; i++){
+        if((strcmp(tabela_simbolos.linhas[i].lexema, nome_def) == 0) && (tabela_simbolos.linhas[i].categoria == PROCEDIMENTO)){
+            return i;
+        }
+    }
+    if(i >= tabela_simbolos.topo){
+        printf("%s\n", nome_def);
+        error("prototipo não encontrado");
+    }
+
+    printf("terminou a busca da posição do procedimento\n");
+}
+
+void apagar_var_locais(int posicao_def){
+    printf("apagando variaveis locais\n");
+
+    if(posicao_def >= 0){
+        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ break; }
+            //aplicar logica certa p apagar
+            // remover_tabsimb();
+        }
+    }
+    printf("acabou a remoção das var locais\n");
+    printar_tabsimb();
+}
+
+void transformar_zumbi(int posicao_def){
+    printf("transformando em zumbi\n");
+    
+    if(posicao_def >= 0){
+        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
+
+            if(tabela_simbolos.linhas[i].zumbi == VIVO){
+                tabela_simbolos.linhas[i].zumbi = EH_ZUMBI;
+            }
+        }
+    }
+    printf("acabou a transformação de vivo em zumbi\n");
+    printar_tabsimb();
+}
+
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -90,7 +137,7 @@ void printar_tabsimb(){
            "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço");
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
-    for (int i = 0; i < tabela_simbolos.topo; i++) {
+    for (int i = 0; i < tabela_simbolos.topo; i++){
         printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
                 i,
                 tabela_simbolos.linhas[i].lexema,

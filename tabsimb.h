@@ -53,7 +53,9 @@ void iniciar_tabsimb();
 void inserir_tabsimb(registro_tabsimb token_ins);
 registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token);
 void verifica_redeclaracao(registro_tabsimb token_aux);
-// int buscar_posicao_prox_token();
+int procura_posicao_proc(char nome_def[]);
 void remover_tabsimb();
+void apagar_var_locais(int posicao_def);
+void transformar_zumbi(int posicao_def);
 void printar_tabsimb();
 #endif

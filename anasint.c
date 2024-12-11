@@ -102,7 +102,6 @@ void decl_def_proc(){
             break;
         case DEF:
             info_token.categoria = PROCEDIMENTO;
-            info_token.zumbi = VIVO;
             def();
             break;
     }
@@ -686,7 +685,7 @@ void decl_var(){
     } 
     
     
-    inserir_tabsimb(info_token);
+    inserir_tabsimb(info_token); //insercao de variavel declarada
     info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
     printf("fim da declaração da variavel\n\n");
 }
@@ -703,7 +702,7 @@ void prot(){
     } else if(rcv_token.categoria == ID){ //idproc
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token);
-        inserir_tabsimb(info_token);
+        inserir_tabsimb(info_token); //insercao do prototipo de procedimento
 
         rcv_token = AnaLex(arqivoProc);
 
@@ -711,8 +710,10 @@ void prot(){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
-
             do{
+                strcpy(info_token.lexema, "");
+                info_token.categoria = PARAMETRO;
+
                 passagem_end_tipo();
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
                     if(_cd < 3){
@@ -734,11 +735,12 @@ void prot(){
                 if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp(); 
-                } else {
-                    break;
-                }
+                } else { break; }
+
+                inserir_tabsimb(info_token); //insercao do parametro de prototipo
             } while(1);
             
+
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
             } else {
@@ -764,7 +766,7 @@ void def(){
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
-        inserir_tabsimb(info_token);
+        inserir_tabsimb(info_token); //insercao do procedimento init
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -788,15 +790,18 @@ void def(){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
             printf("fim da implementação do bloco init\n");
+            apagar_var_locais("init");
             rcv_token = AnaLex(arqivoProc);
         }
     } else if(rcv_token.categoria == ID){
         printf("inicio de alguma implementação de bloco com def\n\n");
+        char nome_def[TAM_MAX_LEXEMA];
+        strcpy(nome_def, rcv_token.lexema);
 
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
-        inserir_tabsimb(info_token);
+        inserir_tabsimb(info_token); //insercao do procedimento
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -811,13 +816,15 @@ void def(){
                     error("era esperado ')', ou '&', ou algum tipo de variável após '('");
                 } else if((rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) ||
                           (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){
-                            info_token.categoria = PARAMETRO;
+
                             do {
+                                info_token.categoria = PARAMETRO;
+                                info_token.zumbi = VIVO;
                                 passagem_end_tipo();
 
                                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
                                 else{
-                                    //salvar na tabela se for ID
+                                    strcpy(info_token.lexema, rcv_token.lexema);//salvar na tabela se for ID
                                     rcv_token = AnaLex(arqivoProc);
 
                                     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
@@ -858,6 +865,8 @@ void def(){
                                         consome_fim_exp(); 
                                     } else { break; }
                                 }
+
+                                inserir_tabsimb(info_token); //insercao do parametro de procedimento
                             } while(1);
                 }
 
@@ -883,6 +892,8 @@ void def(){
                     error("ERRO SINTATICO > era esperado o término do procedimento com 'endp'");
                 } else {
                     printf("fim da implementação do procedimento\n");
+                    transformar_zumbi(procura_posicao_proc(nome_def));
+                    apagar_var_locais(procura_posicao_proc(nome_def));
                     rcv_token = AnaLex(arqivoProc);
                 }
             }

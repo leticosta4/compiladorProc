@@ -226,7 +226,7 @@ void testaAnasint(){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
-            printar_tabsimb();
+            //printar_tabsimb();
             break;
         }
         prog(); //iniciando a chamada do analisador sintatico
