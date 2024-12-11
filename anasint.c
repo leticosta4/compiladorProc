@@ -41,7 +41,7 @@ void prog(){
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
         printf("em prog: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
 
-        info_token.escopo = EXTERNO_PROC;
+        info_token.escopo = GLOBAL;
         info_token.categoria = VAR_GLOBAL;
 
         decl_list_var();
@@ -59,8 +59,7 @@ void decl_list_var(){
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
-    info_token.dimensoes_array[0] = 0;
-    info_token.dimensoes_array[1] = 0;
+    info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
     info_token.constante = NAO; //se for dps altera
     //endereço é adicionado na função de inserção na tabela
 
@@ -87,7 +86,7 @@ void decl_list_var(){
 void decl_def_proc(){
     printf("inicio da declaração de funcoes ou prototipos de procedimentos: < decl_def_proc >\n\n");
 
-    info_token.escopo = EXTERNO_PROC; //se for local é alterado depois em def()
+    info_token.escopo = GLOBAL; //se for local é alterado depois em def()
     info_token.tipo = _NAO_APLICA_TIPO;
     //a categoria (prototipo || procedimento) é atribuida em prot() e nas condicionais de def()
     info_token.passagem = NAO_APLICA_PARAM;
@@ -98,9 +97,12 @@ void decl_def_proc(){
 
     switch (rcv_token.codigo){
         case PROT:
+            info_token.categoria = PROTOTIPO;
             prot();
             break;
         case DEF:
+            info_token.categoria = PROCEDIMENTO;
+            info_token.zumbi = VIVO;
             def();
             break;
     }
@@ -434,7 +436,7 @@ void atrib(){ //ja chega processado
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
-            if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
+            if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != STRINGCON && rcv_token.categoria != SNL){
                 error("ERRO SINTATICO > era esperado termo para inicio de epressão");
             }
             expr();
@@ -526,6 +528,7 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
         case INTCON:
         case REALCON:
         case CHARCON:
+        case STRINGCON:
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -668,12 +671,14 @@ void decl_var(){
                 if(rcv_token.categoria = SNL && rcv_token.codigo == FECHA_CHAVE){
                     rcv_token = AnaLex(arqivoProc);
                 } else { error("ERRO SINTATICO > erra esperado fechamento do '{' com '}'"); }
-            } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
+            } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON){
                 //salvar na tabela de simbolos
-                confere_atrib_constante();
+                confere_atrib_constante(); 
 
                 printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
+            } else if(rcv_token.categoria == STRINGCON){
+                error("não é permitida a declaração de variáveis com stringcon");
             } else{ error("ERRO SINTATICO > era esperado um identificador após '='"); }
         } else {
             if(cat == 9){ error("ERRO SINTATICO > fim do arquivo inesperado"); }
@@ -682,7 +687,7 @@ void decl_var(){
     
     
     inserir_tabsimb(info_token);
-    info_token = limpar_info_token(info_token);
+    info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
     printf("fim da declaração da variavel\n\n");
 }
 
@@ -696,12 +701,9 @@ void prot(){
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         error("ERRO SINTATICO > declaração do bloco init não permitida com prot");
     } else if(rcv_token.categoria == ID){ //idproc
-        info_token.categoria = PROTOTIPO;
-
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token);
         inserir_tabsimb(info_token);
-        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
 
@@ -759,12 +761,10 @@ void def(){
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         printf("inicio do bloco principal do programa proc: < init >\n\n");
 
-        info_token.categoria = PROCEDIMENTO;
-
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
+        info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
         inserir_tabsimb(info_token);
-        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -772,7 +772,7 @@ void def(){
         while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
             printf("em init: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
 
-            info_token.escopo = INTERNO_PROC;
+            info_token.escopo = LOCAL;
             info_token.categoria = VAR_LOCAL;
 
             decl_list_var();
@@ -793,12 +793,10 @@ void def(){
     } else if(rcv_token.categoria == ID){
         printf("inicio de alguma implementação de bloco com def\n\n");
 
-        info_token.categoria = PROCEDIMENTO;
-
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
+        info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
         inserir_tabsimb(info_token);
-        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -813,6 +811,7 @@ void def(){
                     error("era esperado ')', ou '&', ou algum tipo de variável após '('");
                 } else if((rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) ||
                           (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){
+                            info_token.categoria = PARAMETRO;
                             do {
                                 passagem_end_tipo();
 
@@ -847,7 +846,7 @@ void def(){
                                                     if(cd == 1){ info_token.array = VAR_SIMPLES; }
                                                     else if(cd == 2){ info_token.array = ID_VETOR; }
                                                     else{ info_token.array = ID_MATRIZ; }
-
+                                                    
                                                     cate = valor_var();
                                                 }
                                             }
@@ -871,6 +870,7 @@ void def(){
     
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     printf("em def > prot: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
+                    info_token.categoria = VAR_LOCAL;
                     decl_list_var();
                 } 
 
@@ -896,8 +896,7 @@ void def(){
 void passagem_end_tipo(){
     printf("inicio de parametro de procedimento/função | LINHA: %d\n\n", contLinha);
 
-    info_token.escopo = INTERNO_PROC;
-    info_token.categoria = PARAMETRO;
+    info_token.escopo = LOCAL;
     info_token.constante = NAO;
     info_token.passagem = VALOR; //se for referencia muda dps no if
 

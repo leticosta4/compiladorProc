@@ -4,7 +4,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador sintático
 - [ ] tabela de símbolos
 - [ ] integração semântica ~
-- [ ] geeraçao de código
+- [ ] geraçao de código
 
 <b>ANALISADOR LEXICO + SINTATICO > TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
 
@@ -31,6 +31,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] fator
 - [x] op_rel
 - [x] tirar obrigatoriedade de parametro em def em `anasint.c`
+- [ ] ajustes no stringcon
 
 
 ## tabela de símbolos
@@ -40,16 +41,20 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] limpar/resetar o info_token p n acumular a cada insercao
 - [ ] remover tabela - base ok
 - [x] printar tabela 
-- [ ] questão lá do valor da constante: `union`, `enum`, `char`... > e ver como fazer p printar
+- [x] questão lá do valor da constante: `union`, `enum`, `char`... > 
 - [ ] chamadas no `anasint.c`
-- [x] resetar o `info_token` antes des ser preenchido com as infos do prox token a ser processadp no `anasint.c`
+- [x] resetar as dimensoes de array do `info_token` 
 - [x] tratar dimensoes dos arrays como vetor 
 - [x] colocar opcoes que nao aplica no inicio dos enums ? - bom p zerar tabela
 - [ ] ver melhor onde usar `confere_atrib_constante()`
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
-- [ ] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
-- [ ] inserir no do tb - <b>IMPORTANTE</b>
-- [ ] inserir nos parametros de procedimento tb - <b>IMPORTANTE</b>
+- [x] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
+- [x] printar o tipo certo do valor da cnstante
+- [ ] inserir nos parametros de procedimento - <b>IMPORTANTE</b>
+- [ ] inserir sem lexema nos parametros de prototipo - <b>IMPORTANTE</b>
+- [x] bug da variavel vir como parametro em vez de var_local
+- [ ] aplicar os zumbis
+- [ ] quando apagar da tabela?
 
 
 ## outros
@@ -60,14 +65,12 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
 - [ ] no final apagar a funcao debug
+- [ ] tratamentos chatos
 
 ## dúvidas
 - a coisa la do valor da constante p a tabela de simbolos
 - verificacao da variavel em atrib? como lidar?
 
-## resolver/pensar sobre
-- aplicar tabela de simbolos
-- tratamentos chatos
 
 ## prox etapa > semantica
 - [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
