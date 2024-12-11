@@ -10,11 +10,11 @@
 #define TAM_MAX_DIM 3
 
 typedef enum escopo{EXTERNO_PROC, INTERNO_PROC}ESCOPO;
-typedef enum tipo{_INT, _REAL, _CHAR, _BOOL, _NAO_APLICA_TIPO}TIPO;
+typedef enum tipo{_NAO_APLICA_TIPO, _INT, _REAL, _CHAR, _BOOL}TIPO;
 typedef enum categoria{VAR_GLOBAL, VAR_LOCAL, PROCEDIMENTO, PARAMETRO, PROTOTIPO}CATEGORIA;
-typedef enum passagem{VALOR, REFERENCIA, NAO_APLICA_PARAM}PASSAGEM;
-typedef enum zumbi {VIVO, EH_ZUMBI, NAO_APLICA_ZUMBI}ZUMBI;
-typedef enum array{VAR_SIMPLES, ID_VETOR, ID_MATRIZ, NAO_APLICA_ARRAY}ARRAY;
+typedef enum passagem{NAO_APLICA_PARAM, VALOR, REFERENCIA}PASSAGEM;
+typedef enum zumbi {NAO_APLICA_ZUMBI, VIVO, EH_ZUMBI}ZUMBI;
+typedef enum array{NAO_APLICA_ARRAY, VAR_SIMPLES, ID_VETOR, ID_MATRIZ}ARRAY;
 typedef enum eh_const{NAO, SIM}EH_CONST;
 
 typedef struct valor_const{
@@ -51,10 +51,9 @@ extern TOKEN rcv_token;
 
 void iniciar_tabsimb();
 void inserir_tabsimb(registro_tabsimb token_ins);
+registro_tabsimb limpar_info_token(registro_tabsimb used_token);
 void verifica_redeclaracao(registro_tabsimb token_aux);
 // int buscar_posicao_prox_token();
-//fazer funcao de resetar o info_token
-registro_tabsimb verifica_declaracao(); //prototipo de procedimento, constante e variavel ?
 void remover_tabsimb();
 void printar_tabsimb();
 #endif

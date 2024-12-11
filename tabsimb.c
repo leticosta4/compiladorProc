@@ -16,7 +16,7 @@ char constantes[2][TAM_MAX_LEXEMA] = {"nao", "sim"};
 
 void iniciar_tabsimb(){
     printf("tabela de símbolos inicializada\n\n");
-    //talvez algo que limpe a tabela tb
+    //talvez algo que limpe a tabela tb - aqui no inicio ou quando acabar o programa
     tabela_simbolos.topo = 0;
 }
 
@@ -35,6 +35,11 @@ void inserir_tabsimb(registro_tabsimb token_ins){
     tabela_simbolos.topo++;
 
     printar_tabsimb();
+}
+
+registro_tabsimb limpar_info_token(registro_tabsimb used_token){
+    memset(&used_token, 0, sizeof(used_token)); //limpando o indo_token
+    return used_token;
 }
 
 void verifica_redeclaracao(registro_tabsimb token_aux){
@@ -66,29 +71,6 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
     printf("fim da busca TS\n\n");
 }
 
-registro_tabsimb verifica_declaracao(registro_tabsimb token_aux){ //REVISAR
-    printf("iniciada busca por DECLARACAO DE CONSTANTE, PROTOTIPO E VARIAVEL"); //VER AINDA COMO USAR P VARIAVEL EM ATRIB PROVAVELMENTE
-    registro_tabsimb tk_ret;
-    int i;
-
-    for(i = 0; i < tabela_simbolos.topo; i++){
-        if(strcmp(tabela_simbolos.linhas[i].lexema, token_aux.lexema) == 0){
-            //garantir mesma cat p diferenciar variavel e prototipo, por exemplo
-            if((token_aux.categoria == PROCEDIMENTO) && (tabela_simbolos.linhas[i].categoria == PROTOTIPO)){
-                printf("achou a declaração do prototipo para este procedimento\n");
-                tk_ret = tabela_simbolos.linhas[i];
-                break;
-            } else if((tabela_simbolos.linhas[i].categoria == VAR_GLOBAL) || (tabela_simbolos.linhas[i].categoria == VAR_LOCAL)){
-                printf("achou variavel equivalente a constante para tamanho do array\n");
-                tk_ret = tabela_simbolos.linhas[i];
-                break;
-            }
-        }
-    }
-    if(i >= tabela_simbolos.topo){
-        error("ERRO TAB_SIMB > declaração não encontrada");
-    } else{ return tk_ret; }
-}
 
 // int buscar_posicao_prox_token(){
 //     printf("iniciada busca DA PROX POSICAO DE INSERCAO na tabela de símbolos\n\n");
@@ -110,26 +92,26 @@ void remover_tabsimb(){
 
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
-    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-6s | %-10s | %-6s | %-10s | %-10s | %-10s | %-6s | %-8s | %-6s | %-6s | %-6s | %-8s | %-8s |\n", 
-           "Índice", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor COnstante", "Endereço");
-    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-6s | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s |\n", 
+           "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço");
+    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < tabela_simbolos.topo; i++) {
-        printf("| %-6d | %-10s | %-6s | %-10s | %-10s | %-10s | %-6s | %-8s | %-6d | %-6d | %-8s | %-8s | %-8d |\n",
-               i,
-               tabela_simbolos.linhas[i].lexema,
-               escopos[tabela_simbolos.linhas[i].escopo],
-               tipos[tabela_simbolos.linhas[i].tipo],
-               categorias[tabela_simbolos.linhas[i].categoria],
-               passagens[tabela_simbolos.linhas[i].passagem],
-               zumbis[tabela_simbolos.linhas[i].zumbi],
-               arrays[tabela_simbolos.linhas[i].array],
-               tabela_simbolos.linhas[i].dimensoes_array[0],
-               tabela_simbolos.linhas[i].dimensoes_array[1],
-               constantes[tabela_simbolos.linhas[i].constante],
-               tabela_simbolos.linhas[i].valor_constante,
-               tabela_simbolos.linhas[i].endereco);
-        printf("-------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s | %-15d | %-8d\n",
+                i,
+                tabela_simbolos.linhas[i].lexema,
+                escopos[tabela_simbolos.linhas[i].escopo],
+                tipos[tabela_simbolos.linhas[i].tipo],
+                categorias[tabela_simbolos.linhas[i].categoria],
+                passagens[tabela_simbolos.linhas[i].passagem],
+                zumbis[tabela_simbolos.linhas[i].zumbi],
+                arrays[tabela_simbolos.linhas[i].array],
+                tabela_simbolos.linhas[i].dimensoes_array[0],
+                tabela_simbolos.linhas[i].dimensoes_array[1],
+                constantes[tabela_simbolos.linhas[i].constante],
+                tabela_simbolos.linhas[i].valor_constante,
+                tabela_simbolos.linhas[i].endereco);
+    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }

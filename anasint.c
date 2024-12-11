@@ -605,9 +605,10 @@ void decl_var(){
 
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador"); }
 
-    verifica_redeclaracao(info_token); //se o escopo for global ja foi definido em prog
     printf("variavel declarada: %s\n", rcv_token.lexema);
-    
+    strcpy(info_token.lexema, rcv_token.lexema);
+    verifica_redeclaracao(info_token); //se o escopo for global ja foi definido em prog
+
     rcv_token = AnaLex(arqivoProc);
 
     if(info_token.constante == SIM && !(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO)){
@@ -626,11 +627,10 @@ void decl_var(){
                 if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro; }
                 else if(rcv_token.categoria == ID){
                     
-                    registro_tabsimb temp_tk = verifica_declaracao(info_token); //fazer a busca do identificador previamente inserido na tabela
-                    if(temp_tk.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
-                    if(temp_tk.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
+                    if(info_token.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
+                    if(info_token.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
 
-                    info_token.dimensoes_array[cont_dim - 1] = temp_tk.valor_constante.inteiro;
+                    info_token.dimensoes_array[cont_dim - 1] = info_token.valor_constante.inteiro;
                 }
 
                 rcv_token = AnaLex(arqivoProc);
@@ -679,6 +679,10 @@ void decl_var(){
             if(cat == 9){ error("ERRO SINTATICO > fim do arquivo inesperado"); }
         }
     } 
+    
+    
+    inserir_tabsimb(info_token);
+    info_token = limpar_info_token(info_token);
     printf("fim da declaração da variavel\n\n");
 }
 
@@ -693,7 +697,11 @@ void prot(){
         error("ERRO SINTATICO > declaração do bloco init não permitida com prot");
     } else if(rcv_token.categoria == ID){ //idproc
         info_token.categoria = PROTOTIPO;
+
+        strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token);
+        inserir_tabsimb(info_token);
+        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
 
@@ -703,7 +711,7 @@ void prot(){
             rcv_token = AnaLex(arqivoProc);
 
             do{
-                parametro();
+                passagem_end_tipo();
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
                     if(_cd < 3){
                         rcv_token = AnaLex(arqivoProc);
@@ -752,7 +760,11 @@ void def(){
         printf("inicio do bloco principal do programa proc: < init >\n\n");
 
         info_token.categoria = PROCEDIMENTO;
+
+        strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
+        inserir_tabsimb(info_token);
+        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -775,14 +787,18 @@ void def(){
         if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
-            rcv_token = AnaLex(arqivoProc);
             printf("fim da implementação do bloco init\n");
+            rcv_token = AnaLex(arqivoProc);
         }
     } else if(rcv_token.categoria == ID){
         printf("inicio de alguma implementação de bloco com def\n\n");
 
         info_token.categoria = PROCEDIMENTO;
+
+        strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
+        inserir_tabsimb(info_token);
+        info_token = limpar_info_token(info_token);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -798,7 +814,7 @@ void def(){
                 } else if((rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) ||
                           (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){
                             do {
-                                parametro();
+                                passagem_end_tipo();
 
                                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
                                 else{
@@ -815,12 +831,11 @@ void def(){
 
                                                 if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro; }
                                                 else if(rcv_token.categoria == ID){
-                                                    registro_tabsimb temp_tk = verifica_declaracao(info_token); //fazer a busca do identificador previamente inserido na tabela
 
-                                                    if(temp_tk.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
-                                                    if(temp_tk.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
+                                                    if(info_token.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
+                                                    if(info_token.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
 
-                                                    info_token.dimensoes_array[cd - 1] = temp_tk.valor_constante.inteiro;
+                                                    info_token.dimensoes_array[cd - 1] = info_token.valor_constante.inteiro;
                                                 }
                                                 rcv_token = AnaLex(arqivoProc);
                                                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
@@ -878,7 +893,7 @@ void def(){
     printf("fim do uso de def\n");  
 }
 
-void parametro(){
+void passagem_end_tipo(){
     printf("inicio de parametro de procedimento/função | LINHA: %d\n\n", contLinha);
 
     info_token.escopo = INTERNO_PROC;

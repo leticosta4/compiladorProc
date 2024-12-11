@@ -32,5 +32,5 @@ void decl_var();
 //vindas do decl_def_prot:
 void def();
 void prot();
-void parametro();
+void passagem_end_tipo();
 #endif 
