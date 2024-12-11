@@ -728,7 +728,6 @@ void prot(){
                             if(_cd == 1){ info_token.array = VAR_SIMPLES; }
                             else if(_cd == 2){ info_token.array = ID_VETOR; }
                             else{ info_token.array = ID_MATRIZ; }
-
                             ca = valor_var();
                         }
                     } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
@@ -740,7 +739,8 @@ void prot(){
 
                 inserir_tabsimb(info_token); //insercao do parametro de prototipo
             } while(1);
-            inserir_tabsimb(info_token); //insercao do parametro de prototipo
+            limpar_dimensoes_array(info_token);
+            inserir_tabsimb(info_token); //insercao do parametro de prototipo - ultimo dps da virgula
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
@@ -868,7 +868,8 @@ void def(){
                                 }
                                 inserir_tabsimb(info_token); //insercao do parametro de procedimento
                             } while(1);
-                            inserir_tabsimb(info_token); //insercao do parametro de procedimento
+                            limpar_dimensoes_array(info_token);
+                            inserir_tabsimb(info_token); //insercao do parametro de procedimento - ultimo dps da virgula
                 }
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
@@ -911,6 +912,7 @@ void passagem_end_tipo(){
     info_token.escopo = LOCAL;
     info_token.constante = NAO;
     info_token.passagem = VALOR; //se for referencia muda dps no if
+    info_token.array = VAR_SIMPLES; //se n for dps muda no def e no prot
 
     if(rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END){
         printf("endereco\n");

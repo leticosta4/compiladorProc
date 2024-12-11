@@ -58,7 +58,8 @@ TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 - [x] bug da variavel vir como parametro em vez de var_local
 - [x] deixar os parametros de def vivos
 - [x] transformar os parametros de def em zumbis
-- [ ] quando apagar da tabela?
+- [x] parametros: se o primeiro for `id_vetor` o outro pega tb
+- [x] ver quando aplicar o var_simples
 
 
 ## outros
