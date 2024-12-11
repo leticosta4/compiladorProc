@@ -37,11 +37,11 @@ TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 
 
 ## tabela de símbolos
-- [x] iniciar tabela - base ok
-- [x] inserir tabela - base ok
-- [x] buscar redeclaração (var_local || var_global || procedimento || prototipo) - base ok
+- [x] iniciar tabela
+- [x] inserir tabela
+- [x] buscar redeclaração (var_local || var_global || procedimento || prototipo) 
 - [x] limpar/resetar o info_token p n acumular a cada insercao
-- [ ] remover tabela - base ok
+- [x] remover tabela 
 - [x] printar tabela 
 - [x] questão lá do valor da constante: `union`, `enum`, `char`... > 
 - [ ] chamadas no `anasint.c`
