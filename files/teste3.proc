@@ -3,7 +3,7 @@ char b = 'c'
 bool a = 1, c = 0
 int oi[2][1] = {1, 2, 3}
 
-prot soma(&int[][], int)
+prot soma(&int[][], int, int)
 prot fatorial(&int, int) 
 
 def init
@@ -12,7 +12,7 @@ do fatorial(fat, n)
 
 endp
 
-def soma(int n1, int n2)
+def soma(int n1, int n2, int n3)
     char str[4]
     int result
     str[4] = "tena" 

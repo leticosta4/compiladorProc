@@ -107,11 +107,11 @@ void apagar_var_locais(int posicao_def){
         for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ break; }
             //aplicar logica certa p apagar
-            // remover_tabsimb();
+            //remover_tabsimb();
         }
     }
     printf("acabou a remoção das var locais\n");
-    printar_tabsimb();
+    //printar_tabsimb();
 }
 
 void transformar_zumbi(int posicao_def){
@@ -166,7 +166,7 @@ void printar_tabsimb(){
                     break;
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
-        printf(" %-8d\n", tabela_simbolos.linhas[i].endereco);
+        printf(" %-8d |\n", tabela_simbolos.linhas[i].endereco);
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }

@@ -2,11 +2,13 @@
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador léxico
 - [x] analisador sintático
-- [ ] tabela de símbolos
+- [ ] tabela de símbolos ~
 - [ ] integração semântica ~
 - [ ] geraçao de código
 
 <b>ANALISADOR LEXICO + SINTATICO > TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
+
+TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 
 ## gramática
 - [x] prog
@@ -31,7 +33,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] fator
 - [x] op_rel
 - [x] tirar obrigatoriedade de parametro em def em `anasint.c`
-- [ ] ajustes no stringcon
+- [x] ajustes no stringcon
 
 
 ## tabela de símbolos
@@ -50,9 +52,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
 - [x] printar o tipo certo do valor da constante
-- [ ] inserir nos parametros de procedimento e de prototipo - <b>IMPORTANTE</b>
+- [x] inserir nos parametros de procedimento e de prototipo - <b>IMPORTANTE</b>
     - [x] pegar e jogar na tabela
-    - [ ] pegar os dois dps da virgula
+    - [x] pegar os dois dps da virgula
 - [x] bug da variavel vir como parametro em vez de var_local
 - [x] deixar os parametros de def vivos
 - [x] transformar os parametros de def em zumbis

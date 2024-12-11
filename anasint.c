@@ -713,6 +713,7 @@ void prot(){
             do{
                 strcpy(info_token.lexema, "");
                 info_token.categoria = PARAMETRO;
+                info_token.zumbi = NAO_APLICA_ZUMBI;
 
                 passagem_end_tipo();
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
@@ -739,7 +740,7 @@ void prot(){
 
                 inserir_tabsimb(info_token); //insercao do parametro de prototipo
             } while(1);
-            
+            inserir_tabsimb(info_token); //insercao do parametro de prototipo
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
@@ -790,7 +791,7 @@ void def(){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
             printf("fim da implementação do bloco init\n");
-            apagar_var_locais("init");
+            apagar_var_locais(procura_posicao_proc("init")); //n ta funcionando ainda
             rcv_token = AnaLex(arqivoProc);
         }
     } else if(rcv_token.categoria == ID){
@@ -865,9 +866,9 @@ void def(){
                                         consome_fim_exp(); 
                                     } else { break; }
                                 }
-
                                 inserir_tabsimb(info_token); //insercao do parametro de procedimento
                             } while(1);
+                            inserir_tabsimb(info_token); //insercao do parametro de procedimento
                 }
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
