@@ -79,7 +79,6 @@ void remover_tabsimb(){
     } else {
         printf("ERRO TABSIMB > Tabela de símbolos já vazia.\n");
     }
-    printar_tabsimb();
     printf("fim da remoção TS\n\n");
 }
 
@@ -93,7 +92,6 @@ int procura_posicao_proc(char nome_def[]){
         }
     }
     if(i >= tabela_simbolos.topo){
-        printf("%s\n", nome_def);
         error("prototipo não encontrado");
     }
 
@@ -104,21 +102,23 @@ void apagar_var_locais(int posicao_def){
     printf("apagando variaveis locais\n");
 
     if(posicao_def >= 0){
-        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+        for(int i = posicao_def + 1; i <= tabela_simbolos.topo; i++){
+            while(tabela_simbolos.linhas[i].categoria == PARAMETRO){
+                i++;
+            } 
             if(tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ break; }
-            //aplicar logica certa p apagar
-            //remover_tabsimb();
+                remover_tabsimb();
         }
     }
     printf("acabou a remoção das var locais\n");
-    //printar_tabsimb();
+    printar_tabsimb();
 }
 
 void transformar_zumbi(int posicao_def){
     printf("transformando em zumbi\n");
     
     if(posicao_def >= 0){
-        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+        for(int i = posicao_def + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
 
             if(tabela_simbolos.linhas[i].zumbi == VIVO){
