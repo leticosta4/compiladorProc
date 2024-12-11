@@ -63,4 +63,9 @@ def fatorial(&int f, int n)
 endp 
 
 def teste()
+    if(ola)
+    getint a
+        if(ai)
+        endi
+    endi
 endp

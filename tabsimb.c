@@ -6,7 +6,7 @@
 #include "funcaux.h"
 
 tipo_tab_simb tabela_simbolos;
-char escopos[2][TAM_MAX_LEXEMA] = {"externo_proc", "interno_proc"};
+char escopos[2][TAM_MAX_LEXEMA] = {"global", "local"};
 char tipos[5][TAM_MAX_LEXEMA] = {"_nao_aplica_tipo", "_int", "_real", "_char", "_bool"};
 char categorias[5][TAM_MAX_LEXEMA] = {"var_global", "var_local", "procedimento", "parametro", "prototipo"};
 char passagens[3][TAM_MAX_LEXEMA] = {"nao_aplica_param", "valor", "referencia"};
@@ -37,8 +37,9 @@ void inserir_tabsimb(registro_tabsimb token_ins){
     printar_tabsimb();
 }
 
-registro_tabsimb limpar_info_token(registro_tabsimb used_token){
-    memset(&used_token, 0, sizeof(used_token)); //limpando o indo_token
+registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token){
+    used_token.dimensoes_array[0] = 0;
+    used_token.dimensoes_array[1] = 0;
     return used_token;
 }
 
@@ -71,14 +72,6 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
     printf("fim da busca TS\n\n");
 }
 
-
-// int buscar_posicao_prox_token(){
-//     printf("iniciada busca DA PROX POSICAO DE INSERCAO na tabela de símbolos\n\n");
-//     //vai ser chamado em anasint.c antes de chamar a funcao de inserir
-//     return 0;
-// }
-
-
 void remover_tabsimb(){
     printf("iniciada remoção na tabela de símbolos\n\n");
     if (tabela_simbolos.topo > 0) {
@@ -90,6 +83,53 @@ void remover_tabsimb(){
     printf("fim da remoção TS\n\n");
 }
 
+int procura_posicao_proc(char nome_def[]){
+    printf("buscando a posição de um procedimento\n");
+    
+    int i;
+    for(i = 0; i < tabela_simbolos.topo; i++){
+        if((strcmp(tabela_simbolos.linhas[i].lexema, nome_def) == 0) && (tabela_simbolos.linhas[i].categoria == PROCEDIMENTO)){
+            return i;
+        }
+    }
+    if(i >= tabela_simbolos.topo){
+        printf("%s\n", nome_def);
+        error("prototipo não encontrado");
+    }
+
+    printf("terminou a busca da posição do procedimento\n");
+}
+
+void apagar_var_locais(int posicao_def){
+    printf("apagando variaveis locais\n");
+
+    if(posicao_def >= 0){
+        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ break; }
+            //aplicar logica certa p apagar
+            //remover_tabsimb();
+        }
+    }
+    printf("acabou a remoção das var locais\n");
+    //printar_tabsimb();
+}
+
+void transformar_zumbi(int posicao_def){
+    printf("transformando em zumbi\n");
+    
+    if(posicao_def >= 0){
+        for(int i = posicao_def + 1; i < tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
+
+            if(tabela_simbolos.linhas[i].zumbi == VIVO){
+                tabela_simbolos.linhas[i].zumbi = EH_ZUMBI;
+            }
+        }
+    }
+    printf("acabou a transformação de vivo em zumbi\n");
+    printar_tabsimb();
+}
+
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -97,8 +137,8 @@ void printar_tabsimb(){
            "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço");
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
-    for (int i = 0; i < tabela_simbolos.topo; i++) {
-        printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s | %-15d | %-8d\n",
+    for (int i = 0; i < tabela_simbolos.topo; i++){
+        printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
                 i,
                 tabela_simbolos.linhas[i].lexema,
                 escopos[tabela_simbolos.linhas[i].escopo],
@@ -109,9 +149,24 @@ void printar_tabsimb(){
                 arrays[tabela_simbolos.linhas[i].array],
                 tabela_simbolos.linhas[i].dimensoes_array[0],
                 tabela_simbolos.linhas[i].dimensoes_array[1],
-                constantes[tabela_simbolos.linhas[i].constante],
-                tabela_simbolos.linhas[i].valor_constante,
-                tabela_simbolos.linhas[i].endereco);
+                constantes[tabela_simbolos.linhas[i].constante]);
+        if(tabela_simbolos.linhas[i].constante == SIM){
+            switch(tabela_simbolos.linhas[i].tipo){
+                case _INT:
+                    printf(" | %-15d |", tabela_simbolos.linhas[i].valor_constante.inteiro);
+                    break;
+                case _BOOL:
+                    printf(" | %-15d |", tabela_simbolos.linhas[i].valor_constante.v_bool);
+                    break;
+                case _REAL:
+                    printf(" | %-15f |", tabela_simbolos.linhas[i].valor_constante.real);
+                    break;
+                case _CHAR:
+                    printf(" | %-15c |", tabela_simbolos.linhas[i].valor_constante.v_char);
+                    break;
+            } 
+        } else{ printf(" | %-15d |", (i * 0)); }
+        printf(" %-8d |\n", tabela_simbolos.linhas[i].endereco);
     printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }

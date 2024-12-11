@@ -9,7 +9,7 @@
 #define TAM_MAX_TAB 1000
 #define TAM_MAX_DIM 3
 
-typedef enum escopo{EXTERNO_PROC, INTERNO_PROC}ESCOPO;
+typedef enum escopo{GLOBAL, LOCAL}ESCOPO;
 typedef enum tipo{_NAO_APLICA_TIPO, _INT, _REAL, _CHAR, _BOOL}TIPO;
 typedef enum categoria{VAR_GLOBAL, VAR_LOCAL, PROCEDIMENTO, PARAMETRO, PROTOTIPO}CATEGORIA;
 typedef enum passagem{NAO_APLICA_PARAM, VALOR, REFERENCIA}PASSAGEM;
@@ -51,9 +51,11 @@ extern TOKEN rcv_token;
 
 void iniciar_tabsimb();
 void inserir_tabsimb(registro_tabsimb token_ins);
-registro_tabsimb limpar_info_token(registro_tabsimb used_token);
+registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token);
 void verifica_redeclaracao(registro_tabsimb token_aux);
-// int buscar_posicao_prox_token();
+int procura_posicao_proc(char nome_def[]);
 void remover_tabsimb();
+void apagar_var_locais(int posicao_def);
+void transformar_zumbi(int posicao_def);
 void printar_tabsimb();
 #endif
