@@ -7,13 +7,12 @@
 #include "analex.h"
 #include "anasint.h"
 #include "funcaux.h"
+#include "tabsimb.h"
 
 char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA] = {"const", "prot", "def", "init", "int", "real", "bool", "char", "endp", "endw", "endi", "endv", "var", "from", "do", "while", "if", "elif", "else", "dt", "to", "by", "getint", "getreal", "getchar", "getstr", "putint", "putreal", "putchar", "putstr", "getout"};
 FILE *arqivoProc;
 TOKEN rcv_token;
 int contLinha;
-bool mostra_arvore;
-char TABS[200] = "";
 
 void testaAnalex();
 void testaAnasint();
@@ -222,16 +221,16 @@ void testaAnalex(){
 }
 
 void testaAnasint(){
-    if ((arqivoProc = fopen("./files/help.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/teste3.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
+            printar_tabsimb();
             break;
         }
         prog(); //iniciando a chamada do analisador sintatico
     }
-
     fclose(arqivoProc);
 }
 

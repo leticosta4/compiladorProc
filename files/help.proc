@@ -61,3 +61,6 @@ def fatorial(&int f, int n)
     else
     endi 
 endp 
+
+def teste()
+endp

@@ -13,10 +13,9 @@ extern TOKEN rcv_token;
 extern FILE *arqivoProc;
 extern int contLinha;  
 extern char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA];
-extern bool mostra_arvore;
-extern char TABS[200];
 
 int valor_var();
+void confere_atrib_constante();
 void prog();
 void decl_list_var();
 void decl_def_proc();
@@ -33,5 +32,5 @@ void decl_var();
 //vindas do decl_def_prot:
 void def();
 void prot();
-void parametro();
+void passagem_end_tipo();
 #endif 

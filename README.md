@@ -1,10 +1,14 @@
 # compiladorProc
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
+- [x] analisador léxico
+- [x] analisador sintático
+- [ ] tabela de símbolos
+- [ ] integração semântica ~
+- [ ] geeraçao de código
 
+<b>ANALISADOR LEXICO + SINTATICO > TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
 
-<b>TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
-
-## gramática + outros p fazer
+## gramática
 - [x] prog
 - [x] decl_list_var
 - [x] decl_def_prot
@@ -26,17 +30,45 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] termo
 - [x] fator
 - [x] op_rel
+- [x] tirar obrigatoriedade de parametro em def em `anasint.c`
+
+
+## tabela de símbolos
+- [x] iniciar tabela - base ok
+- [x] inserir tabela - base ok
+- [x] buscar redeclaração (var_local || var_global || procedimento || prototipo) - base ok
+- [x] limpar/resetar o info_token p n acumular a cada insercao
+- [ ] remover tabela - base ok
+- [x] printar tabela 
+- [ ] questão lá do valor da constante: `union`, `enum`, `char`... > e ver como fazer p printar
+- [ ] chamadas no `anasint.c`
+- [x] resetar o `info_token` antes des ser preenchido com as infos do prox token a ser processadp no `anasint.c`
+- [x] tratar dimensoes dos arrays como vetor 
+- [x] colocar opcoes que nao aplica no inicio dos enums ? - bom p zerar tabela
+- [ ] ver melhor onde usar `confere_atrib_constante()`
+- [ ] ele nao vendo quando é constante p passar no tamanho do array
+- [ ] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
+- [ ] inserir no do tb - <b>IMPORTANTE</b>
+- [ ] inserir nos parametros de procedimento tb - <b>IMPORTANTE</b>
+
+
+## outros
 - [ ] limpar prints e comentarios
 - [ ] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
+- [ ] no final apagar a funcao debug
 
 ## dúvidas
-- por enquanto dboa, só confirmar como tirar stringcon
+- a coisa la do valor da constante p a tabela de simbolos
+- verificacao da variavel em atrib? como lidar?
 
 ## resolver/pensar sobre
-- tirar stringcon
 - aplicar tabela de simbolos
 - tratamentos chatos
+
+## prox etapa > semantica
+- [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
+- [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)

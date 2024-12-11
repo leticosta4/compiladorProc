@@ -1,0 +1,17 @@
+const real vdd = 3.14
+char b = 'c'
+bool a = 1, c = 0
+int oi[2][1] = {1, 2, 3}
+
+prot soma(&int[][], int)
+prot fatorial(&int, int) 
+
+def init
+int tchau, hey
+do fatorial(fat, n) 
+
+endp
+
+def soma(int n1, int n2)
+    result = n1 + n2
+endp
