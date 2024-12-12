@@ -625,15 +625,7 @@ void decl_var(){
             } else {
                 printa_valor_token();
 
-                //logica aqui para a tabela de simbolos
-                if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro; }
-                else if(rcv_token.categoria == ID){
-                    
-                    if(info_token.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
-                    if(info_token.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
-
-                    info_token.dimensoes_array[cont_dim - 1] = info_token.valor_constante.inteiro;
-                }
+                info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro;
 
                 rcv_token = AnaLex(arqivoProc);
 
@@ -739,7 +731,7 @@ void prot(){
 
                 inserir_tabsimb(info_token); //insercao do parametro de prototipo
             } while(1);
-            limpar_dimensoes_array(info_token);
+    
             inserir_tabsimb(info_token); //insercao do parametro de prototipo - ultimo dps da virgula
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
@@ -821,6 +813,7 @@ void def(){
                             do {
                                 info_token.categoria = PARAMETRO;
                                 info_token.zumbi = VIVO;
+                                info_token = limpar_dimensoes_array(info_token);
                                 passagem_end_tipo();
 
                                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
@@ -836,14 +829,8 @@ void def(){
                                             } else{
                                                 printa_valor_token();
 
-                                                if(rcv_token.categoria == INTCON){ info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro; }
-                                                else if(rcv_token.categoria == ID){
+                                                info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro;
 
-                                                    if(info_token.constante == NAO){ error("ERRO TAB SIMB > a variável precisa ser uma constante para tamanho do array"); }
-                                                    if(info_token.tipo != _INT){ error("a variável precisa ser do tipo int para tamanho do array"); }
-
-                                                    info_token.dimensoes_array[cd - 1] = info_token.valor_constante.inteiro;
-                                                }
                                                 rcv_token = AnaLex(arqivoProc);
                                                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
                                                     error("ERRO SINTATICO > era esperado o fechamento do colchetes");
@@ -868,7 +855,6 @@ void def(){
                                 }
                                 inserir_tabsimb(info_token); //insercao do parametro de procedimento
                             } while(1);
-                            limpar_dimensoes_array(info_token);
                             inserir_tabsimb(info_token); //insercao do parametro de procedimento - ultimo dps da virgula
                 }
 
