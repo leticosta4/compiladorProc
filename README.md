@@ -2,7 +2,7 @@
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador léxico
 - [x] analisador sintático
-- [ ] tabela de símbolos ~
+- [x] tabela de símbolos 
 - [ ] integração semântica ~
 - [ ] geraçao de código
 
@@ -60,18 +60,17 @@ quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta
 - [x] parametros: se o primeiro for `id_vetor` o outro pega tb
 - [x] ver quando aplicar o var_simples
 - [x] o valor de array nos parametros de procedimento tao continuando para os que nao sao
-- [ ] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
-- [ ] quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta um numero
+- [x] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
 
 
 ## outros
 - [ ] limpar prints e comentarios
-- [ ] tabela de simbolos
+- [x] tabela de simbolos
 - [ ] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
-- [ ] no final apagar a funcao debug
+- [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
 
 ## dúvidas
@@ -83,3 +82,4 @@ quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta
 - [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
 - [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
+- [ ] tratar identificador no tamanho do array

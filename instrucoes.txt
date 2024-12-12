@@ -1,0 +1,13 @@
+colocar o nome do arquivo desejado para leitura pelo compilador nas segundas linhas de cada uma das funções abaixo (arquivo proc.c):
+
+- testaAnalex()
+- testaAnasint()
+
+comando para compilar o projeto e rodar o executavel:
+
+- gcc proc.c analex.c anasint.c funcaux.c tabsimb.c -o proclang && ./proclang
+
+observação:
+    quando um identificador IDCONST é passado como tamanho de array (vetor ou matriz), os campos Dim-1 e Dim-2 na tabela adquirem números aleatórios, já
+    que esta etapa só será tratada na Análise Semântica. Nesta versão atual do projeto, o tamanho do array (valor inteiro) só consta de
+    fato na tabela quando se atribui um INTCON para tal campo.

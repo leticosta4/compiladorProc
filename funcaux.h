@@ -10,5 +10,4 @@ void error(char msg[]);
 int verifica_plv_rsvd(const char lexema[]);
 void printa_valor_token();
 void consome_fim_exp();
-void debug(char onde[]);
 #endif

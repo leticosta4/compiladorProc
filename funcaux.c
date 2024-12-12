@@ -44,7 +44,3 @@ void printa_valor_token(){
 void consome_fim_exp(){
     while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
 }
-
-void debug(char onde[]){
-    printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
-}
