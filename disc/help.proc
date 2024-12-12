@@ -1,0 +1,71 @@
+const int oi = 2
+bool a = 1
+
+prot soma(&int[][], int)
+prot fatorial (&int, int) 
+
+def init
+int tchau, hey
+char c = 'a'
+int teste[2][2] = {1, 2, 3, 4}
+
+int n, fat 
+getint n 
+do fatorial(fat, n) 
+putint fat 
+
+//do soma(tchau, hey)
+
+while(yeah)
+    putstr "hello world"
+    putstr "help"
+
+    var hola from 1 to 10 by me
+    endv
+endw
+
+var hola from 1 to 10
+    while(yeah)
+        algo = 2 + 2
+    endw
+endv
+
+if(ola)
+getint a
+getreal b
+getchar c
+getstr d
+getout
+
+elif(bye)
+putint a
+putreal b
+putchar c
+putstr d
+
+else
+putint 2
+putreal 2.2
+putchar 's'
+putstr "oi"
+endi
+
+endp
+
+def fatorial(&int f, int n) 
+    if (n <= 1)
+        f = 1  
+    elif(n > 1)
+        do fatorial(f, n-1) 
+        f = f * n  //erro aqui por causa do 'do' anteriormente
+    else
+    endi 
+endp 
+
+def teste()
+    if(ola)
+    getint a
+        if(ai)
+        endi
+    endi
+endp

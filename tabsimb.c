@@ -16,7 +16,7 @@ char constantes[2][TAM_MAX_LEXEMA] = {"nao", "sim"};
 
 void iniciar_tabsimb(){
     printf("tabela de símbolos inicializada\n\n");
-    //talvez algo que limpe a tabela tb - aqui no inicio ou quando acabar o programa
+    memset(&tabela_simbolos, 0, sizeof(tabela_simbolos));
     tabela_simbolos.topo = 0;
 }
 
@@ -102,11 +102,11 @@ void apagar_var_locais(int posicao_def){
     printf("apagando variaveis locais\n");
 
     if(posicao_def >= 0){
-        for(int i = posicao_def + 1; i <= tabela_simbolos.topo; i++){
-            while(tabela_simbolos.linhas[i].categoria == PARAMETRO){
+        for(int i = posicao_def; i <= tabela_simbolos.topo; i++){
+            while(tabela_simbolos.linhas[i+1].categoria == PARAMETRO){
                 i++;
             } 
-            if(tabela_simbolos.linhas[i].categoria == VAR_LOCAL){ remover_tabsimb(); }
+            if(tabela_simbolos.linhas[i+1].categoria == VAR_LOCAL){ remover_tabsimb(); }
             else{ break; }
                 
         }

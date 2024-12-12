@@ -11,7 +11,7 @@ endp
 
 // Ponto 1
 
-def subtrair(&int r[a][c], int a, int b) //o valor da constante continua p o resto dos parametross
+def subtrair(&int r[a][c], int a, int b) 
     int w
     w = a - b
     r = w

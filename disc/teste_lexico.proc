@@ -1,0 +1,36 @@
+init
+    //Esse código n faz nada
+    'a' //Erro
+    real palavra = 2.5
+    int a = 10
+    int b = 34
+    int c = a + b
+    int arraySuper[20]
+    char _variavel = 'a'    
+    char dado = "eai"
+    real teste = 3.2
+
+    while (c >= a)
+        if b + a + 1 > c
+        getint 2
+        endi
+    endw
+
+    var loop from array to &outroArray by numero endv
+    char a //testando 
+
+    //mais um teste
+    "dkjdej"
+    arraySuper = "kjkfkdjfjjd"
+
+    While //esse é p sair como ID
+
+    //esses de baixo se for p testar erro
+    //123456789012345678900
+    //123456789012345678.8767900
+    //"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJLMNOPQRSTUVWXYZ"
+
+
+    '\n'
+    '\0'
+    'c'

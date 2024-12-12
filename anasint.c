@@ -783,7 +783,7 @@ void def(){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
             printf("fim da implementação do bloco init\n");
-            apagar_var_locais(procura_posicao_proc("init")); //n ta funcionando ainda
+            apagar_var_locais(procura_posicao_proc("init")); 
             rcv_token = AnaLex(arqivoProc);
         }
     } else if(rcv_token.categoria == ID){
