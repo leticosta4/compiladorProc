@@ -2,13 +2,11 @@
 compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador léxico
 - [x] analisador sintático
-- [ ] tabela de símbolos ~
+- [x] tabela de símbolos 
 - [ ] integração semântica ~
 - [ ] geraçao de código
 
-<b>ANALISADOR LEXICO + SINTATICO > TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
-
-quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta um numero - ATTA ?
+<b>ANALISADOR LEXICO + SINTATICO + tabela de simbolos> TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
 
 ## gramática
 - [x] prog
@@ -48,7 +46,7 @@ quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta
 - [x] resetar as dimensoes de array do `info_token` 
 - [x] tratar dimensoes dos arrays como vetor 
 - [x] colocar opcoes que nao aplica no inicio dos enums ? - bom p zerar tabela
-- [ ] ver melhor onde usar `confere_atrib_constante()`
+- [x] ver melhor onde usar `confere_atrib_constante()`
 - [x] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
 - [x] printar o tipo certo do valor da constante
 - [x] inserir nos parametros de procedimento e de prototipo - <b>IMPORTANTE</b>
@@ -60,22 +58,21 @@ quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta
 - [x] parametros: se o primeiro for `id_vetor` o outro pega tb
 - [x] ver quando aplicar o var_simples
 - [x] o valor de array nos parametros de procedimento tao continuando para os que nao sao
-- [ ] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
-- [ ] quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta um numero
+- [x] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
 
 
 ## outros
-- [ ] limpar prints e comentarios
-- [ ] tabela de simbolos
-- [ ] talvez tirar a função `printa_valor_token()`
+- [ ] limpar prints
+- [ ] limpei os comentarios
+- [x] tabela de simbolos
+- [x] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
-- [ ] no final apagar a funcao debug
+- [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
 
 ## dúvidas
-- a coisa la do valor da constante p a tabela de simbolos
 - verificacao da variavel em atrib? como lidar?
 
 
@@ -83,3 +80,4 @@ quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta
 - [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
 - [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
+- [ ] tratar identificador no tamanho do array

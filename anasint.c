@@ -12,8 +12,6 @@
 registro_tabsimb info_token;
 
 int valor_var(){
-    printa_valor_token();
-    //adicionar na tabela de simb?
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
     return rcv_token.categoria;
@@ -50,7 +48,6 @@ void prog(){
         printf("em prog: %d (tem que ser 2 ou 3)\n", rcv_token.codigo);
         decl_def_proc(); 
     }
-    //algo da tabela de simbolos 
 }
 
 void decl_list_var(){
@@ -131,31 +128,26 @@ void cmd(){
             case GETREAL:
             case GETCHAR:
             case GETSTR:
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador para input com get"); }
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTINT:
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTREAL:
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTCHAR:
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case PUTSTR:
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
@@ -217,7 +209,7 @@ void cmd(){
                             
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
-                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                consome_fim_exp();
                                 if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
                                     printf("SAINDO while\n\n");
                                     break;
@@ -257,7 +249,7 @@ void cmd(){
                             
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
-                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                consome_fim_exp(); 
                                 if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
                                     printf("SAINDO if\n\n");
                                     break;
@@ -288,7 +280,7 @@ void cmd(){
                                         
                                         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                             cmd();
-                                            consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                            consome_fim_exp(); 
                                             if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
                                                 printf("SAINDO elif\n\n");
                                                 break;
@@ -306,7 +298,7 @@ void cmd(){
                                 
                                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                     cmd();
-                                    consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                    consome_fim_exp(); 
                                     if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDI){
                                         printf("SAINDO else\n\n");
                                         break;
@@ -361,7 +353,7 @@ void cmd(){
 
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd();
-                                consome_fim_exp(); //chamar se n afeta o processamento do prox token
+                                consome_fim_exp(); 
                                 if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDV){
                                     printf("SAINDO var\n\n");
                                     break;
@@ -502,7 +494,6 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
                 if(cont_d < 3){
                     rcv_token = AnaLex(arqivoProc);
                     if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
-                        //logica p tabela de simbolos?
                         expr();
 
                         if(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL){
@@ -623,8 +614,6 @@ void decl_var(){
             if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
                 error("ERRO SINTATICO > era esperado intcon ou um identificador");
             } else {
-                printa_valor_token();
-
                 info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro;
 
                 rcv_token = AnaLex(arqivoProc);
@@ -663,10 +652,8 @@ void decl_var(){
                     rcv_token = AnaLex(arqivoProc);
                 } else { error("ERRO SINTATICO > erra esperado fechamento do '{' com '}'"); }
             } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON){
-                //salvar na tabela de simbolos
                 confere_atrib_constante(); 
 
-                printa_valor_token();
                 rcv_token = AnaLex(arqivoProc);
             } else if(rcv_token.categoria == STRINGCON){
                 error("não é permitida a declaração de variáveis com stringcon");
@@ -758,7 +745,7 @@ void def(){
 
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
-        info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
+        info_token = limpar_dimensoes_array(info_token); 
         inserir_tabsimb(info_token); //insercao do procedimento init
 
         rcv_token = AnaLex(arqivoProc);
@@ -793,7 +780,7 @@ void def(){
 
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
-        info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
+        info_token = limpar_dimensoes_array(info_token); 
         inserir_tabsimb(info_token); //insercao do procedimento
 
         rcv_token = AnaLex(arqivoProc);
@@ -827,8 +814,6 @@ void def(){
                                             if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
                                                 error("ERRO SINTATICO > era esperado inteiro após '['");
                                             } else{
-                                                printa_valor_token();
-
                                                 info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro;
 
                                                 rcv_token = AnaLex(arqivoProc);
