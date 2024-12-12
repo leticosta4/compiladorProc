@@ -43,5 +43,4 @@ endp
 
 def soma(int n, int m)
 char result
-//int array[2][3][4]
 endp
