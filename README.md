@@ -8,7 +8,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 <b>ANALISADOR LEXICO + SINTATICO > TA FUNCIOONANDO PARA TODOS OS ARQUIVOSS</b>
 
-TEM ALGUM BUG NA VIRGULA DE PARAMETRO
+quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta um numero - ATTA ?
 
 ## gramática
 - [x] prog
@@ -44,12 +44,11 @@ TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 - [x] remover tabela 
 - [x] printar tabela 
 - [x] questão lá do valor da constante: `union`, `enum`, `char`... > 
-- [ ] chamadas no `anasint.c`
+- [x] chamadas no `anasint.c`
 - [x] resetar as dimensoes de array do `info_token` 
 - [x] tratar dimensoes dos arrays como vetor 
 - [x] colocar opcoes que nao aplica no inicio dos enums ? - bom p zerar tabela
 - [ ] ver melhor onde usar `confere_atrib_constante()`
-- [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] quando tem virgula ele nao guarda atribuicoes do `info_token` - <b>IMPORTANTE</b>
 - [x] printar o tipo certo do valor da constante
 - [x] inserir nos parametros de procedimento e de prototipo - <b>IMPORTANTE</b>
@@ -60,6 +59,9 @@ TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 - [x] transformar os parametros de def em zumbis
 - [x] parametros: se o primeiro for `id_vetor` o outro pega tb
 - [x] ver quando aplicar o var_simples
+- [x] o valor de array nos parametros de procedimento tao continuando para os que nao sao
+- [ ] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
+- [ ] quando coloca identificador no tamanho do array - nao vai pq por enquanto só ta um numero
 
 
 ## outros
@@ -80,3 +82,4 @@ TEM ALGUM BUG NA VIRGULA DE PARAMETRO
 ## prox etapa > semantica
 - [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
 - [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
+- [ ] ele nao vendo quando é constante p passar no tamanho do array

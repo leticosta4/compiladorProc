@@ -1,5 +1,5 @@
 def init
-    int fat, n, z
+    int fat, n, z //na tabela de simbolos ele ta guardando o 'f'
 
     getint n
 

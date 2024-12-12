@@ -106,12 +106,13 @@ void apagar_var_locais(int posicao_def){
             while(tabela_simbolos.linhas[i].categoria == PARAMETRO){
                 i++;
             } 
-            if(tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ break; }
-                remover_tabsimb();
+            if(tabela_simbolos.linhas[i].categoria == VAR_LOCAL){ remover_tabsimb(); }
+            else{ break; }
+                
         }
     }
     printf("acabou a remoção das var locais\n");
-    printar_tabsimb();
+    //printar_tabsimb();
 }
 
 void transformar_zumbi(int posicao_def){
@@ -127,7 +128,7 @@ void transformar_zumbi(int posicao_def){
         }
     }
     printf("acabou a transformação de vivo em zumbi\n");
-    printar_tabsimb();
+    //printar_tabsimb();
 }
 
 void printar_tabsimb(){
