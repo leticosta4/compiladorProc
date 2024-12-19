@@ -542,7 +542,10 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
                 fator();
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
-            } else { error("ERRO SINTATICO > sinal invalido encontrado em fator"); }
+            } else {
+                debug("erro fator");
+                error("ERRO SINTATICO > sinal invalido encontrado em fator");
+            }
             break;
     }
     printf("fim de um fator\n");
