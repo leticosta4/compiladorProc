@@ -5,9 +5,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] tabela de símbolos 
 - [ ] integração semântica ~
 - [ ] geraçao de código
-- [ ] bugfix:
-    - [ ] anasint
-    - [ ] tabsimb
+- [x] bugfix:
+    - [x] anasint
+    - [x] tabsimb
 
 ## gramática
 - [x] prog
@@ -33,7 +33,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] op_rel
 - [x] tirar obrigatoriedade de parametro em def em `anasint.c`
 - [x] ajustes no stringcon
-- [ ] erro em do > fator ? (investigar linha 80 do novo arquivo)
+- [x] erro em do > fator ? (investigar linha 80 do novo arquivo)
 
 
 ## tabela de símbolos
@@ -61,7 +61,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ver quando aplicar o var_simples
 - [x] o valor de array nos parametros de procedimento tao continuando para os que nao sao
 - [x] o remover_var_locais ainda deixa uma na tabela (aa primeira normalmente)
-- [ ] alterar como eu trato prototipo de procedimento e os seus parametros
+- [x] alterar como eu trato prototipo de procedimento e os seus parametros
 
 
 ## outros
