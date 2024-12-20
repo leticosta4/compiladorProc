@@ -92,10 +92,39 @@ int procura_posicao_proc(char nome_def[]){
         }
     }
     if(i >= tabela_simbolos.topo){
-        error("prototipo não encontrado");
+        error("parte de parametros/var_locais > procedimento não encontrado\n");
     }
 
     printf("terminou a busca da posição do procedimento\n");
+}
+
+int procura_existencia_prot(char nome_prot[]){
+    printf("verificando a existencia do prototipo para o procedimento\n");
+
+    int j;
+    for(j = 0; j < tabela_simbolos.topo; j++){
+        if((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && (tabela_simbolos.linhas[j].categoria == PROTOTIPO)){
+            printf("prototipo do procedimento encontrado!\n");
+            return j;
+        }
+    }
+    if(j >= tabela_simbolos.topo){
+        printf("ainda não existe declaração de prototipo para esse procedimento\n");
+        return -1;
+    }
+
+    printf("terminou a busca da existencia do prototipo para o procedimento\n");
+}
+
+void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
+    printf("substituindo prototipo por procedimento\n");
+
+    if(posicao_prot >= 0){
+        tabela_simbolos.linhas[posicao_prot] = token_proced;
+    }
+
+    printar_tabsimb();
+    printf("acabou a substituição de prototipo por procedimento\n");
 }
 
 void apagar_var_locais(int posicao_def){

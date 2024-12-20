@@ -751,7 +751,7 @@ void prot(){
 }
 
 void def(){
-    int cate, cd = 1;
+    int cate, cd = 1, substituir_prot;
 
     printf("inicio da declaração de funcoes: < def > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc); 
@@ -797,7 +797,16 @@ void def(){
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); 
-        inserir_tabsimb(info_token); //insercao do procedimento
+
+        //verifica existencia do prototipo - existe: substitui naquela posicao
+        substituir_prot = procura_existencia_prot(nome_def);
+        if(substituir_prot == -1){
+            inserir_tabsimb(info_token); //insercao do procedimento
+        } else{
+            substituir_prot_proc(substituir_prot, info_token);
+            //ver como refletir isso nos parametros
+        }
+        
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();

@@ -33,7 +33,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] op_rel
 - [x] tirar obrigatoriedade de parametro em def em `anasint.c`
 - [x] ajustes no stringcon
-- [ ] erro em do > fator ? (investigar linha 80 do novo arquivo)
+- [x] erro em do > fator ? (investigar linha 80 do novo arquivo)
 
 
 ## tabela de símbolos
