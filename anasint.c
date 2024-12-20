@@ -111,6 +111,7 @@ void decl_def_proc(){
 }
 
 void cmd(){
+    int passou_expr = 0;
     //o token ja chega processado p cmd mesmo
     printf("inicio de algum comando: < cmd > | LINHA: %d\n\n", contLinha);
     if(rcv_token.categoria == PLV_RSVD){
@@ -152,7 +153,8 @@ void cmd(){
                 if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
                 break;
-            case DO:
+            case DO: 
+                //int passou_expr = 0;
                 printf("início de um do\n\n");
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
@@ -163,9 +165,14 @@ void cmd(){
                     } else{
                         rcv_token = AnaLex(arqivoProc);
                         consome_fim_exp();
-                        if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
+                
+                        if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN) &&
+                            !(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON)){
+                                error("era esperado ')' ou alguma expressão após '('");
+                        } else if((rcv_token.categoria == SNL && rcv_token.codigo != FECHA_PAREN) || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
+                            passou_expr = 1;
                             expr();
-
+                        
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             while (rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                                 rcv_token = AnaLex(arqivoProc);
@@ -184,7 +191,13 @@ void cmd(){
                                 rcv_token = AnaLex(arqivoProc);
                                 consome_fim_exp();
                             }
-                        } else{ error("ERRO SINTATICO > era esperada uma expressão após '('"); }
+                        } 
+                        
+                        if((passou_expr == 0) && (rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){ //colocando essa condicional do passou_expr p o token não ser processado duas vezes
+                            printf("foi um do\n");
+                            rcv_token = AnaLex(arqivoProc);
+                            consome_fim_exp();
+                        }
                     }
                 }
                 break;
