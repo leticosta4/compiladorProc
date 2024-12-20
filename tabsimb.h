@@ -57,6 +57,7 @@ int procura_posicao_proc(char nome_def[]);
 int procura_existencia_prot(char nome_prot[]);
 void remover_tabsimb();
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced);
+void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_param_proced);
 void apagar_var_locais(int posicao_def);
 void transformar_zumbi(int posicao_def);
 void printar_tabsimb();

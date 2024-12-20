@@ -556,7 +556,6 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             } else {
-                debug("erro fator");
                 error("ERRO SINTATICO > sinal invalido encontrado em fator");
             }
             break;
@@ -800,12 +799,8 @@ void def(){
 
         //verifica existencia do prototipo - existe: substitui naquela posicao
         substituir_prot = procura_existencia_prot(nome_def);
-        if(substituir_prot == -1){
-            inserir_tabsimb(info_token); //insercao do procedimento
-        } else{
-            substituir_prot_proc(substituir_prot, info_token);
-            //ver como refletir isso nos parametros
-        }
+        if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
+        } else{ substituir_prot_proc(substituir_prot, info_token); }
         
 
         rcv_token = AnaLex(arqivoProc);
@@ -863,9 +858,16 @@ void def(){
                                         consome_fim_exp(); 
                                     } else { break; }
                                 }
-                                inserir_tabsimb(info_token); //insercao do parametro de procedimento
+
+                                //a insercao vai depender se teve prototipo antes ou nao
+                                if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
+                                } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
+                                
                             } while(1);
-                            inserir_tabsimb(info_token); //insercao do parametro de procedimento - ultimo dps da virgula
+                            
+                            //a insercao vai depender se teve prototipo antes ou nao - ultimo dps da virgula
+                            if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
+                            } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
                 }
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){

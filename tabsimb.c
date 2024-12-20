@@ -127,6 +127,23 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("acabou a substituição de prototipo por procedimento\n");
 }
 
+void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_param_proced){
+    printf("substituindo os parametros dos prototipos para os do procedimento\n");
+
+    if(posicao_prot >= 0){
+        for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
+            if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0))  {
+                tabela_simbolos.linhas[i] = token_param_proced;
+                break;
+            }
+        }
+    }    
+
+    printar_tabsimb();
+    printf("acabou a substituição de parametros dos prototipos para os do procedimento\n");
+}
+
 void apagar_var_locais(int posicao_def){
     printf("apagando variaveis locais\n");
 
