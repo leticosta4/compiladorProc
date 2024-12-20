@@ -1,0 +1,92 @@
+int lines = 0, collumns = 0
+const int MAX_TAM_TAREFAS = 1024, MAX_LETTERS = 32, MAX_ROWS = 4
+char tarefas[MAX_TAM_TAREFAS][MAX_LETTERS]
+
+prot criarTarefa()
+prot removerUltimaTarefa()
+prot adicionarTarefa(char[])
+prot listarTarefas()
+prot removerTodasTarefas()
+
+def adicionarTarefa(char t[MAX_LETTERS])
+    tarefas[index] = t
+    index = index + 1
+endp
+
+def listarTarefas()
+    int i = 0
+    char tarefa[MAX_LETTERS]
+    while(i < MAX_TAM_TAREFAS)
+    if(tarefas[index][0] == ' ') 
+        getout
+    endi
+    tarefa = tarefas[i]
+    putstr tarefas
+    i = i + 1
+    endw
+endp
+
+def criarTarefa()
+        char tarefa[MAX_LETTERS]
+        char dias, prioridade
+        if(index > MAX_TAM_TAREFAS)
+            putstr "Quantidade maxima de tarefas"
+            putchar '\n'
+            getout
+        endi
+    while(1)
+        putstr "Digite 0 para sair"
+        putchar '\n'
+        putstr "Diga o nome da tarefa"
+        getstr tarefa
+        if(tarefa == ' ')
+            putstr "A tarefa não deve ser vazia"
+        elif(tarefa == 0) 
+            getout
+        else
+            do adicionarTarefa(tarefa, dias, prioridade)
+            getout
+        endi
+    endw
+    putstr "Tarefa criada com sucesso"
+endp
+
+def removerUltimaTarefa()
+    index = index - 1
+    putstr "Ultima tarefa removida"
+endp
+
+def removerTodasTarefas()
+    index = 0
+    putstr "Todas as tarefas foram removidas"
+endp
+
+def init
+    int opcao
+    while(1)
+      
+      putstr "O que deseja fazer?"
+      putstr "1 - Criar Tarefa"
+      putchar '\n'
+      putstr "2 - Deletar ultima tarefa"
+      putchar '\n'
+      putstr "3 - Listar Tarefas"
+      putchar '\n'
+      putstr "4 - Sair"
+      
+      getint opcao
+
+      if(opcao == 1)
+        do criarTarefa()
+      elif(opcao == 2)
+        do removerUltimaTarefa()
+      elif(opcao == 3)
+        do listarTarefas()
+      elif(opcao == 4)
+        getout
+      else
+        putstr "Opcao invalida"
+      endi
+
+   endw
+endp

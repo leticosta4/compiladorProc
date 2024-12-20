@@ -9,4 +9,5 @@ extern int contLinha; //extern para garantir que a mesma variavel global sendo u
 void error(char msg[]);
 int verifica_plv_rsvd(const char lexema[]);
 void consome_fim_exp();
+void debug(char onde[]);
 #endif

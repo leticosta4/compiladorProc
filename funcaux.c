@@ -21,3 +21,18 @@ int verifica_plv_rsvd(const char lexema[]){
 void consome_fim_exp(){
     while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
 }
+
+void debug(char onde[]){
+    printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
+}
+
+//temporario para a parte da GERACAO DE CODIGO - MAQUINA DE PILHA
+// void gera_label(char *label){
+//     char strcont[10];
+//     static int cont = 1;
+
+//     strcpy(label, "L");
+//     itoa(cont, strcont, 10);
+//     strcat(label, strcont);
+//     cont++;
+// }
