@@ -27,7 +27,7 @@ void confere_atrib_constante(){
             info_token.valor_constante.real = rcv_token.valor_real;
         } else if(rcv_token.categoria == INTCON && info_token.tipo == _BOOL){
             info_token.valor_constante.v_bool = rcv_token.valor_inteiro; //0 ou 1
-        } else{ error("era esperado tipo compatível para inicialização da constante"); }
+        } else{ error("ERRO SEMANTICO > era esperado tipo compatível para inicialização da constante"); }
     }
 }
 
@@ -41,6 +41,7 @@ void prog(){
 
         info_token.escopo = GLOBAL;
         info_token.categoria = VAR_GLOBAL;
+        info_token.tem_prototipo = NAO_APLICA_PROT;
 
         decl_list_var();
     }
@@ -95,6 +96,7 @@ void decl_def_proc(){
     switch (rcv_token.codigo){
         case PROT:
             info_token.categoria = PROTOTIPO;
+            info_token.tem_prototipo = _SIM;
             prot();
             break;
         case DEF:
@@ -111,7 +113,7 @@ void decl_def_proc(){
 }
 
 void cmd(){
-    int passou_expr = 0;
+    int passou_expr = 0, clausula;
     //o token ja chega processado p cmd mesmo
     printf("inicio de algum comando: < cmd > | LINHA: %d\n\n", contLinha);
     if(rcv_token.categoria == PLV_RSVD){
@@ -154,11 +156,13 @@ void cmd(){
                 rcv_token = AnaLex(arqivoProc);
                 break;
             case DO: 
-                //int passou_expr = 0;
                 printf("início de um do\n\n");
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
                 else{ //idproc  
+                    if(procura_existencia_prot(rcv_token.lexema) == -1){ //ver se o procedimento existe - ANALISE SEMANTICA
+                        error("ERRO SEMANTICO > o procedimento a ser chamado com o 'do' precisa ter seu prototipo assinado ou ja ter sido definido");
+                    }
                     rcv_token = AnaLex(arqivoProc);
                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
                         error("ERRO SINTATICO > era esperado abertura de parenteses após o identificador para chamada do procedimento");
@@ -349,12 +353,16 @@ void cmd(){
                         if(!(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == TO || rcv_token.codigo == DT))){
                             error("ERRO SINTATICO > eram esperadas as palavras reservadas 'to' ou 'dt' após a expressão");
                         } else{
+                            clausula = (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == TO)? 0 : 1; //0: to; 1: dt
+
                             rcv_token = AnaLex(arqivoProc);
                             consome_fim_exp();
                             if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
                                 error("ERRO SINTATICO > era esperado termo para inicio de epressão");
                             }
                             expr(); //expr2
+
+                            //ANALISE SEMANTICA VER A CONDICAO DE QUAL EXPR TEM  SER MAIOR - provavelmente uma funcao(clausula)
 
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == BY){
@@ -692,7 +700,7 @@ void prot(){
     rcv_token = AnaLex(arqivoProc);
 
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
-        error("ERRO SINTATICO > declaração do bloco init não permitida com prot");
+        error("ERRO SEMANTICO > declaração do bloco init não permitida com prot");
     } else if(rcv_token.categoria == ID){ //idproc
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token);
@@ -708,6 +716,7 @@ void prot(){
                 strcpy(info_token.lexema, "");
                 info_token.categoria = PARAMETRO;
                 info_token.zumbi = NAO_APLICA_ZUMBI;
+                info_token.tem_prototipo = NAO_APLICA_PROT;
 
                 passagem_end_tipo();
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
@@ -757,7 +766,7 @@ void def(){
     
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         printf("inicio do bloco principal do programa proc: < init >\n\n");
-
+        info_token.tem_prototipo = NAO_APLICA_PROT;
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); 
@@ -799,8 +808,13 @@ void def(){
 
         //verifica existencia do prototipo - existe: substitui naquela posicao
         substituir_prot = procura_existencia_prot(nome_def);
-        if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
-        } else{ substituir_prot_proc(substituir_prot, info_token); }
+        if(substituir_prot == -1){
+            info_token.tem_prototipo = _NAO;
+            inserir_tabsimb(info_token); //insercao do procedimento - NOVO
+        } else{
+            info_token.tem_prototipo = _SIM;
+            substituir_prot_proc(substituir_prot, info_token);
+        }
         
 
         rcv_token = AnaLex(arqivoProc);
@@ -810,6 +824,7 @@ void def(){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
+            info_token.tem_prototipo = NAO_APLICA_PROT;
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN) &&
                 !(rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) &&
                 !(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == REAL || rcv_token.codigo == CHAR || rcv_token.codigo == BOOL))){

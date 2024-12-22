@@ -16,6 +16,7 @@ typedef enum passagem{NAO_APLICA_PARAM, VALOR, REFERENCIA}PASSAGEM;
 typedef enum zumbi {NAO_APLICA_ZUMBI, VIVO, EH_ZUMBI}ZUMBI;
 typedef enum array{NAO_APLICA_ARRAY, VAR_SIMPLES, ID_VETOR, ID_MATRIZ}ARRAY;
 typedef enum eh_const{NAO, SIM}EH_CONST;
+typedef enum tem_prot{NAO_APLICA_PROT, _NAO, _SIM}TEM_PROT;
 
 typedef struct valor_const{
     union {
@@ -39,6 +40,7 @@ typedef struct{
     VALOR_CONST valor_constante;
     int endereco;
     //rotulo;
+    TEM_PROT tem_prototipo;
 }registro_tabsimb;
 
 typedef struct{

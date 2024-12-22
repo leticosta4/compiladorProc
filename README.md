@@ -3,13 +3,13 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador léxico
 - [x] analisador sintático
 - [x] tabela de símbolos 
-- [ ] integração semântica ~
+- [ ] integração semântica - WIP
 - [ ] geraçao de código
 - [x] bugfix:
     - [x] anasint
     - [x] tabsimb
 
-## gramática
+## analise sintatica - gramática
 - [x] prog
 - [x] decl_list_var
 - [x] decl_def_prot
@@ -79,8 +79,43 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - verificacao da variavel em atrib? como lidar?
 
 
-## prox etapa > semantica
-- [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
-- [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
+## analise semantica    
+### bugs
+- [x] endereço reiniciando nos parametros
+
+### regras
+- [ ] buscar REDECLARACAO
+    - [x] prototipo
+    - [x] procedimento
+    - [ ] constante
+    - [x] variavel
+    - [ ] parametro - dentro do mesmo procedimento
+- [ ] verificação do tipo da veriavel com o correspondente da declaração 
+    - [ ] inteiro com ele mesmo e char, e vice-versa
+    - [ ] bool com int
+- [x] variaveis locais e globais
+- [ ] buscar DECLARACAO 
+    - [ ] constante
+    - [x] prototipo > p o procedimento
+    - [ ] variavel > analisar
+    - [ ] var local no procedimento e parametro daquele procedimento
+    - [ ] passar o id dentro do tamanho do array - ver como lidar 
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
-- [ ] tratar identificador no tamanho do array
+- [ ] declaração de var globais antes de procedimento
+- [ ] declaração de var locais antes de comandos
+- [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
+- [ ] não pode deixar definição de procedimento interno
+- [x] escopo local para os parametros de um procedimento
+- [ ] variavel sem ser array n pode ser inicializada com {}
+- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (wtf?)
+- [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
+- [ ] parametros compatíveis no procedimento
+    - [ ] em tipo
+    - [ ] em quantidade - refinar
+    - [ ] em ordem
+- [x] não pode ter & na chama do procedimento com o do
+- [ ] tipo boolean para a expr condicional de if, elif e while
+- [ ] var
+    - [ ] usou TO: expr1 < expr2
+    - [ ] usou DT: expr1 > expr2
+- [ ] basically td de expr

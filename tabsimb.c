@@ -13,6 +13,7 @@ char passagens[3][TAM_MAX_LEXEMA] = {"nao_aplica_param", "valor", "referencia"};
 char zumbis[3][TAM_MAX_LEXEMA] = {"nao_aplica_zumbi", "vivo", "eh_zumbi"};
 char arrays[4][TAM_MAX_LEXEMA] = {"nao_aplica_array", "var_simples", "id_vetor", "id_matriz"};
 char constantes[2][TAM_MAX_LEXEMA] = {"nao", "sim"};
+char tem_prototipos[3][TAM_MAX_LEXEMA] = {"nao_aplica_prot", "_nao", "_sim"};
 
 void iniciar_tabsimb(){
     printf("tabela de símbolos inicializada\n\n");
@@ -50,18 +51,18 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
         if((strcmp(tabela_simbolos.linhas[i].lexema, token_aux.lexema) == 0) && (tabela_simbolos.linhas[i].categoria == token_aux.categoria)){
             switch(token_aux.categoria){
                 case VAR_GLOBAL:
-                    error("ERRO TABSIMB > foi encontrada redeclaração de variável global");
+                    error("ERRO SEMANTICO > foi encontrada redeclaração de variável global");
                     break;
                 case VAR_LOCAL:
-                    error("ERRO TABSIMB > foi encontrada redeclaração de variável local");
+                    error("ERRO SEMANTICO > foi encontrada redeclaração de variável local");
                     break;
                 case PROTOTIPO:
-                    error("ERRO TABSIMB > foi encontrada redeclaração de protótipo de procedimento");
+                    error("ERRO SEMANTICO > foi encontrada redeclaração de protótipo de procedimento");
                     break;
                 case PROCEDIMENTO:
-                    if(strcmp(tabela_simbolos.linhas[i].lexema, "init")){
-                        error("ERRO TABSIMB > deve haver somente um bloco init");
-                    } else{ error("ERRO TABSIMB > foi encontrada redeclaração de procedimento"); }
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, "init") == 0){
+                        error("ERRO SEMANTICO > deve haver somente um bloco init");
+                    } else{ error("ERRO SEMANTICO > foi encontrada redeclaração de procedimento"); }
                     break;
             }
         }
@@ -92,34 +93,36 @@ int procura_posicao_proc(char nome_def[]){
         }
     }
     if(i >= tabela_simbolos.topo){
-        error("parte de parametros/var_locais > procedimento não encontrado\n");
+        error("parte de parametros/var_locais > procedimento não encontrado"); //o erro do do sem procedimento declarado ta vindo aqui
     }
 
     printf("terminou a busca da posição do procedimento\n");
 }
 
 int procura_existencia_prot(char nome_prot[]){
-    printf("verificando a existencia do prototipo para o procedimento\n");
+    printf("verificando a existencia da assinatura de prototipo/definição para o procedimento\n");
 
     int j;
     for(j = 0; j < tabela_simbolos.topo; j++){
-        if((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && (tabela_simbolos.linhas[j].categoria == PROTOTIPO)){
-            printf("prototipo do procedimento encontrado!\n");
+        if(((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && ((tabela_simbolos.linhas[j].categoria == PROTOTIPO) || (tabela_simbolos.linhas[j].categoria == PROCEDIMENTO))) ||
+           ((tabela_simbolos.linhas[j].categoria == PROCEDIMENTO) && (tabela_simbolos.linhas[j].tem_prototipo == _SIM))){ //no caso de ser chamado novamente a categoria ja vai ter mudado de prototipo p procedimento
+            printf("prototipo/definição do procedimento encontrado!\n");
             return j;
         }
     }
     if(j >= tabela_simbolos.topo){
-        printf("ainda não existe declaração de prototipo para esse procedimento\n");
+        printf("não existe assinatura de prototipo para esse procedimento nem a definição do mesmo\n");
         return -1;
     }
 
-    printf("terminou a busca da existencia do prototipo para o procedimento\n");
+    printf("terminou a busca da existencia da assinatura de prototipo/definição para o procedimento\n");
 }
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("substituindo prototipo por procedimento\n");
 
     if(posicao_prot >= 0){
+        token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 
@@ -133,7 +136,8 @@ void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_pa
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
-            if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0))  {
+            if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){
+                token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
                 tabela_simbolos.linhas[i] = token_param_proced;
                 break;
             }
@@ -179,10 +183,10 @@ void transformar_zumbi(int posicao_def){
 
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
-    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-6s | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s |\n", 
-           "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço");
-    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-6s | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s | %-6s\n", 
+           "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço", "Tem prototipo?");
+    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < tabela_simbolos.topo; i++){
         printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
@@ -213,7 +217,7 @@ void printar_tabsimb(){
                     break;
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
-        printf(" %-8d |\n", tabela_simbolos.linhas[i].endereco);
-    printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf(" %-8d | %-15s |\n", tabela_simbolos.linhas[i].endereco, tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
+    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }
