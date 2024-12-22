@@ -73,6 +73,21 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
     printf("fim da busca TS\n\n");
 }
 
+void verifica_redecl_param(int pos_proced, char nome_param[]){
+    printf("verificando repetição dos parametros do procedimento\n");
+
+    if(pos_proced >= 0){
+        for(int i = pos_proced + 1; i <= tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
+            if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, nome_param) == 0)){
+                error("ERRO SEMANTICO > foi encontrada repetição de parametro para o procedimento");
+            }
+        }
+    }    
+
+    printf("acabou a verificação de repetição dos parametros do procedimento\n");
+}
+
 void remover_tabsimb(){
     printf("iniciada remoção na tabela de símbolos\n\n");
     if (tabela_simbolos.topo > 0) {
@@ -105,7 +120,7 @@ int procura_existencia_prot(char nome_prot[]){
     int j;
     for(j = 0; j < tabela_simbolos.topo; j++){
         if(((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && ((tabela_simbolos.linhas[j].categoria == PROTOTIPO) || (tabela_simbolos.linhas[j].categoria == PROCEDIMENTO))) ||
-           ((tabela_simbolos.linhas[j].categoria == PROCEDIMENTO) && (tabela_simbolos.linhas[j].tem_prototipo == _SIM))){ //no caso de ser chamado novamente a categoria ja vai ter mudado de prototipo p procedimento
+           ((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && (tabela_simbolos.linhas[j].categoria == PROCEDIMENTO) && (tabela_simbolos.linhas[j].tem_prototipo == _SIM))){ //no caso de ser chamado novamente a categoria ja vai ter mudado de prototipo p procedimento
             printf("prototipo/definição do procedimento encontrado!\n");
             return j;
         }
@@ -120,7 +135,6 @@ int procura_existencia_prot(char nome_prot[]){
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("substituindo prototipo por procedimento\n");
-
     if(posicao_prot >= 0){
         token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
         tabela_simbolos.linhas[posicao_prot] = token_proced;
@@ -183,13 +197,13 @@ void transformar_zumbi(int posicao_def){
 
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
-    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-6s | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s | %-6s\n", 
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-6s | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s | %-12s  |\n", 
            "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço", "Tem prototipo?");
-    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < tabela_simbolos.topo; i++){
-        printf("| %-6d | %-10s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
+        printf("| %-6d | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
                 i,
                 tabela_simbolos.linhas[i].lexema,
                 escopos[tabela_simbolos.linhas[i].escopo],
@@ -218,6 +232,6 @@ void printar_tabsimb(){
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
         printf(" %-8d | %-15s |\n", tabela_simbolos.linhas[i].endereco, tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
-    printf("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }

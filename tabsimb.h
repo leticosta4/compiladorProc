@@ -55,6 +55,7 @@ void iniciar_tabsimb();
 void inserir_tabsimb(registro_tabsimb token_ins);
 registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token);
 void verifica_redeclaracao(registro_tabsimb token_aux);
+void verifica_redecl_param(int pos_proced, char nome_param[]);
 int procura_posicao_proc(char nome_def[]);
 int procura_existencia_prot(char nome_prot[]);
 void remover_tabsimb();

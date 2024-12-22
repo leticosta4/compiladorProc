@@ -1,0 +1,12 @@
+prot procedimento(int, int)
+prot oi(int, int)
+
+def init
+endp
+
+def procedimento(int a, int b)
+endp
+
+def oi(int a, int c)
+endp
+

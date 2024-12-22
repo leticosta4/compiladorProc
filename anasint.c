@@ -119,9 +119,13 @@ void cmd(){
     if(rcv_token.categoria == PLV_RSVD){
         switch(rcv_token.codigo){
             case PROT:
+                error("ERRO SEMANTICO > não é permitido assinatura de protótipo de procedimento aqui");
+                break;
             case DEF:
+                error("ERRO SEMANTICO > não é permitido definicão de procedimento aqui");
+                break;
             case INIT:
-                error("ERRO SINTATICO > palavra reservada inválida para o cmd");
+                error("ERRO SINTATICO > não é permitido definicão do bloco 'init' aqui");
                 break;
             case FINAL_EXP:
             case GETOUT:
@@ -694,7 +698,7 @@ void decl_var(){
 
 //vindas do decl_def_prot
 void prot(){
-    int ca, _cd = 1; 
+    int ca, _cd = 1, com_param; 
 
     printf("inicio da declaração de prototipos de procedimentos: < prot > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc);
@@ -712,6 +716,7 @@ void prot(){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
+            if(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN){ com_param = 1; }
             do{
                 strcpy(info_token.lexema, "");
                 info_token.categoria = PARAMETRO;
@@ -735,15 +740,16 @@ void prot(){
                         }
                     } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
                 } 
+                
                 if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp(); 
                 } else { break; }
 
-                inserir_tabsimb(info_token); //insercao do parametro de prototipo
+                if(com_param != 1){ inserir_tabsimb(info_token); } //insercao do parametro de prototipo se realmente tiver
             } while(1);
     
-            inserir_tabsimb(info_token); //insercao do parametro de prototipo - ultimo dps da virgula
+            if(com_param != 1){ inserir_tabsimb(info_token); } //insercao do parametro de prototipo se realmente tiver - ultimo dps da virgula
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
@@ -874,13 +880,15 @@ void def(){
                                     } else { break; }
                                 }
 
-                                //a insercao vai depender se teve prototipo antes ou nao
+                                //a insercao vai depender se teve prototipo antes ou nao 
+                                verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                                 if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
                                 } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
                                 
                             } while(1);
                             
                             //a insercao vai depender se teve prototipo antes ou nao - ultimo dps da virgula
+                            verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                             if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
                             } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
                 }

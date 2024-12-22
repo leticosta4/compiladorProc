@@ -82,6 +82,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ## analise semantica    
 ### bugs
 - [x] endereço reiniciando nos parametros
+- [ ] nomes de procedimentos sendo reescritos
 
 ### regras
 - [ ] buscar REDECLARACAO
@@ -89,7 +90,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] procedimento
     - [ ] constante
     - [x] variavel
-    - [ ] parametro - dentro do mesmo procedimento
+    - [x] parametro - dentro do mesmo procedimento
 - [ ] verificação do tipo da veriavel com o correspondente da declaração 
     - [ ] inteiro com ele mesmo e char, e vice-versa
     - [ ] bool com int
@@ -104,7 +105,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] declaração de var globais antes de procedimento
 - [ ] declaração de var locais antes de comandos
 - [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
-- [ ] não pode deixar definição de procedimento interno
+- [x] não pode deixar definição de procedimento interno
 - [x] escopo local para os parametros de um procedimento
 - [ ] variavel sem ser array n pode ser inicializada com {}
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (wtf?)
@@ -118,4 +119,5 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] var
     - [ ] usou TO: expr1 < expr2
     - [ ] usou DT: expr1 > expr2
-- [ ] basically td de expr
+- [ ] basically td de expr...
+- [ ] mais coisas que envolvem boooleans e resultados
