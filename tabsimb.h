@@ -51,7 +51,7 @@ typedef struct{
 extern tipo_tab_simb tabela_simbolos;
 extern TOKEN rcv_token;
 
-void iniciar_tabsimb();
+void limpar_tabsimb();
 void inserir_tabsimb(registro_tabsimb token_ins);
 registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token);
 void verifica_redeclaracao(registro_tabsimb token_aux);

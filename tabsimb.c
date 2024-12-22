@@ -15,10 +15,8 @@ char arrays[4][TAM_MAX_LEXEMA] = {"nao_aplica_array", "var_simples", "id_vetor",
 char constantes[2][TAM_MAX_LEXEMA] = {"nao", "sim"};
 char tem_prototipos[3][TAM_MAX_LEXEMA] = {"nao_aplica_prot", "_nao", "_sim"};
 
-void iniciar_tabsimb(){
-    printf("tabela de símbolos inicializada\n\n");
+void limpar_tabsimb(){
     memset(&tabela_simbolos, 0, sizeof(tabela_simbolos));
-    tabela_simbolos.topo = 0;
 }
 
 void inserir_tabsimb(registro_tabsimb token_ins){ 
@@ -29,8 +27,7 @@ void inserir_tabsimb(registro_tabsimb token_ins){
         exit(1);
     }
 
-    verifica_redeclaracao(token_ins); //tem que verificar se o token a ser inserido ja n tem na tabela
-
+    //verifica_redeclaracao(token_ins); //tem que verificar se o token a ser inserido ja n tem na tabela
     token_ins.endereco = tabela_simbolos.topo;
     tabela_simbolos.linhas[tabela_simbolos.topo] = token_ins;
     tabela_simbolos.topo++;
@@ -45,7 +42,7 @@ registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token){
 }
 
 void verifica_redeclaracao(registro_tabsimb token_aux){
-    printf("iniciada busca POR REDECLARAÇÃO DE VARIAVEL OU PROCEDIMENTO na tabela de símbolos\n\n");
+    printf("iniciada busca POR REDECLARAÇÃO DE VARIAVEL GLOBAL, PROTOTIPO OU PROCEDIMENTO na tabela de símbolos\n\n");
 
     for(int i = 0; i < tabela_simbolos.topo; i++){
         if((strcmp(tabela_simbolos.linhas[i].lexema, token_aux.lexema) == 0) && (tabela_simbolos.linhas[i].categoria == token_aux.categoria)){
@@ -73,7 +70,7 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
     printf("fim da busca TS\n\n");
 }
 
-void verifica_redecl_param(int pos_proced, char nome_param[]){
+void verifica_redecl_param(int pos_proced, char nome_param[]){ //what_cat: 1 = var_local; 3 = param
     printf("verificando repetição dos parametros do procedimento\n");
 
     if(pos_proced >= 0){

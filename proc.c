@@ -238,7 +238,7 @@ void testaAnasint(){
 
 int main(){
     contLinha = 1;
-    testaAnalex();
+    //testaAnalex();
 
     contLinha = 1;
     testaAnasint();

@@ -82,14 +82,17 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ## analise semantica    
 ### bugs
 - [x] endereço reiniciando nos parametros
-- [ ] nomes de procedimentos sendo reescritos
+- [x] nomes de procedimentos sendo reescritos
+- [x] tabela resetando
+- [x] coisa de array com {}
 
 ### regras
 - [ ] buscar REDECLARACAO
     - [x] prototipo
     - [x] procedimento
     - [ ] constante
-    - [x] variavel
+    - [x] variavel global
+    - [ ] variavel local - dentro do mesmo procedimento
     - [x] parametro - dentro do mesmo procedimento
 - [ ] verificação do tipo da veriavel com o correspondente da declaração 
     - [ ] inteiro com ele mesmo e char, e vice-versa
@@ -107,7 +110,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
 - [x] não pode deixar definição de procedimento interno
 - [x] escopo local para os parametros de um procedimento
-- [ ] variavel sem ser array n pode ser inicializada com {}
+- [x] variavel sem ser array n pode ser inicializada com {}
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (wtf?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
 - [ ] parametros compatíveis no procedimento
