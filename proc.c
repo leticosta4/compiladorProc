@@ -231,7 +231,7 @@ void testaAnasint(){
             printar_tabsimb();
             break;
         }
-        prog(); //iniciando a chamada do analisador sintatico
+        prog(); 
     }
     fclose(arqivoProc);
 }
@@ -242,6 +242,7 @@ int main(){
 
     contLinha = 1;
     testaAnasint();
-    
+
+    //limpar_tabsimb();
     return 0;
 }

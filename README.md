@@ -105,8 +105,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] var local no procedimento e parametro daquele procedimento
     - [ ] passar o id dentro do tamanho do array - ver como lidar 
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
-- [ ] declaração de var globais antes de procedimento
-- [ ] declaração de var locais antes de comandos
+- [x] declaração de var globais antes de procedimento
+- [x] declaração de var locais antes de comandos
 - [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
 - [x] não pode deixar definição de procedimento interno
 - [x] escopo local para os parametros de um procedimento

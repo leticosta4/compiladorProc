@@ -33,7 +33,6 @@ void confere_atrib_constante(){
 
 void prog(){
     //printf("inicio do programa: < prog > | LINHA: %d\n\n", contLinha);
-    //iniciar_tabsimb();
     consome_fim_exp();
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
@@ -48,9 +47,10 @@ void prog(){
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
         //printf("em prog: %d (tem que ser 2 ou 3)\n", rcv_token.codigo);
         decl_def_proc(); 
-    }
 
-    //limpar_tabsimb();
+        busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 0);
+    }
+    busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 0);
 }
 
 void decl_list_var(){
@@ -804,6 +804,7 @@ void def(){
             if(rcv_token.codigo == ENDP){ break; }
             cmd();
             consome_fim_exp();
+            busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 1);
         }
 
         if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){

@@ -1,14 +1,18 @@
-int n[2] = {1, 2}
-
 prot procedimento(int, int)
 prot oi(int, int)
 
+//int n[2] = {1, 2}
+
 def init
+    int a = 1
+    putint a
+
+    //int b
 endp
 
-def procedimento(int a, int b)
-endp
+//def procedimento(int a, int b)
+//endp
 
-def oi(int a, int c)
-endp
+//def oi(int a, int c)
+//endp
 
