@@ -7,6 +7,7 @@
 #include "funcaux.h"
 #include "tabsimb.h"
 
+
 void error(char msg[]){ 
     printf("%s na linha %d\n", msg, contLinha); 
     exit(1); 

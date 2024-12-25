@@ -4,7 +4,7 @@ prot oi(int, int)
 //int n[2] = {1, 2}
 
 def init
-    int a = 1
+    int a = 2
     putint a
 
     //int b
@@ -15,4 +15,3 @@ endp
 
 //def oi(int a, int c)
 //endp
-

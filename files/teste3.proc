@@ -7,7 +7,7 @@ prot soma(&int[][], int, int)
 
 def init
     int tchau, hey
-    do fatorial(fat, n) 
+    //do fatorial(fat, n) 
 endp
 
 def soma(int n1, int n2, int n3)

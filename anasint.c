@@ -595,11 +595,9 @@ int op_rel(){ //ja chega processado de expr
 
 //vindas do decl_list_var:
 void tipo(){
-    //printf("tipo de variaveis: < tipo > | LINHA: %d\n\n", contLinha);
     if(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
-        //printf("em tipo: %d (tem que ser de 5 a 8)\n", rcv_token.codigo);
         
-        switch (rcv_token.codigo){
+        switch(rcv_token.codigo){
             case INT:
                 info_token.tipo = _INT;
                 break;
@@ -623,7 +621,6 @@ void tipo(){
 void decl_var(){
     int cont_dim = 1, nao_escalar = 0;
     //printf("inicio da declaração da variavel: < decl_var > | LINHA: %d\n\n", contLinha);
-
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador"); }
 
     printf("variavel declarada: %s\n", rcv_token.lexema);
@@ -631,10 +628,6 @@ void decl_var(){
     verifica_redeclaracao(info_token); //se o escopo for global ja foi definido em prog
 
     rcv_token = AnaLex(arqivoProc);
-
-    if(!(rcv_token.categoria == SNL && (rcv_token.codigo == ABRE_COL || rcv_token.codigo == ATRIBUICAO))){
-        error("caracter inválido após identificador");
-    }
 
     if(info_token.constante == SIM && !(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO)){
         error("era esperada inicialização da constante");
@@ -677,6 +670,7 @@ void decl_var(){
                 if(!(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON)){
                     error("era esperado um charcon, realcon ou intcon após '{'");
                 }
+                verifica_compatibilidade_tipo(rcv_token, info_token); //testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 do{
                      cat = valor_var();
                     if(rcv_token.categoria = SNL && rcv_token.codigo == VIRGULA){ 
@@ -688,12 +682,11 @@ void decl_var(){
                 if(rcv_token.categoria = SNL && rcv_token.codigo == FECHA_CHAVE){
                     rcv_token = AnaLex(arqivoProc);
                 } else { error("ERRO SINTATICO > erra esperado fechamento do '{' com '}'"); }
-            } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON){
+            } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
+                verifica_compatibilidade_tipo(rcv_token, info_token); //testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 confere_atrib_constante(); 
 
                 rcv_token = AnaLex(arqivoProc);
-            } else if(rcv_token.categoria == STRINGCON){
-                error("não é permitida a declaração de variáveis com stringcon");
             } else{ error("ERRO SINTATICO > era esperado um identificador após '='"); }
         } else {
             if(cat == 9){ error("ERRO SINTATICO > fim do arquivo inesperado"); }
@@ -894,7 +887,10 @@ void def(){
                                 //a insercao vai depender se teve prototipo antes ou nao 
                                 verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                                 if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
-                                } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
+                                } else{
+                                    //fazer a verificação de tipo, ordem e tal
+                                    substituir_parametros_prot_proc(substituir_prot, info_token);
+                                }
                                 
                             } while(1);
                             

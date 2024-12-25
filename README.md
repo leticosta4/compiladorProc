@@ -85,6 +85,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] nomes de procedimentos sendo reescritos
 - [x] tabela resetando
 - [x] coisa de array com {}
+- [ ] caracteres invalidos no decl_var (ex.: )
 
 ### regras
 - [ ] buscar REDECLARACAO
@@ -94,9 +95,11 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] variavel global
     - [ ] variavel local - dentro do mesmo procedimento
     - [x] parametro - dentro do mesmo procedimento
-- [ ] verificação do tipo da veriavel com o correspondente da declaração 
-    - [ ] inteiro com ele mesmo e char, e vice-versa
-    - [ ] bool com int
+- [x] verificação do tipo da veriavel com o correspondente na DECLARAÇÃO 
+    - [x] inteiro com ele mesmo e char, e vice-versa
+    - [x] bool com int
+    - [x] resto com resto
+- [ ] verificação do tipo da veriavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
 - [ ] buscar DECLARACAO 
     - [ ] constante
@@ -111,7 +114,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] não pode deixar definição de procedimento interno
 - [x] escopo local para os parametros de um procedimento
 - [x] variavel sem ser array n pode ser inicializada com {}
-- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (wtf?)
+- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
 - [ ] parametros compatíveis no procedimento
     - [ ] em tipo

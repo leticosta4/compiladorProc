@@ -232,3 +232,23 @@ void printar_tabsimb(){
     printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }
+
+void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk){
+    if(info_tk.tipo == _INT && (tk.categoria != INTCON && tk.categoria != CHARCON)){
+        error("ERRO SEMANTICO > variável do tipo int é compatível somente com inteiro ou caracter");
+    } else if(info_tk.tipo == _CHAR){
+        if((info_tk.array == ID_VETOR || info_tk.array == ID_MATRIZ) && tk.categoria != STRINGCON){
+            error("ERRO SEMANTICO > array tipo char é compatível somente com string de caracteres");
+        } else if(info_tk.array == VAR_SIMPLES && (tk.categoria != CHARCON && tk.categoria != INTCON)){
+            error("ERRO SEMANTICO > variável do tipo char é compatível somente com caracter ou inteiro");
+        } 
+    } else if(info_tk.tipo == _BOOL){
+        if(info_tk.array != VAR_SIMPLES){
+            error("ERRO SEMANTICO > variável do tipo bool deve ser escalar somente");
+        } else if(info_tk.array == VAR_SIMPLES && tk.categoria != INTCON){
+            error("ERRO SEMANTICO > variável do tipo bool é compatível somente com inteiro");
+        }
+    } else if(info_tk.tipo == _REAL && tk.categoria != REALCON){
+        error("ERRO SEMANTICO > variável do tipo real é compatível somente com real");
+    }
+}

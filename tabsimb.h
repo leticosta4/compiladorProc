@@ -64,4 +64,5 @@ void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_pa
 void apagar_var_locais(int posicao_def);
 void transformar_zumbi(int posicao_def);
 void printar_tabsimb();
+void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk);
 #endif
