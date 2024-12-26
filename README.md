@@ -105,7 +105,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] constante
     - [x] prototipo > p o procedimento
     - [ ] variavel > analisar
-    - [ ] var local no procedimento e parametro daquele procedimento
+    - [ ] var local no procedimento e parametro daquele procedimento <b>PROXIMO A SER FEITO</b>
     - [ ] passar o id dentro do tamanho do array - ver como lidar 
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] declaração de var globais antes de procedimento
@@ -116,17 +116,17 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] variavel sem ser array n pode ser inicializada com {}
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
-- [ ] parametros compatíveis no procedimento
+- [x] parametros compatíveis no procedimento
     - [x] na definicao quando ele tem prototipo
         - [x] em tipo
         - [x] em quantidade 
         - [x] em ordem
         - [x] array ou var escalar
-    - [ ] na chamada com o do quando ele nao tem prototipo 
-        - [ ] em tipo
-        - [ ] em quantidade 
-        - [ ] em ordem
-        - [ ] array ou var escalar
+    - [x] na chamada com o do quando ele nao tem prototipo 
+        - [x] em tipo
+        - [x] em quantidade 
+        - [x] em ordem
+        - [x] array ou var escalar
 - [x] não pode ter & na chama do procedimento com o do
 - [ ] tipo boolean para a expr condicional de if, elif e while
 - [ ] var

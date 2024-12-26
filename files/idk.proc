@@ -5,8 +5,9 @@ prot procedimento(int, int)
 
 def init
     int a = 2
+    //int b
     putint a
-
+    do procedimento(a, b) //fazer ainda a semantica de passar um parametro aqui mas a variavel n ter sido declarada
     //int b
 endp
 

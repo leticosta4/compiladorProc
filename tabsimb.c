@@ -111,7 +111,7 @@ int procura_posicao_proc(char nome_def[]){
     printf("terminou a busca da posição do procedimento\n");
 }
 
-int procura_existencia_prot(char nome_prot[]){
+int procura_existencia_prototipo_ou_proced(char nome_prot[]){
     printf("verificando a existencia da assinatura de prototipo/definição para o procedimento\n");
 
     int j;
@@ -141,13 +141,13 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("acabou a substituição de prototipo por procedimento\n");
 }
 
-void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_param_proced, int flag_substituicao){
+void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_substituicao){
     printf("substituindo os parametros dos prototipos para os do procedimento\n");
 
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
-            if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){
+            if((tabela_simbolos.linhas[i].categoria == PARAMETRO)){
                 if(tabela_simbolos.linhas[i].tipo != token_param_proced.tipo){
                     error("ERRO SEMÂNTICO > os parametros de procedimento devem possuir o mesmo tipo");
                 } else{
@@ -155,7 +155,7 @@ void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_pa
                         error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
                     }
                 }
-                if(flag_substituicao == 1){
+                if(flag_substituicao == 1 && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
                     token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
                     tabela_simbolos.linhas[i] = token_param_proced;
                     break;
@@ -276,3 +276,5 @@ void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk){
         error("ERRO SEMANTICO > variável do tipo real é compatível somente com real");
     }
 }
+
+int prototipo_ou_proced(int posicao_encontrada){ return tabela_simbolos.linhas[posicao_encontrada].categoria; }

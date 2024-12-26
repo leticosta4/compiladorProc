@@ -115,7 +115,7 @@ void decl_def_proc(){
 }
 
 void cmd(){
-    int passou_expr = 0, clausula;
+    int passou_expr = 0, clausula, cont_param_chamada = 0, cont_param_orig = 0, pos;
     //o token ja chega processado p cmd mesmo
     //printf("inicio de algum comando: < cmd > | LINHA: %d\n\n", contLinha);
     if(rcv_token.categoria == PLV_RSVD){
@@ -166,9 +166,12 @@ void cmd(){
                 rcv_token = AnaLex(arqivoProc);
                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
                 else{ //idproc  
-                    if(procura_existencia_prot(rcv_token.lexema) == -1){ //ver se o procedimento existe - ANALISE SEMANTICA
+                    pos = procura_existencia_prototipo_ou_proced(rcv_token.lexema);
+                    if(pos == -1){ //ver se o procedimento existe - ANALISE SEMANTICA
                         error("ERRO SEMANTICO > o procedimento a ser chamado com o 'do' precisa ter seu prototipo assinado ou ja ter sido definido");
                     }
+                    cont_param_orig = contar_params(pos);
+
                     rcv_token = AnaLex(arqivoProc);
                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
                         error("ERRO SINTATICO > era esperado abertura de parenteses após o identificador para chamada do procedimento");
@@ -182,7 +185,8 @@ void cmd(){
                         } else if((rcv_token.categoria == SNL && rcv_token.codigo != FECHA_PAREN) || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
                             passou_expr = 1;
                             expr();
-                        
+                            cont_param_chamada++;
+
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             while (rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                                 rcv_token = AnaLex(arqivoProc);
@@ -191,13 +195,19 @@ void cmd(){
                                     error("ERRO SINTATICO > era esperada uma expressão após ','");
                                 } else {
                                     expr();
+                                    cont_param_chamada++;
                                 }
                             }
                             
                             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                                 error("ERRO SINTATICO > era esperado ')' após a expressão no do");
                             } else{
-                                //printf("foi um do\n");
+                                //printf("foi um do\n");    
+                                if(cont_param_chamada != cont_param_orig){
+                                    error("ERRO SEMANTICO > a quantidade de parametros do procedimento deve ser compatível com a de seu prototipo ou definição");
+                                }
+                                substituir_parametros_prot_proc_testar_compat_tipos(pos, info_token, 0); //nao quero substituir, so testar tipos
+
                                 rcv_token = AnaLex(arqivoProc);
                                 consome_fim_exp();
                             }
@@ -817,7 +827,7 @@ void def(){
         info_token = limpar_dimensoes_array(info_token); 
 
         //verifica existencia do prototipo - existe: substitui naquela posicao
-        substituir_prot = procura_existencia_prot(nome_def);
+        substituir_prot = procura_existencia_prototipo_ou_proced(nome_def);
 
         if(substituir_prot == -1){
             info_token.tem_prototipo = _NAO;
@@ -891,7 +901,7 @@ void def(){
                                 verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                                 if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
                                 } else{
-                                    substituir_parametros_prot_proc(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
+                                    substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
                                 }
                                 
                             } while(1);
@@ -903,7 +913,7 @@ void def(){
                             verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                             if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
                             } else{
-                                substituir_parametros_prot_proc(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
+                                substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
                             }
                 }
 
