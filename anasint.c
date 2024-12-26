@@ -768,7 +768,7 @@ void prot(){
 }
 
 void def(){
-    int cate, cd = 1, substituir_prot;
+    int cate, cd = 1, substituir_prot, cont_param_essa_def = 0, cont_param_proto = 0; //substituir_prot é a posição do prototipo
 
     //printf("inicio da declaração de funcoes: < def > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc); 
@@ -818,11 +818,13 @@ void def(){
 
         //verifica existencia do prototipo - existe: substitui naquela posicao
         substituir_prot = procura_existencia_prot(nome_def);
+
         if(substituir_prot == -1){
             info_token.tem_prototipo = _NAO;
             inserir_tabsimb(info_token); //insercao do procedimento - NOVO
         } else{
             info_token.tem_prototipo = _SIM;
+            cont_param_proto = contar_params(substituir_prot); //tem prototipo
             substituir_prot_proc(substituir_prot, info_token);
         }
         
@@ -878,6 +880,7 @@ void def(){
                                         } else{ error("ESSO SINTATICO > foi encontrado array com núemero de dimensões superior a 2 nos parâmetros do protótipo de procedimento"); }
                                     }
 
+                                    cont_param_essa_def++;
                                     if(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
                                         rcv_token = AnaLex(arqivoProc);
                                         consome_fim_exp(); 
@@ -888,16 +891,20 @@ void def(){
                                 verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                                 if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
                                 } else{
-                                    //fazer a verificação de tipo, ordem e tal
-                                    substituir_parametros_prot_proc(substituir_prot, info_token);
+                                    substituir_parametros_prot_proc(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
                                 }
                                 
                             } while(1);
                             
                             //a insercao vai depender se teve prototipo antes ou nao - ultimo dps da virgula
+                             if((substituir_prot != -1) && (cont_param_essa_def != cont_param_proto)){
+                                error("ERRO SEMANTICO > a quantidade de parametros de prototipo e de procedimento devem ser a mesma");
+                            }
                             verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                             if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
-                            } else{ substituir_parametros_prot_proc(substituir_prot, info_token); }
+                            } else{
+                                substituir_parametros_prot_proc(substituir_prot, info_token, 1); //verificacao da compatibilidae de tipo embutida aqui
+                            }
                 }
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){

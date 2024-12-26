@@ -105,7 +105,7 @@ int procura_posicao_proc(char nome_def[]){
         }
     }
     if(i >= tabela_simbolos.topo){
-        error("parte de parametros/var_locais > procedimento não encontrado"); //o erro do do sem procedimento declarado ta vindo aqui
+        error("parte de parametros/var_locais > procedimento não encontrado"); 
     }
 
     printf("terminou a busca da posição do procedimento\n");
@@ -141,22 +141,46 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("acabou a substituição de prototipo por procedimento\n");
 }
 
-void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_param_proced){
+void substituir_parametros_prot_proc(int posicao_prot, registro_tabsimb token_param_proced, int flag_substituicao){
     printf("substituindo os parametros dos prototipos para os do procedimento\n");
 
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
             if((tabela_simbolos.linhas[i].categoria == PARAMETRO) && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){
-                token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
-                tabela_simbolos.linhas[i] = token_param_proced;
-                break;
+                if(tabela_simbolos.linhas[i].tipo != token_param_proced.tipo){
+                    error("ERRO SEMÂNTICO > os parametros de procedimento devem possuir o mesmo tipo");
+                } else{
+                    if(tabela_simbolos.linhas[i].array != token_param_proced.array){
+                        error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
+                    }
+                }
+                if(flag_substituicao == 1){
+                    token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
+                    tabela_simbolos.linhas[i] = token_param_proced;
+                    break;
+                }
             }
         }
     }    
 
     printar_tabsimb();
     printf("acabou a substituição de parametros dos prototipos para os do procedimento\n");
+}
+
+int contar_params(int posicao_prot_def){
+    int cont_param = 0, i;
+    if(posicao_prot_def >= 0){
+        for(i = posicao_prot_def + 1; i <= tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break;
+            } else{ cont_param++; }
+        }
+    } 
+
+    if(i >= tabela_simbolos.topo){
+        error("nenhum parametro encontrado"); 
+    }
+    return cont_param;
 }
 
 void apagar_var_locais(int posicao_def){

@@ -1,5 +1,5 @@
 prot procedimento(int, int)
-prot oi(int, int)
+//prot oi(int, int)
 
 //int n[2] = {1, 2}
 
@@ -10,8 +10,8 @@ def init
     //int b
 endp
 
-//def procedimento(int a, int b)
-//endp
+def procedimento(int a, int b)
+endp
 
 //def oi(int a, int c)
 //endp
