@@ -4,6 +4,7 @@ prot procedimento(int, int)
 //int n[2] = {1, 2}
 
 def init
+    const int r = 7
     int a = 2
     //int b
     putint a

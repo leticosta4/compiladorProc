@@ -33,4 +33,6 @@ void decl_var();
 void def();
 void prot();
 void passagem_end_tipo();
+//vindas do cmd
+void _do();
 #endif 

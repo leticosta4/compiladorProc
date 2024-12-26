@@ -147,7 +147,7 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
-            if((tabela_simbolos.linhas[i].categoria == PARAMETRO)){
+            if(tabela_simbolos.linhas[i].categoria == PARAMETRO){
                 if(tabela_simbolos.linhas[i].tipo != token_param_proced.tipo){
                     error("ERRO SEMÂNTICO > os parametros de procedimento devem possuir o mesmo tipo");
                 } else{
@@ -269,7 +269,7 @@ void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk){
     } else if(info_tk.tipo == _BOOL){
         if(info_tk.array != VAR_SIMPLES){
             error("ERRO SEMANTICO > variável do tipo bool deve ser escalar somente");
-        } else if(info_tk.array == VAR_SIMPLES && tk.categoria != INTCON){
+        } else if(info_tk.array == VAR_SIMPLES && (tk.categoria != INTCON && tk.categoria != CHARCON)){
             error("ERRO SEMANTICO > variável do tipo bool é compatível somente com inteiro");
         }
     } else if(info_tk.tipo == _REAL && tk.categoria != REALCON){
@@ -277,4 +277,10 @@ void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk){
     }
 }
 
-int prototipo_ou_proced(int posicao_encontrada){ return tabela_simbolos.linhas[posicao_encontrada].categoria; }
+void prototipo_sozinho(){
+    for(int i = 0; i <= tabela_simbolos.topo; i++){
+        if(tabela_simbolos.linhas[i].categoria == PROTOTIPO){
+            error("ERRO SEMÂNTICO > não deve existir prototipo sem procedimento declarado");
+        }
+    }
+}

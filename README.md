@@ -91,21 +91,26 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] buscar REDECLARACAO
     - [x] prototipo
     - [x] procedimento
-    - [ ] constante
     - [x] variavel global
-    - [ ] variavel local - dentro do mesmo procedimento
+    - [x] variavel local - dentro do mesmo procedimento
     - [x] parametro - dentro do mesmo procedimento
+- [ ] constante
+    - [x] redeclaração
+    - [x] deve ser inicializada
+    - [ ] passar no array e atribuir o valor da const na dimensao
+    - [ ] compatibilidade tipo
+- [x] não pode prototipo sem procedimento
 - [x] verificação do tipo da veriavel com o correspondente na DECLARAÇÃO 
     - [x] inteiro com ele mesmo e char, e vice-versa
-    - [x] bool com int
+    - [x] bool com int e char
     - [x] resto com resto
 - [ ] verificação do tipo da veriavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
 - [ ] buscar DECLARACAO 
-    - [ ] constante
+    - [ ] constante > quando usada na dimensao do array
     - [x] prototipo > p o procedimento
     - [ ] variavel > analisar
-    - [ ] var local no procedimento e parametro daquele procedimento <b>PROXIMO A SER FEITO</b>
+    - [ ] var local no procedimento e parametro daquele procedimento 
     - [ ] passar o id dentro do tamanho do array - ver como lidar 
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] declaração de var globais antes de procedimento
@@ -128,9 +133,15 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
         - [x] em ordem
         - [x] array ou var escalar
 - [x] não pode ter & na chama do procedimento com o do
-- [ ] tipo boolean para a expr condicional de if, elif e while
-- [ ] var
-    - [ ] usou TO: expr1 < expr2
-    - [ ] usou DT: expr1 > expr2
-- [ ] basically td de expr...
-- [ ] mais coisas que envolvem boooleans e resultados
+- [ ] expr
+    - [ ] tipo booleano
+    - [ ] se for um id, o tipo dessa expr é o tipo do id
+    - [ ] se for uma constante int, o tipo dessa expr é o tipo do id
+    - [ ] nao pode comparação de variaveis entre tipos diferentes
+    - [ ] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
+    - [ ] se expr é aritmetica o tipo dela é o resultado da operação
+    - [ ] uma expressao entre colchetes deve ser do tipo int
+    - [ ] tipo boolean para a expr condicional de if, elif e while
+    - [ ] var
+        - [ ] usou TO: expr1 < expr2
+        - [ ] usou DT: expr1 > expr2
