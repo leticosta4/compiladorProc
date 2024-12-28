@@ -96,10 +96,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] variavel global
     - [x] variavel local - dentro do mesmo procedimento
     - [x] parametro - dentro do mesmo procedimento
-- [ ] constante
+- [x] constante
     - [x] redeclaração
     - [x] deve ser inicializada
-    - [ ] passar no array e atribuir o valor da const na dimensao
+    - [x] passar no array e atribuir o valor da const na dimensao
     - [x] compatibilidade tipo
 - [x] não pode prototipo sem procedimento
 - [x] verificação do tipo da veriavel com o correspondente na DECLARAÇÃO 
@@ -109,10 +109,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
 - [ ] buscar DECLARACAO 
-    - [ ] constante > quando usada na dimensao do array
+    - [x] constante > quando usada na dimensao do array
     - [x] prototipo > p o procedimento
     - [x] de identificador ao ser usado em expr
-- [ ] ele nao vendo quando é constante p passar no tamanho do array ?
+- [x] ele nao vendo quando é constante p passar no tamanho do array ?
 - [x] declaração de var globais antes de procedimento
 - [x] declaração de var locais antes de comandos
 - [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)

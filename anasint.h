@@ -17,7 +17,7 @@ extern char palavras_reservadas[NUM_PLV_RSVD][TAM_MAX_LEXEMA];
 int valor_var();
 void confere_atrib_constante();
 void prog();
-void decl_list_var();
+void decl_list_var(char possivel_proced[]);
 void decl_def_proc();
 void cmd(char procedimento[]);
 void atrib(char p[]);
@@ -28,7 +28,7 @@ void fator(char p[]);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();
-void decl_var();
+void decl_var(char possivel_proced[]);
 //vindas do decl_def_prot:
 void def();
 void prot();

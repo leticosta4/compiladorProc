@@ -48,6 +48,7 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
         if((strcmp(tabela_simbolos.linhas[i].lexema, token_aux.lexema) == 0) && (tabela_simbolos.linhas[i].categoria == token_aux.categoria)){
             switch(token_aux.categoria){
                 case VAR_GLOBAL:
+                    printf("ue: %s\n", token_aux.lexema);
                     error("ERRO SEMANTICO > foi encontrada redeclaração de variável global");
                     break;
                 case VAR_LOCAL:
@@ -97,8 +98,10 @@ void remover_tabsimb(){
 
 int procura_posicao_proc(char nome_def[]){
     printf("buscando a posição de um procedimento\n");
-    
     int i;
+
+    if(strcmp(nome_def, "") == 0){ return -1; }
+
     for(i = 0; i < tabela_simbolos.topo; i++){
         if((strcmp(tabela_simbolos.linhas[i].lexema, nome_def) == 0) && (tabela_simbolos.linhas[i].categoria == PROCEDIMENTO)){
             return i;
@@ -323,5 +326,16 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
             }
             if((i >= tabela_simbolos.topo) || diff != 0){ error("não foi encontrada declaração do identificador"); }
         }
+    } else{
+        for(i = 0; i < tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != VAR_GLOBAL){ diff = 2; break; }
+            else{
+                if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                    printf("achou var-global equivalente ao identificador\n");
+                    return tabela_simbolos.linhas[i];
+                }
+            }
+        }
+        if((i >= tabela_simbolos.topo) || diff == 2){ error("não foi encontrada declaração do identificador"); }   
     }
 }

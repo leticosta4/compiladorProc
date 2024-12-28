@@ -42,7 +42,7 @@ void prog(){
         info_token.categoria = VAR_GLOBAL;
         info_token.tem_prototipo = NAO_APLICA_PROT;
 
-        decl_list_var();
+        decl_list_var("");
     }
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
         //printf("em prog: %d (tem que ser 2 ou 3)\n", rcv_token.codigo);
@@ -54,7 +54,7 @@ void prog(){
     prototipo_sozinho();
 }
 
-void decl_list_var(){
+void decl_list_var(char possivel_proced[]){
     //printf("inicio da declaração da lista de variaveis: < decl_list_var > | LINHA: %d\n\n", contLinha);
 
     info_token.passagem = NAO_APLICA_PARAM;
@@ -73,13 +73,13 @@ void decl_list_var(){
     }
 
     tipo();
-    decl_var();
+    decl_var(possivel_proced);
     
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
         //printf("em decl list var: %d (tem que ser 22)\n", rcv_token.codigo);
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp(); 
-        decl_var();   
+        decl_var(possivel_proced);   
     }
     consome_fim_exp();
     //printf("fim da declaração da lista de variaveis\n\n");
@@ -592,8 +592,9 @@ void tipo(){
     }
 }
 
-void decl_var(){
+void decl_var(char possivel_proced[]){
     int cont_dim = 1, nao_escalar = 0;
+    registro_tabsimb aux;
     //printf("inicio da declaração da variavel: < decl_var > | LINHA: %d\n\n", contLinha);
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador"); }
 
@@ -615,8 +616,15 @@ void decl_var(){
             if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
                 error("ERRO SINTATICO > era esperado intcon ou um identificador");
             } else {
-                info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro;
-
+                if(rcv_token.categoria == ID){
+                    aux = procura_existencia_identificador_em_proced(procura_posicao_proc(possivel_proced), rcv_token.lexema);
+                    if(aux.constante != SIM){ error("a variável para array precisa ser uma constante"); }
+                    else{
+                        info_token.dimensoes_array[cont_dim - 1] = aux.valor_constante.inteiro;
+                    }
+                    printf("etstando: %s\n", info_token.lexema);
+                } else{ info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro; }
+                
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
 
@@ -777,7 +785,7 @@ void def(){
             info_token.escopo = LOCAL;
             info_token.categoria = VAR_LOCAL;
 
-            decl_list_var();
+            decl_list_var("init");
         } 
 
         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
@@ -912,7 +920,7 @@ void def(){
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     //printf("em def > prot: %d (tem que ser 1 ou de 5 a 8)\n", rcv_token.codigo);
                     info_token.categoria = VAR_LOCAL;
-                    decl_list_var();
+                    decl_list_var(nome_def);
                 } 
 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd

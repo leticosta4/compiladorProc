@@ -29,7 +29,7 @@ void debug(char onde[]){
 }
 
 void busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(TOKEN sus_token, int escopo_var){
-    if(sus_token.categoria == PLV_RSVD && (sus_token.codigo == INT || sus_token.codigo == REAL || sus_token.codigo == CHAR || sus_token.codigo == BOOL)){
+    if(sus_token.categoria == PLV_RSVD && (sus_token.codigo == CONST || sus_token.codigo == INT || sus_token.codigo == REAL || sus_token.codigo == CHAR || sus_token.codigo == BOOL)){
         switch(escopo_var){
             case GLOBAL:
                 error("\nERRO SEMANTICO > a declaração de variável(is) global(is) deve ocorrer no iníco do programa, antes declaração de prototipo(s)/procedimento(s)");
