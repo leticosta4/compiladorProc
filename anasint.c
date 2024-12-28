@@ -441,11 +441,7 @@ void atrib(char p[]){ //ja chega processado
 void expr(char p[]){ //ja chega processado
     int seguir;
     //printf("inicio de uma expressão: < expr > | LINHA: %d\n\n", contLinha);
-    if(rcv_token.categoria == ID){
-        debug("etste");
-        printf("porraaaa: %s\n", rcv_token.lexema);
-        info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema);
-    }
+    if(rcv_token.categoria == ID){ info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema); }
     expr_simples(p);
 
     //ja veio processado do final de fator < final de termo < final de expr_simples

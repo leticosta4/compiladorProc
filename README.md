@@ -76,7 +76,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tratamentos chatos
 
 ## dúvidas
-- verificacao da variavel em atrib? como lidar?
+- insercao das variaveis locais sao sempre no topo?
 
 
 ## analise semantica    
@@ -86,7 +86,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] tabela resetando
 - [x] coisa de array com {}
 - [ ] quando tem duas constantes nao ta apagando a ultima
-- [ ] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
+- [x] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
+- [x] refinar a busca da declaracao de identificador
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -111,7 +112,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] constante > quando usada na dimensao do array
     - [x] prototipo > p o procedimento
     - [x] de identificador ao ser usado em expr
-- [ ] ele nao vendo quando é constante p passar no tamanho do array
+- [ ] ele nao vendo quando é constante p passar no tamanho do array ?
 - [x] declaração de var globais antes de procedimento
 - [x] declaração de var locais antes de comandos
 - [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
@@ -132,7 +133,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
         - [x] em ordem
         - [x] array ou var escalar
 - [x] não pode ter & na chama do procedimento com o do
-- [ ] expr
+- [ ] expr URGENTE
     - [ ] tipo booleano
     - [ ] se for um id, o tipo dessa expr é o tipo do id
     - [ ] se for uma constante int, o tipo dessa expr é o tipo do id

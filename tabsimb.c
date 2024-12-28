@@ -148,17 +148,19 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
             if(tabela_simbolos.linhas[i].categoria == PARAMETRO){
-                if(tabela_simbolos.linhas[i].tipo != token_param_proced.tipo){
-                    error("ERRO SEMÂNTICO > os parametros de procedimento devem possuir o mesmo tipo");
-                } else{
-                    if(tabela_simbolos.linhas[i].array != token_param_proced.array){
-                        error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
+                if(tabela_simbolos.linhas[posicao_prot].tem_prototipo == _NAO || (tabela_simbolos.linhas[posicao_prot].tem_prototipo == _SIM && strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){
+                    if(tabela_simbolos.linhas[i].tipo != token_param_proced.tipo){
+                        error("ERRO SEMÂNTICO > os parametros de procedimento devem possuir o mesmo tipo");
+                    } else{
+                        if(tabela_simbolos.linhas[i].array != token_param_proced.array){
+                            error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
+                        }
                     }
-                }
-                if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
-                    token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
-                    tabela_simbolos.linhas[i] = token_param_proced;
-                    break;
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
+                        token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
+                        tabela_simbolos.linhas[i] = token_param_proced;
+                        break;
+                    }
                 }
             }
         }
@@ -289,11 +291,23 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
     int i, diff = 0;
     if(posicao_procedimento >= 0){
         for(i = posicao_procedimento + 1; i <= tabela_simbolos.topo; i++){
-            if(tabela_simbolos.linhas[i].categoria != PARAMETRO && tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ diff = 1; break; }
-            else{
-                if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
-                    printf("achou var-local/param equivalente ao identificador\n");
-                    return tabela_simbolos.linhas[i];
+            if(tabela_simbolos.linhas[posicao_procedimento].tem_prototipo != _SIM){
+                if(tabela_simbolos.linhas[i].categoria != PARAMETRO && tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ diff = 1; break; }
+                else{
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                        printf("achou var-local/param equivalente ao identificador\n");
+                        return tabela_simbolos.linhas[i];
+                    }
+                }
+            } else{
+                if(tabela_simbolos.linhas[i].categoria == PROCEDIMENTO && strcmp(tabela_simbolos.linhas[i].lexema, "init") == 0){
+                    diff = 1; 
+                    break;   
+                } else{
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                        printf("achou var-local/param equivalente ao identificador\n");
+                        return tabela_simbolos.linhas[i];
+                    }
                 }
             }
         }
@@ -301,16 +315,13 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
             for(i = 0; i < tabela_simbolos.topo; i++){
                 if(tabela_simbolos.linhas[i].categoria != VAR_GLOBAL){ diff = 2; break; }
                 else{
-                    if(strcpy(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
                         printf("achou var-global equivalente ao identificador\n");
                         return tabela_simbolos.linhas[i];
                     }
                 }
             }
-            if((i >= tabela_simbolos.topo) || diff != 0){
-                printf("%s\n", tabela_simbolos.linhas[i].lexema);
-                error("não foi encontrada declaração do identificador");
-            }
+            if((i >= tabela_simbolos.topo) || diff != 0){ error("não foi encontrada declaração do identificador"); }
         }
     }
 }
