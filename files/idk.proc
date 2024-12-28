@@ -4,12 +4,12 @@ prot procedimento(int, int)
 //int n[2] = {1, 2}
 
 def init
-    const int r = 7, s = 8 //ele n ta contando essas duas como var_local
-    int a = 2, b
-    //char c = 'i', d
-    
+    const int r = 7//, s = 8 //ele n ta contando essas duas como var_local
+    int a = 2//, b
+    char c = 'i', d
+    char b
     putint a
-    do procedimento(a, b) //fazer ainda a semantica de passar um parametro aqui mas a variavel n ter sido declarada
+    do procedimento(1, b) //fazer ainda a semantica de passar um parametro aqui mas a variavel n ter sido declarada
     //int b
 endp
 

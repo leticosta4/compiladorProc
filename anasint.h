@@ -19,12 +19,12 @@ void confere_atrib_constante();
 void prog();
 void decl_list_var();
 void decl_def_proc();
-void cmd();
-void atrib();
-void expr();
-void expr_simples();
-void termo();
-void fator();
+void cmd(char procedimento[]);
+void atrib(char p[]);
+void expr(char p[]);
+void expr_simples(char p[]);
+void termo(char p[]);
+void fator(char p[]);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();
@@ -34,5 +34,5 @@ void def();
 void prot();
 void passagem_end_tipo();
 //vindas do cmd
-void _do();
+void _do(char em_qual_proced[]);
 #endif 

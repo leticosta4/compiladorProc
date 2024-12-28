@@ -141,7 +141,7 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     printf("acabou a substituição de prototipo por procedimento\n");
 }
 
-void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_substituicao){
+void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced){
     printf("substituindo os parametros dos prototipos para os do procedimento\n");
 
     if(posicao_prot >= 0){
@@ -155,7 +155,7 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
                         error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
                     }
                 }
-                if(flag_substituicao == 1 && (strcmp(tabela_simbolos.linhas[i].lexema, "") == 0)){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
+                if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
                     token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
                     tabela_simbolos.linhas[i] = token_param_proced;
                     break;
@@ -281,6 +281,36 @@ void prototipo_sozinho(){
     for(int i = 0; i <= tabela_simbolos.topo; i++){
         if(tabela_simbolos.linhas[i].categoria == PROTOTIPO){
             error("ERRO SEMÂNTICO > não deve existir prototipo sem procedimento declarado");
+        }
+    }
+}
+
+registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedimento, char nome_identificador[]){
+    int i, diff = 0;
+    if(posicao_procedimento >= 0){
+        for(i = posicao_procedimento + 1; i <= tabela_simbolos.topo; i++){
+            if(tabela_simbolos.linhas[i].categoria != PARAMETRO && tabela_simbolos.linhas[i].categoria != VAR_LOCAL){ diff = 1; break; }
+            else{
+                if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                    printf("achou var-local/param equivalente ao identificador\n");
+                    return tabela_simbolos.linhas[i];
+                }
+            }
+        }
+        if((i >= tabela_simbolos.topo) || diff == 1){
+            for(i = 0; i < tabela_simbolos.topo; i++){
+                if(tabela_simbolos.linhas[i].categoria != VAR_GLOBAL){ diff = 2; break; }
+                else{
+                    if(strcpy(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
+                        printf("achou var-global equivalente ao identificador\n");
+                        return tabela_simbolos.linhas[i];
+                    }
+                }
+            }
+            if((i >= tabela_simbolos.topo) || diff != 0){
+                printf("%s\n", tabela_simbolos.linhas[i].lexema);
+                error("não foi encontrada declaração do identificador");
+            }
         }
     }
 }

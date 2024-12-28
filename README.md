@@ -85,10 +85,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] nomes de procedimentos sendo reescritos
 - [x] tabela resetando
 - [x] coisa de array com {}
-- [ ] caracteres invalidos no decl_var (ex.: )
-- [ ] tipo igual no param sendo contado como diferente > 
 - [ ] quando tem duas constantes nao ta apagando a ultima
-- [ ] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade
+- [ ] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -107,14 +105,12 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] inteiro com ele mesmo e char, e vice-versa
     - [x] bool com int e char
     - [x] resto com resto
-- [ ] verificação do tipo da veriavel com o correspondente na ATRIBUIÇÃO 
+- [ ] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
 - [ ] buscar DECLARACAO 
     - [ ] constante > quando usada na dimensao do array
     - [x] prototipo > p o procedimento
-    - [ ] variavel > analisar
-    - [ ] var local no procedimento e parametro daquele procedimento - <b>é relacionado a um bug</b>
-    - [ ] passar o id dentro do tamanho do array - ver como lidar 
+    - [x] de identificador ao ser usado em expr
 - [ ] ele nao vendo quando é constante p passar no tamanho do array
 - [x] declaração de var globais antes de procedimento
 - [x] declaração de var locais antes de comandos
@@ -150,3 +146,4 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
         - [ ] usou DT: expr1 > expr2
 
 ## geração de codigo
+- [ ] enderecos corretamente (me fudi)
