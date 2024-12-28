@@ -5,9 +5,9 @@ prot soma(&int[], int)
 prot fatorial (&int, int) 
 
 def init
-    int tchau, hey //na tabela de simbolos ele ta guardando 'tchau'
-    char c = 'a'
-    do soma(tchau, hey)
+    int tchau[1], hey //na tabela de simbolos ele ta guardando 'tchau'
+    //char c = 'a'
+    do soma(tchau[], hey)
     while(yeah)
         putstr "hello world"
         putstr "help"

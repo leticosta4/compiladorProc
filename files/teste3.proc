@@ -10,7 +10,7 @@ def init
     //do fatorial(fat, n) 
 endp
 
-def soma(int n1, int n2, int n3)
+def soma(int n1[1][1], int n2, int n3) //ta dando incopatibilidade
     char str[4]
     int result
     str[4] = "tena" 

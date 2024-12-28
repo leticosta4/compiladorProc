@@ -11,7 +11,7 @@ endp
 
 // Ponto 1
 
-def subtrair(&int r[a][c], int a, int b) 
+def subtrair(&int r[a][c], int a, int b) //ta dando incopatibilidade
     int w
     w = a - b
     r = w

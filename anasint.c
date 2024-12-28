@@ -69,6 +69,7 @@ void decl_list_var(){
         //printf("em decl list var: %d (tem que ser 1)\n", rcv_token.codigo);
         info_token.constante = SIM;
         rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
     }
 
     tipo();
@@ -110,6 +111,7 @@ void decl_def_proc(){
     consome_fim_exp();
     if(rcv_token. categoria == PLV_RSVD && rcv_token.codigo == ENDP){
         rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
         //printf("fim da declaração de procedimentos\n\n");
     } 
     //a falta do ENDP ja foi tratada em def()
@@ -133,34 +135,45 @@ void cmd(){
             case FINAL_EXP:
             case GETOUT:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case GETINT:
             case GETREAL:
             case GETCHAR:
             case GETSTR:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador para input com get"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case PUTINT:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case PUTREAL:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case PUTCHAR:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case PUTSTR:
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 break;
             case DO: 
                 //printf("início de um do\n\n");
@@ -299,9 +312,11 @@ void cmd(){
             case VAR:
                 //printf("início de um bloco var\n\n");
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
                 if(rcv_token.categoria != ID || (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == VAR)){ error("ERRO SINTATICO > era esperado identificador para expressao após o 'var'"); }
                 else{
                     rcv_token = AnaLex(arqivoProc);
+                    consome_fim_exp();
                     if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == FROM)){ error("ERRO SINTATICO > era esperada a palavra reservada 'from' após o identificador"); }
                     else{
                         rcv_token = AnaLex(arqivoProc);
@@ -329,6 +344,7 @@ void cmd(){
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == BY){
                                 rcv_token = AnaLex(arqivoProc);
+                                consome_fim_exp();
                                 if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){ error("ERRO SINTATICO > era esperado um valor inteiro ou identificador após 'by'"); }
                                 rcv_token = AnaLex(arqivoProc);
                                 consome_fim_exp();
@@ -363,7 +379,7 @@ void cmd(){
         atrib(); //esse atrib ja faz o cmd terminar com processamento de token
     } 
 
-    else if(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
+    else if(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); consome_fim_exp(); }
     
     else if(rcv_token.categoria == FINAL_ARQ){ error("ERRO SINTATICO > final do arquivo inesperadamente encontrado durante CMD - faltou fechamento de algum bloco [endi | endw | endi]"); }
     
@@ -472,9 +488,11 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
     switch (rcv_token.categoria){
         case ID:
             rcv_token = AnaLex(arqivoProc);
+            consome_fim_exp();
             while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
                 if(cont_d < 3){
                     rcv_token = AnaLex(arqivoProc);
+                    consome_fim_exp();
                     if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
                         expr();
 
@@ -524,9 +542,7 @@ void fator(){ //ja chega processado de expr_simples (que vem de expr ou do sinal
                 fator();
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
-            } else {
-                error("ERRO SINTATICO > sinal invalido encontrado em fator");
-            }
+            } else { error("ERRO SINTATICO > sinal invalido encontrado em fator"); }
             break;
     }
     //printf("fim de um fator\n");
@@ -569,6 +585,7 @@ void tipo(){
         }
 
         rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
     } else {
         error("ERRO SINTATICO > era esperado a declaração do tipo de variável");
     }
@@ -584,6 +601,7 @@ void decl_var(){
     verifica_redeclaracao(info_token); //se o escopo for global ja foi definido em prog
 
     rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp();
 
     if(info_token.constante == SIM && !(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO)){
         error("era esperada inicialização da constante");
@@ -599,6 +617,7 @@ void decl_var(){
                 info_token.dimensoes_array[cont_dim - 1] = rcv_token.valor_inteiro;
 
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
 
                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
                     error("ERRO SINTATICO > era esperado o fechamento do colchete");
@@ -623,6 +642,8 @@ void decl_var(){
             if(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente  
                 if(nao_escalar != 1){ error("não é permitido inicialização de variável escalar com '{}'"); }
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
+
                 if(!(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON)){
                     error("era esperado um charcon, realcon ou intcon após '{'");
                 }
@@ -637,12 +658,14 @@ void decl_var(){
 
                 if(rcv_token.categoria = SNL && rcv_token.codigo == FECHA_CHAVE){
                     rcv_token = AnaLex(arqivoProc);
+                    consome_fim_exp();
                 } else { error("ERRO SINTATICO > erra esperado fechamento do '{' com '}'"); }
             } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
                 verifica_compatibilidade_tipo(rcv_token, info_token); //testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 confere_atrib_constante(); 
 
                 rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
             } else{ error("ERRO SINTATICO > era esperado um identificador após '='"); }
         } else {
             if(cat == 9){ error("ERRO SINTATICO > fim do arquivo inesperado"); }
@@ -661,6 +684,7 @@ void prot(){
 
     //printf("inicio da declaração de prototipos de procedimentos: < prot > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp();
 
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         error("ERRO SEMANTICO > declaração do bloco init não permitida com prot");
@@ -670,11 +694,14 @@ void prot(){
         inserir_tabsimb(info_token); //insercao do prototipo de procedimento
 
         rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
 
         if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
+            consome_fim_exp();
+
             if(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN){ com_param = 1; }
             do{
                 strcpy(info_token.lexema, "");
@@ -686,6 +713,8 @@ void prot(){
                 while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
                     if(_cd < 3){
                         rcv_token = AnaLex(arqivoProc);
+                        consome_fim_exp();
+
                         if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
                             error("ERRO SINTATICO > era esperado o fechamento do colchetes");
                         } else {
@@ -728,6 +757,7 @@ void def(){
 
     //printf("inicio da declaração de funcoes: < def > | LINHA: %d\n\n", contLinha);
     rcv_token = AnaLex(arqivoProc); 
+    consome_fim_exp();
     
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
         //printf("inicio do bloco principal do programa proc: < init >\n\n");
@@ -762,6 +792,7 @@ void def(){
             //printf("fim da implementação do bloco init\n");
             apagar_var_locais(procura_posicao_proc("init")); 
             rcv_token = AnaLex(arqivoProc);
+            consome_fim_exp();
         }
     } else if(rcv_token.categoria == ID){
         //printf("inicio de alguma implementação de bloco com def\n\n");
@@ -792,6 +823,8 @@ void def(){
             error("ERRO SINTATICO > era esperado abertura do parenteses na declaração de prototipo de procedimento");
         } else {
             rcv_token = AnaLex(arqivoProc);
+            consome_fim_exp();
+
             info_token.tem_prototipo = NAO_APLICA_PROT;
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN) &&
                 !(rcv_token.categoria == SNL && rcv_token.codigo == ACESSO_END) &&
@@ -810,16 +843,21 @@ void def(){
                                 else{
                                     strcpy(info_token.lexema, rcv_token.lexema);//salvar na tabela se for ID
                                     rcv_token = AnaLex(arqivoProc);
+                                    consome_fim_exp();
 
                                     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){
                                         if(cd < 3){
                                             rcv_token = AnaLex(arqivoProc);
+                                            consome_fim_exp();
+
                                             if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){
                                                 error("ERRO SINTATICO > era esperado inteiro após '['");
                                             } else{
                                                 info_token.dimensoes_array[cd - 1] = rcv_token.valor_inteiro;
 
                                                 rcv_token = AnaLex(arqivoProc);
+                                                consome_fim_exp();
+                                                
                                                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_COL)){
                                                     error("ERRO SINTATICO > era esperado o fechamento do colchetes");
                                                 } else {
@@ -888,6 +926,7 @@ void def(){
                     transformar_zumbi(procura_posicao_proc(nome_def));
                     apagar_var_locais(procura_posicao_proc(nome_def));
                     rcv_token = AnaLex(arqivoProc);
+                    consome_fim_exp();
                 }
             }
         }
@@ -909,6 +948,7 @@ void passagem_end_tipo(){
         //printf("endereco\n");
         info_token.passagem = REFERENCIA;
         rcv_token = AnaLex(arqivoProc); 
+        consome_fim_exp();
         tipo();
     } 
 
@@ -919,7 +959,7 @@ void passagem_end_tipo(){
 void _do(){
     //o token ja chega processado
     int passou_expr = 0, cont_param_chamada = 0, cont_param_orig = 0, pos;
-    
+
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
     else{ //idproc  
         pos = procura_existencia_prototipo_ou_proced(rcv_token.lexema);
@@ -929,6 +969,8 @@ void _do(){
         cont_param_orig = contar_params(pos);
 
         rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
+
         if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
             error("ERRO SINTATICO > era esperado abertura de parenteses após o identificador para chamada do procedimento");
         } else{
@@ -940,6 +982,7 @@ void _do(){
                     error("era esperado ')' ou alguma expressão após '('");
             } else if((rcv_token.categoria == SNL && rcv_token.codigo != FECHA_PAREN) || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
                 passou_expr = 1;
+                
                 expr();
                 cont_param_chamada++;
 
