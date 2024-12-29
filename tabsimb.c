@@ -20,7 +20,7 @@ void limpar_tabsimb(){
 }
 
 void inserir_tabsimb(registro_tabsimb token_ins){ 
-    printf("iniciada inserção na tabela de símbolos\n\n");
+    //printf("iniciada inserção na tabela de símbolos\n\n");
 
     if(tabela_simbolos.topo >= TAM_MAX_TAB){
         printf("ERRO TABSIMB > tabela de símbolos cheia.\n");
@@ -42,13 +42,12 @@ registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token){
 }
 
 void verifica_redeclaracao(registro_tabsimb token_aux){
-    printf("iniciada busca POR REDECLARAÇÃO DE VARIAVEL GLOBAL, PROTOTIPO OU PROCEDIMENTO na tabela de símbolos\n\n");
+    //printf("iniciada busca POR REDECLARAÇÃO DE VARIAVEL GLOBAL, PROTOTIPO OU PROCEDIMENTO na tabela de símbolos\n\n");
 
     for(int i = 0; i < tabela_simbolos.topo; i++){
         if((strcmp(tabela_simbolos.linhas[i].lexema, token_aux.lexema) == 0) && (tabela_simbolos.linhas[i].categoria == token_aux.categoria)){
             switch(token_aux.categoria){
                 case VAR_GLOBAL:
-                    printf("ue: %s\n", token_aux.lexema);
                     error("ERRO SEMANTICO > foi encontrada redeclaração de variável global");
                     break;
                 case VAR_LOCAL:
@@ -68,7 +67,7 @@ void verifica_redeclaracao(registro_tabsimb token_aux){
 
     //verificar lexema e escopo talvez
     
-    printf("fim da busca TS\n\n");
+    //printf("fim da busca TS\n\n");
 }
 
 void verifica_redecl_param(int pos_proced, char nome_param[]){ //what_cat: 1 = var_local; 3 = param
@@ -87,17 +86,18 @@ void verifica_redecl_param(int pos_proced, char nome_param[]){ //what_cat: 1 = v
 }
 
 void remover_tabsimb(){
-    printf("iniciada remoção na tabela de símbolos\n\n");
+    //printf("iniciada remoção na tabela de símbolos\n\n");
     if (tabela_simbolos.topo > 0) {
         tabela_simbolos.topo--;
     } else {
         printf("ERRO TABSIMB > Tabela de símbolos já vazia.\n");
+        exit(1);
     }
-    printf("fim da remoção TS\n\n");
+    //printf("fim da remoção TS\n\n");
 }
 
 int procura_posicao_proc(char nome_def[]){
-    printf("buscando a posição de um procedimento\n");
+    //printf("buscando a posição de um procedimento\n");
     int i;
 
     if(strcmp(nome_def, "") == 0){ return -1; }
@@ -111,11 +111,11 @@ int procura_posicao_proc(char nome_def[]){
         error("parte de parametros/var_locais > procedimento não encontrado"); 
     }
 
-    printf("terminou a busca da posição do procedimento\n");
+    //printf("terminou a busca da posição do procedimento\n");
 }
 
 int procura_existencia_prototipo_ou_proced(char nome_prot[]){
-    printf("verificando a existencia da assinatura de prototipo/definição para o procedimento\n");
+    //printf("verificando a existencia da assinatura de prototipo/definição para o procedimento\n");
 
     int j;
     for(j = 0; j < tabela_simbolos.topo; j++){
@@ -130,22 +130,22 @@ int procura_existencia_prototipo_ou_proced(char nome_prot[]){
         return -1;
     }
 
-    printf("terminou a busca da existencia da assinatura de prototipo/definição para o procedimento\n");
+    //printf("terminou a busca da existencia da assinatura de prototipo/definição para o procedimento\n");
 }
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
-    printf("substituindo prototipo por procedimento\n");
+    //printf("substituindo prototipo por procedimento\n");
     if(posicao_prot >= 0){
         token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 
     printar_tabsimb();
-    printf("acabou a substituição de prototipo por procedimento\n");
+    //printf("acabou a substituição de prototipo por procedimento\n");
 }
 
 void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced){
-    printf("substituindo os parametros dos prototipos para os do procedimento\n");
+    //printf("substituindo os parametros dos prototipos para os do procedimento\n");
 
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
@@ -170,7 +170,7 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
     }    
 
     printar_tabsimb();
-    printf("acabou a substituição de parametros dos prototipos para os do procedimento\n");
+    //printf("acabou a substituição de parametros dos prototipos para os do procedimento\n");
 }
 
 int contar_params(int posicao_prot_def){
@@ -189,7 +189,7 @@ int contar_params(int posicao_prot_def){
 }
 
 void apagar_var_locais(int posicao_def){
-    printf("apagando variaveis locais\n");
+    //printf("apagando variaveis locais\n");
 
     if(posicao_def >= 0){
         for(int i = posicao_def; i <= tabela_simbolos.topo; i++){
@@ -201,12 +201,12 @@ void apagar_var_locais(int posicao_def){
                 
         }
     }
-    printf("acabou a remoção das var locais\n");
+    //printf("acabou a remoção das var locais\n");
     //printar_tabsimb();
 }
 
 void transformar_zumbi(int posicao_def){
-    printf("transformando em zumbi\n");
+    //printf("transformando em zumbi\n");
     
     if(posicao_def >= 0){
         for(int i = posicao_def + 1; i <= tabela_simbolos.topo; i++){
@@ -217,7 +217,7 @@ void transformar_zumbi(int posicao_def){
             }
         }
     }
-    printf("acabou a transformação de vivo em zumbi\n");
+    //printf("acabou a transformação de vivo em zumbi\n");
     //printar_tabsimb();
 }
 
@@ -262,7 +262,7 @@ void printar_tabsimb(){
     }
 }
 
-void verifica_compatibilidade_tipo(TOKEN tk, registro_tabsimb info_tk){
+void verifica_compatibilidade_tipo_decl(TOKEN tk, registro_tabsimb info_tk){
     if(info_tk.tipo == _INT && (tk.categoria != INTCON && tk.categoria != CHARCON)){
         error("ERRO SEMANTICO > variável do tipo int é compatível somente com inteiro ou caracter");
     } else if(info_tk.tipo == _CHAR){
@@ -299,6 +299,7 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
                 else{
                     if(strcmp(tabela_simbolos.linhas[i].lexema, nome_identificador) == 0){
                         printf("achou var-local/param equivalente ao identificador\n");
+                        printf("tipo: %d (%s)\n", tabela_simbolos.linhas[i].tipo, tabela_simbolos.linhas[i].lexema);
                         return tabela_simbolos.linhas[i];
                     }
                 }

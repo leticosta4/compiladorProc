@@ -20,11 +20,11 @@ void prog();
 void decl_list_var(char possivel_proced[]);
 void decl_def_proc();
 void cmd(char procedimento[]);
-void atrib(char p[]);
-void expr(char p[]);
-void expr_simples(char p[]);
-void termo(char p[]);
-void fator(char p[]);
+int atrib(char p[]);
+int expr(char p[]);
+int expr_simples(char p[]);
+int termo(char p[]);
+int fator(char p[]);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();

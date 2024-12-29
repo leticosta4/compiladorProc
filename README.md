@@ -106,7 +106,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] inteiro com ele mesmo e char, e vice-versa
     - [x] bool com int e char
     - [x] resto com resto
-- [ ] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
+- [x] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
 - [ ] buscar DECLARACAO 
     - [x] constante > quando usada na dimensao do array
@@ -121,6 +121,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] variavel sem ser array n pode ser inicializada com {}
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
+- [ ] possivel funcao de associaçao de compatibilidade dos tipos int, char e bool
+    - [ ] p atrib
+    - [ ] adaptar p condicional em expr
 - [x] parametros compatíveis no procedimento
     - [x] na definicao quando ele tem prototipo
         - [x] em tipo
@@ -135,8 +138,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] não pode ter & na chama do procedimento com o do
 - [ ] expr URGENTE
     - [ ] tipo booleano
-    - [ ] se for um id, o tipo dessa expr é o tipo do id
-    - [ ] se for uma constante int, o tipo dessa expr é o tipo do id
+    - [ ] se for um id, o tipo dessa expr é o tipo do id - wip
+    - [ ] se for uma constante int, o tipo dessa expr é o tipo do id - wip
     - [ ] nao pode comparação de variaveis entre tipos diferentes
     - [ ] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
     - [ ] se expr é aritmetica o tipo dela é o resultado da operação
