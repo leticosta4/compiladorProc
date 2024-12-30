@@ -111,10 +111,10 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 
-    printar_tabsimb();
+    //printar_tabsimb();
 }
 
-void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced){
+void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_veio_do){
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
@@ -127,7 +127,7 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
                             error("ERRO SEMÂNTICO > os parametros de procedimento devem ser compatíveis [ou array ou varável escalar]");
                         }
                     }
-                    if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
+                    if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0 && (flag_veio_do != 1)){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
                         token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
                         tabela_simbolos.linhas[i] = token_param_proced;
                         break;

@@ -59,7 +59,7 @@ int procura_posicao_proc(char nome_def[]);
 int procura_existencia_prototipo_ou_proced(char nome_prot[]);
 void remover_tabsimb();
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced);
-void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced);
+void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_veio_do);
 int contar_params(int posicao_prot_def);
 void apagar_var_locais(int posicao_def);
 void transformar_zumbi(int posicao_def);

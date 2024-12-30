@@ -90,9 +90,11 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] refinar a busca da declaracao de identificador
 - [x] bug `while(!(b > c))` : para no c e não reconhece (bug do sintatico) > `else if NEGACAO` do `case SNL` em `fator()`
 - [ ] aql ngcio la do contlinha
-- [x] manipulacao de var locais na tabela de simbolos
+- [x] manipulacao de var locais na tabela de simbolos > gambiarra
     - [x] em `procura_existencia_identificador_em_proced` : reconhecimento identificadores
     - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada
+- [x] quantidade de parametros na chamada do do
+- [ ] camuflar bug da primeira variavel no print da tabela
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -130,7 +132,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] adaptar p condicional em expr
 - [x] parametros compatíveis no procedimento
     - [x] na definicao quando ele tem prototipo
-        - [ ] em tipo > FAZER
+        - [x] em tipo 
         - [x] em quantidade 
         - [x] em ordem
         - [x] array ou var escalar

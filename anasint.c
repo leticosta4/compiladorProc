@@ -888,7 +888,7 @@ void def(){
                                 verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                                 if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
                                 } else{
-                                    substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token); //verificacao da compatibilidae de tipo embutida aqui
+                                    substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token, 0); //verificacao da compatibilidae de tipo embutida aqui
                                 }
                                 
                             } while(1);
@@ -900,7 +900,7 @@ void def(){
                             verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
                             if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
                             } else{
-                                substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token); //verificacao da compatibilidae de tipo embutida aqui
+                                substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token, 0); //verificacao da compatibilidae de tipo embutida aqui
                             }
                 }
 
@@ -954,7 +954,7 @@ void passagem_end_tipo(){
 
 //vindas do cmd
 void _do(char em_qual_proced[]){ //o token ja chega processado
-    int passou_expr = 0, cont_param_chamada = 0, cont_param_orig = 0, pos, tipo_simples; //temporario 
+    int passou_expr = 0, cont_param_chamada = 0, cont_param_orig = 0, pos, tipo_param; //temporario 
 
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
     else{ //idproc  
@@ -979,7 +979,9 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
             } else if((rcv_token.categoria == SNL && rcv_token.codigo != FECHA_PAREN) || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
                 passou_expr = 1;
                 
-                tipo_simples = expr(em_qual_proced); 
+                tipo_param = expr(em_qual_proced); 
+                info_token.tipo = tipo_param;
+                substituir_parametros_prot_proc_testar_compat_tipos(pos, info_token, 1);
                 cont_param_chamada++;
 
                 //ja veio processado do final de fator < final de termo < final de expr_simples
@@ -989,7 +991,9 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
                     if(rcv_token.categoria != SNL && rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON){
                         error("ERRO SINTATICO > era esperada uma expressão após ','");
                     } else {
-                        tipo_simples = expr(em_qual_proced);
+                        tipo_param = expr(em_qual_proced);
+                        info_token.tipo = tipo_param;
+                        substituir_parametros_prot_proc_testar_compat_tipos(pos, info_token, 1);
                         cont_param_chamada++;
                     }
                 }
