@@ -3,17 +3,18 @@ const int r = 7, s = 8
 int teste[r]
 
 prot procedimento(int, int)
-//prot oi(int, int)
+prot oi(int, int)
 
 //int n[2] = {1, 2}
 
 def init
     bool b0 
     int b, c, a = 1
-
+    real de
     c = r * a
     b = c + a + r
 
+    //do oi(de, c) //falta fzr a verificacao do tipo
     //real f = 2.2
     //int a = 2, b
     //char c = 'i', d
@@ -32,5 +33,5 @@ endp
 def procedimento(int a, int b)
 endp
 
-//def oi(int a, int c)
-//endp
+def oi(int a, int c)
+endp

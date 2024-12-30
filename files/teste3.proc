@@ -13,6 +13,6 @@ endp
 def soma(int n1[1][1], int n2, int n3) 
     char str[4]
     int result
-    str[4] = "tena" //ele n ta reconhecendo o identificador
+    str[4] = "algo" 
     result = n1 + n2
 endp
