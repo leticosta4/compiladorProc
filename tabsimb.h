@@ -68,4 +68,5 @@ void printar_tabsimb();
 void verifica_compatibilidade_tipo_decl(TOKEN tk, registro_tabsimb info_tk);
 void prototipo_sozinho();
 registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedimento, char nome_identificador[]);
+void verificacao_final_var_local();
 #endif

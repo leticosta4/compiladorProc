@@ -228,7 +228,8 @@ void testaAnasint(){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
-            //printar_tabsimb();
+            verificacao_final_var_local();
+            printar_tabsimb();
             break;
         }
         prog(); 

@@ -8,7 +8,7 @@ prot procedimento(int, int)
 //int n[2] = {1, 2}
 
 def init
-    bool b0 //ele n ta apagando
+    bool b0 
     int b, c, a = 1
 
     c = r * a

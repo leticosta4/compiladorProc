@@ -314,3 +314,10 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
         if((i >= tabela_simbolos.topo) || diff == 2){ error("não foi encontrada declaração do identificador"); }   
     }
 }
+
+void verificacao_final_var_local(){
+    for(int i = tabela_simbolos.topo; i >= 0; i--){
+        if(tabela_simbolos.linhas[i-1].categoria == VAR_LOCAL){ remover_tabsimb(); }
+        else{ break; }
+    }
+}
