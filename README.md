@@ -76,8 +76,6 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tratamentos chatos
 
 ## dúvidas
-- insercao das variaveis locais sao sempre no topo?
-
 
 ## analise semantica    
 ### bugs
@@ -87,8 +85,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] coisa de array com {}
 - [x] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
 - [x] refinar a busca da declaracao de identificador
-- [ ] quando tem duas constantes nao ta apagando a ultima
-- [ ] bug while(!(b > c)) : para no c e não reconhece )) (bug do sintatico)
+- [x] bug `while(!(b > c))` : para no c e não reconhece (bug do sintatico) > `else if NEGACAO` do `case SNL` em `fator()`
+- [ ] aql ngcio la do contlinha
+- [ ] manipulacao de var locais na tabela de simbolos, em `procura_existencia_identificador_em_proced` e `apagar_var_locais`
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -120,7 +119,6 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] não pode deixar definição de procedimento interno
 - [x] escopo local para os parametros de um procedimento
 - [x] variavel sem ser array n pode ser inicializada com {}
-- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
 - [x] possivel funcao de associaçao de compatibilidade dos tipos int, char e bool
     - [x] p atrib
@@ -137,18 +135,18 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
         - [x] em ordem
         - [x] array ou var escalar
 - [x] não pode ter & na chama do procedimento com o do
-- [ ] expr 
-    - [ ] tipo booleano
+- [x] expr 
     - [x] se for um id, o tipo dessa expr é o tipo do id 
     - [x] se for uma constante int, o tipo dessa expr é o tipo do id 
     - [x] nao pode comparação de variaveis entre tipos nao compativeis
     - [x] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
-    - [ ] se expr é aritmetica o tipo dela é o resultado da operação
+    - [x] se expr é aritmetica o tipo dela é o resultado da operação
     - [x] uma expressao entre colchetes deve ser do tipo int
     - [x] tipo boolean para a expr condicional de if, elif e while
-    - [ ] var (DEPENDE DA MAQ DE PILHA)
-        - [ ] usou TO: expr1 < expr2
-        - [ ] usou DT: expr1 > expr2
+- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
+- [ ] var (DEPENDE DA MAQ DE PILHA)
+    - [ ] usou TO: expr1 < expr2
+    - [ ] usou DT: expr1 > expr2
 
 ## geração de codigo - MP
 - [ ] enderecos corretamente (me fudi)

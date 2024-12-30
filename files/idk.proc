@@ -8,9 +8,12 @@ prot procedimento(int, int)
 //int n[2] = {1, 2}
 
 def init
-    const int r = 7
-    bool b0
-    int b, c
+    bool b0 //ele n ta apagando
+    int b, c, a = 1
+
+    c = r * a
+    b = c + a + r
+
     //real f = 2.2
     //int a = 2, b
     //char c = 'i', d
@@ -18,8 +21,8 @@ def init
     //do procedimento(1, b) //fazer ainda a semantica de passar um parametro aqui mas a variavel n ter sido declarada
     //int b
 
-    //while(!(b > c)) //erro aqui
-    //endw
+    while(!(b > c)) //erro aqui
+    endw
 
     if(b)
     elif(c)

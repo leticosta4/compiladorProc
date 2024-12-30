@@ -20,8 +20,6 @@ void limpar_tabsimb(){
 }
 
 void inserir_tabsimb(registro_tabsimb token_ins){ 
-    //printf("iniciada inserção na tabela de símbolos\n\n");
-
     if(tabela_simbolos.topo >= TAM_MAX_TAB){
         printf("ERRO TABSIMB > tabela de símbolos cheia.\n");
         exit(1);
@@ -86,18 +84,14 @@ void verifica_redecl_param(int pos_proced, char nome_param[]){ //what_cat: 1 = v
 }
 
 void remover_tabsimb(){
-    //printf("iniciada remoção na tabela de símbolos\n\n");
-    if (tabela_simbolos.topo > 0) {
-        tabela_simbolos.topo--;
-    } else {
+    if (tabela_simbolos.topo > 0) { tabela_simbolos.topo--; }
+    else {
         printf("ERRO TABSIMB > Tabela de símbolos já vazia.\n");
         exit(1);
-    }
-    //printf("fim da remoção TS\n\n");
+    } 
 }
 
 int procura_posicao_proc(char nome_def[]){
-    //printf("buscando a posição de um procedimento\n");
     int i;
 
     if(strcmp(nome_def, "") == 0){ return -1; }
@@ -110,13 +104,9 @@ int procura_posicao_proc(char nome_def[]){
     if(i >= tabela_simbolos.topo){
         error("parte de parametros/var_locais > procedimento não encontrado"); 
     }
-
-    //printf("terminou a busca da posição do procedimento\n");
 }
 
 int procura_existencia_prototipo_ou_proced(char nome_prot[]){
-    //printf("verificando a existencia da assinatura de prototipo/definição para o procedimento\n");
-
     int j;
     for(j = 0; j < tabela_simbolos.topo; j++){
         if(((strcmp(tabela_simbolos.linhas[j].lexema, nome_prot) == 0) && ((tabela_simbolos.linhas[j].categoria == PROTOTIPO) || (tabela_simbolos.linhas[j].categoria == PROCEDIMENTO))) ||
@@ -129,24 +119,18 @@ int procura_existencia_prototipo_ou_proced(char nome_prot[]){
         printf("não existe assinatura de prototipo para esse procedimento nem a definição do mesmo\n");
         return -1;
     }
-
-    //printf("terminou a busca da existencia da assinatura de prototipo/definição para o procedimento\n");
 }
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
-    //printf("substituindo prototipo por procedimento\n");
     if(posicao_prot >= 0){
         token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 
     printar_tabsimb();
-    //printf("acabou a substituição de prototipo por procedimento\n");
 }
 
 void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced){
-    //printf("substituindo os parametros dos prototipos para os do procedimento\n");
-
     if(posicao_prot >= 0){
         for(int i = posicao_prot + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
@@ -168,9 +152,7 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
             }
         }
     }    
-
     printar_tabsimb();
-    //printf("acabou a substituição de parametros dos prototipos para os do procedimento\n");
 }
 
 int contar_params(int posicao_prot_def){
@@ -189,8 +171,6 @@ int contar_params(int posicao_prot_def){
 }
 
 void apagar_var_locais(int posicao_def){
-    //printf("apagando variaveis locais\n");
-
     if(posicao_def >= 0){
         for(int i = posicao_def; i <= tabela_simbolos.topo; i++){
             while(tabela_simbolos.linhas[i+1].categoria == PARAMETRO){
@@ -201,13 +181,9 @@ void apagar_var_locais(int posicao_def){
                 
         }
     }
-    //printf("acabou a remoção das var locais\n");
-    //printar_tabsimb();
 }
 
 void transformar_zumbi(int posicao_def){
-    //printf("transformando em zumbi\n");
-    
     if(posicao_def >= 0){
         for(int i = posicao_def + 1; i <= tabela_simbolos.topo; i++){
             if(tabela_simbolos.linhas[i].categoria != PARAMETRO){ break; }
@@ -217,8 +193,6 @@ void transformar_zumbi(int posicao_def){
             }
         }
     }
-    //printf("acabou a transformação de vivo em zumbi\n");
-    //printar_tabsimb();
 }
 
 void printar_tabsimb(){
