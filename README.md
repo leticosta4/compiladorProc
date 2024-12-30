@@ -85,9 +85,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] nomes de procedimentos sendo reescritos
 - [x] tabela resetando
 - [x] coisa de array com {}
-- [ ] quando tem duas constantes nao ta apagando a ultima
 - [x] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
 - [x] refinar a busca da declaracao de identificador
+- [ ] quando tem duas constantes nao ta apagando a ultima
+- [ ] bug while(!(b > c)) : para no c e não reconhece )) (bug do sintatico)
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -108,7 +109,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] resto com resto
 - [x] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
 - [x] variaveis locais e globais
-- [ ] buscar DECLARACAO 
+- [x] buscar DECLARACAO 
     - [x] constante > quando usada na dimensao do array
     - [x] prototipo > p o procedimento
     - [x] de identificador ao ser usado em expr
@@ -121,9 +122,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] variavel sem ser array n pode ser inicializada com {}
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
 - [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
-- [ ] possivel funcao de associaçao de compatibilidade dos tipos int, char e bool
-    - [ ] p atrib
-    - [ ] adaptar p condicional em expr
+- [x] possivel funcao de associaçao de compatibilidade dos tipos int, char e bool
+    - [x] p atrib
+    - [x] adaptar p condicional em expr
 - [x] parametros compatíveis no procedimento
     - [x] na definicao quando ele tem prototipo
         - [x] em tipo
@@ -136,18 +137,29 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
         - [x] em ordem
         - [x] array ou var escalar
 - [x] não pode ter & na chama do procedimento com o do
-- [ ] expr URGENTE
+- [ ] expr 
     - [ ] tipo booleano
-    - [ ] se for um id, o tipo dessa expr é o tipo do id - wip
-    - [ ] se for uma constante int, o tipo dessa expr é o tipo do id - wip
-    - [ ] nao pode comparação de variaveis entre tipos diferentes
-    - [ ] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
+    - [x] se for um id, o tipo dessa expr é o tipo do id 
+    - [x] se for uma constante int, o tipo dessa expr é o tipo do id 
+    - [x] nao pode comparação de variaveis entre tipos nao compativeis
+    - [x] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
     - [ ] se expr é aritmetica o tipo dela é o resultado da operação
-    - [ ] uma expressao entre colchetes deve ser do tipo int
-    - [ ] tipo boolean para a expr condicional de if, elif e while
-    - [ ] var
+    - [x] uma expressao entre colchetes deve ser do tipo int
+    - [x] tipo boolean para a expr condicional de if, elif e while
+    - [ ] var (DEPENDE DA MAQ DE PILHA)
         - [ ] usou TO: expr1 < expr2
         - [ ] usou DT: expr1 > expr2
 
-## geração de codigo
+## geração de codigo - MP
 - [ ] enderecos corretamente (me fudi)
+- [ ] while
+- [ ] if
+- [ ] elif
+- [ ] else
+- [ ] var
+- [ ] comp igualdade
+- [ ] comp diferença
+- [ ] maior que
+- [ ] menor que
+- [ ] and logico
+- [ ] or logico

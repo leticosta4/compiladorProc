@@ -42,7 +42,7 @@ void busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(TOKEN sus_token, int escopo_v
 }
 
 int associa_tipos_compat(int tipo_base, int tipo_cmp){
-    if(((tipo_base == _INT || tipo_base == _BOOL || tipo_base == _CHAR) && (tipo_cmp != _INT && tipo_cmp != _CHAR)) ||
+    if(((tipo_base == _INT || tipo_base == _BOOL || tipo_base == _CHAR) && (tipo_cmp != _INT && tipo_cmp != _CHAR && tipo_cmp != _BOOL)) ||
         tipo_base == _REAL && tipo_cmp != _REAL){
             return -1;
     } 

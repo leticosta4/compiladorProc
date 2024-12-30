@@ -10,6 +10,7 @@
 #include "tabsimb.h"
 
 registro_tabsimb info_token;
+int identificador_bool = -1;
 
 int valor_var(){
     rcv_token = AnaLex(arqivoProc);
@@ -176,47 +177,13 @@ void cmd(char procedimento[]){
                 consome_fim_exp();
                 break;
             case DO: 
-                //printf("início de um do\n\n");
                 rcv_token = AnaLex(arqivoProc);
                 _do(procedimento);
                 break;
             case WHILE:
-                //printf("início de um while\n\n");
                 rcv_token = AnaLex(arqivoProc); 
                 consome_fim_exp();
-                if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
-                    error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
-                } else {
-                    rcv_token = AnaLex(arqivoProc);
-                    consome_fim_exp();
-                    if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
-                        tipo_expr_cond = expr(procedimento); //temporario
-
-                        //ja veio processado do final de fator < final de termo < final de expr_simples
-                        if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
-                            error("ERRO SINTATICO > era esperado um ')' após a expressão no while");
-                        } else{
-                            rcv_token = AnaLex(arqivoProc);
-                            consome_fim_exp();
-                            
-                            while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
-                                cmd(procedimento);
-                                consome_fim_exp();
-                                if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
-                                    //printf("SAINDO while\n\n");
-                                    break;
-                                }
-                                //analex é chamado de novo no final da função - n precisa chamar aqui
-                            }
-                            if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
-                                error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
-                            } 
-                            rcv_token = AnaLex(arqivoProc);
-                            consome_fim_exp();
-                        }
-                    } else{ error("ERRO SINTATICO > era esperada uma expressão após '('"); }
-                }
-                //printf("fim do while\n\n");
+                _while(procedimento);
                 break;
             case IF:
                 //printf("início de um if\n\n");
@@ -230,7 +197,11 @@ void cmd(char procedimento[]){
                     if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
                         error("ERRO SINTATICO > era esperado termo para inicio de epressão");
                     }
-                    tipo_expr_cond = expr(procedimento); //temporario
+                    tipo_expr_cond = expr(procedimento); 
+                    printf("\nteste fo tipo q a expr_cond ficou > TIPO : %d\n", tipo_expr_cond);
+                    if(associa_tipos_compat(tipo_expr_cond, _BOOL) != 0){
+                        error("ERRO SEMANTICO > o tipo da expressão para o if deve ser booleana");
+                    }
 
                     //ja veio processado do final de fator < final de termo < final de expr_simples
                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
@@ -242,10 +213,7 @@ void cmd(char procedimento[]){
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd(procedimento);
                                 consome_fim_exp(); 
-                                if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
-                                    //printf("SAINDO if\n\n");
-                                    break;
-                                }
+                                if(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){ break; }
                                 //analex é chamado de novo no final da função - n precisa chamar aqui
                             }
 
@@ -261,7 +229,11 @@ void cmd(char procedimento[]){
                                     if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != SNL){
                                         error("ERRO SINTATICO > era esperado termo para inicio de epressão");
                                     }
-                                    tipo_expr_cond = expr(procedimento); //temporario
+                                    tipo_expr_cond = expr(procedimento);
+                                    printf("\nteste fo tipo q a expr_cond ficou > TIPO : %d\n", tipo_expr_cond);
+                                    if(associa_tipos_compat(tipo_expr_cond, _BOOL) != 0){
+                                        error("ERRO SEMANTICO > o tipo da expressão para o elif deve ser booleana");
+                                    }
 
                                     //ja veio processado do final de fator < final de termo < final de expr_simples
                                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
@@ -273,10 +245,7 @@ void cmd(char procedimento[]){
                                         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                             cmd(procedimento);
                                             consome_fim_exp(); 
-                                            if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
-                                                //printf("SAINDO elif\n\n");
-                                                break;
-                                            }
+                                            if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){ break; }
                                             //analex é chamado de novo no final da função - n precisa chamar aqui
                                         }
                                     }
@@ -409,7 +378,7 @@ int atrib(char p[]){ //ja chega processado
                 }
 
                 //logica p tabela de simbolos?
-                tipo_indice_array = expr(p); //temporario
+                tipo_indice_array = expr(p); 
                 if(tipo_indice_array != _INT){ //talvez tb possa char
                     error("ERRO SEMANTICO > a expressão usada como índice no array deve ter tipo int");
                 }
@@ -437,75 +406,93 @@ int atrib(char p[]){ //ja chega processado
             if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != STRINGCON && rcv_token.categoria != SNL){
                 error("ERRO SINTATICO > era esperado termo para inicio de epressão");
             }
-            tipo_atribuicao = expr(p); //temporario
+            tipo_atribuicao = expr(p); 
             //ja finaliza processado
         } else {
             error("ERRO SINTATICO > era esperado um '=' para atribuição");
         }
      return tipo_atribuicao;
      }
-     //printf("fim de uma atribuição\n\n");
 }
 
 int expr(char p[]){ //ja chega processado
-    int seguir, tipo_expr[2];
-    //printf("inicio de uma expressão: < expr > | LINHA: %d\n\n", contLinha);
-    tipo_expr[0] = expr_simples(p);
+    int seguir, tipo_expressoes[2], tipo_final_expr;
+    
+    tipo_expressoes[0] = expr_simples(p);
 
     //ja veio processado do final de fator < final de termo < final de expr_simples
     seguir = op_rel();
     //ja veio processado do final de op_rel
-    if(seguir == 1){
-        tipo_expr[1] = expr_simples(p);
-        //fazer logica para tipo_expr[0] receber o tipo final 
-    }
 
-    return tipo_expr[0];
-    //printf("fim de uma expressão\n");
+    if(seguir != -1){
+        tipo_expressoes[1] = expr_simples(p);
+    
+        if(associa_tipos_compat(tipo_expressoes[0], tipo_expressoes[1]) != 0){
+            error("ERRO SEMÂNTICO > não é possível comparação entre tipos não compatíveis");
+        } else { tipo_final_expr = _BOOL; }
+    } else {tipo_final_expr = tipo_expressoes[0]; }
+
+    printf("\nteste tipo expr: %d\n", tipo_final_expr);
+    return tipo_final_expr;
 }
 
 int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
-    //printf("inicio de uma expressão simples: < expr_simp > | LINHA: %d\n\n", contLinha);
-    int tipo_expr_simples;
+    int tipo_expr_simples, op_arit, rel_logica = 0;
     if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
+        if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+        op_arit = 1;
         rcv_token = AnaLex(arqivoProc);
     }
-    tipo_expr_simples = termo(p);
+    tipo_expr_simples = termo(p, op_arit);
 
     //ja veio processado do final de termo < final de fator
     while(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO || rcv_token.codigo == AND_LOGICO)){
+        if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
+            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+            op_arit = 1;
+        } else if(rcv_token.categoria == SNL && rcv_token.codigo == AND_LOGICO){
+            rel_logica = 1;
+        }
         //... logica p pegar o tipo do resultado
+
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
-        tipo_expr_simples = termo(p);
+        tipo_expr_simples = termo(p, op_arit);
     }
+    if(rel_logica != 0){ tipo_expr_simples = _BOOL; }
     return tipo_expr_simples;
-    //printf("fim de uma expressão simples\n");
 }
 
-int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
-    //printf("inicio de um termo: < termo > | LINHA: %d\n\n", contLinha);
-    int tipo_expr;
-    tipo_expr = fator(p);
+int termo(char p[], int aritm){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
+    int tipo_expr, rel_logica = 0;
+    tipo_expr = fator(p, aritm);
     
     //ja veio processado do final de fator
     while(rcv_token.categoria == SNL && (rcv_token.codigo == MULTIPLICACAO || rcv_token.codigo == DIVISAO || rcv_token.codigo == OR_LOGICO)){ 
+        if(rcv_token.categoria == SNL && (rcv_token.codigo == MULTIPLICACAO || rcv_token.codigo == DIVISAO)){
+            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+            aritm = 1;
+        } else if(rcv_token.categoria == SNL && rcv_token.codigo == OR_LOGICO){
+            rel_logica = 1;
+        }
         //... logica p pegar o tipo do resultado
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
-        tipo_expr = fator(p);
+        tipo_expr = fator(p, aritm);
     }
+    if(rel_logica != 0){ tipo_expr = _BOOL; }
     return tipo_expr;
     //printf("fim de um termo\n");
 }
 
-int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
-    int cont_d = 1, tipo_expr, tipo_indice_array;
+int fator(char p[], int aritm){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
+    int cont_d = 1, tipo_expr, tipo_indice_array, cat_temp, rel_logica = 0;
     //printf("inicio de um fator: < fator > | LINHA: %d\n\n", contLinha);
     switch (rcv_token.categoria){
         case ID:
             info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema); 
             tipo_expr = info_token.tipo;
+            if(tipo_expr == _BOOL){ identificador_bool = 1; } //temporario
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
@@ -514,7 +501,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
                     if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
-                        tipo_indice_array = expr(p); //temporario
+                        tipo_indice_array = expr(p);
                         if(tipo_indice_array != _INT){
                             error("ERRO SEMANTICO > a expressão usada como índice de array deve ter tipo int");
                         }
@@ -539,7 +526,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
             }
             break;
         case INTCON:
-            tipo_expr = _INT; //talvez vire bool depois
+            tipo_expr = _INT; //talvez vire bool depois?
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -550,7 +537,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
             break;
         case CHARCON:
         case STRINGCON:
-            tipo_expr = _CHAR; //talvez vire bool depois
+            tipo_expr = _CHAR; //talvez vire bool depois?
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -559,7 +546,11 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
-                    tipo_expr = expr(p); //temporario
+                    cat_temp = rcv_token.categoria;
+                    tipo_expr = expr(p); 
+
+                    if(cat_temp == ID){ if(tipo_expr == _BOOL){ identificador_bool = 1; }} //temporario
+
                     if(rcv_token.codigo != FECHA_PAREN){
                         error("ERRO SINTATICO > era esperado um ')' após a expressão");
                     } else{
@@ -569,14 +560,16 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
                     }
                 }
             } else if(rcv_token.codigo == NEGACAO){
+                rel_logica = 1;
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
-                fator(p);
+                fator(p, aritm);
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             } else { error("ERRO SINTATICO > sinal invalido encontrado em fator"); }
             break;
     }
+    if(rel_logica != 0){ tipo_expr = _BOOL; }
     return tipo_expr;
     //printf("fim de um fator\n");
 }
@@ -594,8 +587,8 @@ int op_rel(){ //ja chega processado de expr
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         //printf("fim de um operador relacional\n\n");
-        return 1;
-    } else{ return 0; }
+        return rcv_token.codigo;
+    } else{ return -1; }
 }
 
 //vindas do decl_list_var:
@@ -1058,5 +1051,46 @@ void _do(char em_qual_proced[]){
                 consome_fim_exp();
             }
         }
+    }
+}
+
+void _while(char em_qual_proced[]){
+    int tipo_expr_cond;
+    if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
+        error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
+    } else {
+        rcv_token = AnaLex(arqivoProc);
+        consome_fim_exp();
+        if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){
+            tipo_expr_cond = expr(em_qual_proced);
+            if(associa_tipos_compat(_BOOL, tipo_expr_cond) != 0){
+                printf("ox porra: %d\n", associa_tipos_compat(tipo_expr_cond, _BOOL));
+                error("ERRO SEMANTICO > o tipo da expressão para o while deve ser booleana");
+            }
+
+            //ja veio processado do final de fator < final de termo < final de expr_simples
+            if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
+                debug("porraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                error("ERRO SINTATICO > era esperado um ')' após a expressão no while");
+            } else{
+                rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
+                
+                while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
+                    cmd(em_qual_proced);
+                    consome_fim_exp();
+                    if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
+                        //printf("SAINDO while\n\n");
+                        break;
+                    }
+                    //analex é chamado de novo no final da função - n precisa chamar aqui
+                }
+                if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
+                    error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
+                } 
+                rcv_token = AnaLex(arqivoProc);
+                consome_fim_exp();
+            }
+        } else{ error("ERRO SINTATICO > era esperada uma expressão após '('"); }
     }
 }

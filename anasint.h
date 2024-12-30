@@ -23,8 +23,8 @@ void cmd(char procedimento[]);
 int atrib(char p[]);
 int expr(char p[]);
 int expr_simples(char p[]);
-int termo(char p[]);
-int fator(char p[]);
+int termo(char p[], int aritm);
+int fator(char p[], int aritm);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();
@@ -35,4 +35,5 @@ void prot();
 void passagem_end_tipo();
 //vindas do cmd
 void _do(char em_qual_proced[]);
+void _while(char em_qual_proced[]);
 #endif 
