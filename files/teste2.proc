@@ -14,7 +14,7 @@ endp
 def subtrair(&int r[a][c], int a, int b) 
     int w
     w = a - b
-    r = w
+    r = w 
 endp
 
 // Ponto 2
@@ -44,7 +44,7 @@ def init
 
     // Ponto 4
 
-    do somar(z, a, b)
+    do somar(z, a, b) 
     putstr "Soma: "
     putint z
     putchar '\n'

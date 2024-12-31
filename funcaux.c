@@ -5,6 +5,8 @@
 #include <stdbool.h> 
 #include "analex.h"
 #include "funcaux.h"
+#include "tabsimb.h"
+
 
 void error(char msg[]){ 
     printf("%s na linha %d\n", msg, contLinha); 
@@ -24,6 +26,27 @@ void consome_fim_exp(){
 
 void debug(char onde[]){
     printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
+}
+
+void busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(TOKEN sus_token, int escopo_var){
+    if(sus_token.categoria == PLV_RSVD && (sus_token.codigo == CONST || sus_token.codigo == INT || sus_token.codigo == REAL || sus_token.codigo == CHAR || sus_token.codigo == BOOL)){
+        switch(escopo_var){
+            case GLOBAL:
+                error("\nERRO SEMANTICO > a declaração de variável(is) global(is) deve ocorrer no iníco do programa, antes declaração de prototipo(s)/procedimento(s)");
+                break;
+            case LOCAL:
+                error("\nERRO SEMANTICO > a declaração de variável(is) local(is) deve ocorrer no iníco do procedimento, antes de comando(s)");
+                break;
+        }
+    }
+}
+
+int associa_tipos_compat(int tipo_base, int tipo_cmp){
+    if(((tipo_base == _INT || tipo_base == _BOOL || tipo_base == _CHAR) && (tipo_cmp != _INT && tipo_cmp != _CHAR && tipo_cmp != _BOOL)) ||
+        tipo_base == _REAL && tipo_cmp != _REAL){
+            return -1;
+    } 
+    return 0;
 }
 
 //temporario para a parte da GERACAO DE CODIGO - MAQUINA DE PILHA

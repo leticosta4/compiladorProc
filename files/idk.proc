@@ -1,0 +1,31 @@
+const int r = 7, s = 8 
+
+int teste[r]
+
+prot procedimento(int, int)
+prot oi(int, int)
+
+//int n[2] = {1, 2}
+
+def init
+    bool b0 
+    int b, c, a = 1
+    real de
+    c = r * a
+    b = c + a + r
+
+    do procedimento(a, b) //testar passar a var 'de' como parametro para apontar erro
+
+    while(!(b > c)) //erro aqui
+    endw
+
+    if(b)
+    elif(c)
+    endi
+endp
+
+def procedimento(int a, int b)
+endp
+
+def oi(int p1, int p2)
+endp

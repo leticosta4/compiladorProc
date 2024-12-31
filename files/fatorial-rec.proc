@@ -1,7 +1,8 @@
-prot fatorial (&int, int)  //também funciona caso eu apague (por enquanto ok, mas pode mudar dps das regras semanticas) 
+int n //global - teste semantico > ta ok
+prot fatorial (&int, int) 
 
 def init 
-    int n, fat 
+    int n, fat, m
     getint n 
     do fatorial(fat, n) 
     putint fat 

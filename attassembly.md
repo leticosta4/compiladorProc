@@ -80,8 +80,8 @@ A == B  e  A  != B
     LOAD A
     LOAD B
     SUB
-    GOFALSE Ly
-    PUSH 0
+    GOFALSE Ly //se for 0 a é igual a b > condição verdadeira
+    PUSH 0     //se for maior q 0 a > b > condição falsa (0 no topo da pilha) 
     GOTO Lz
     LABEL Ly
     PUSH 1
@@ -89,3 +89,82 @@ A == B  e  A  != B
 
 para <b>DIFERENTE</b>  é só trocar os `PUSH`es
 
+## MENOR IGUAL 
+? (a <= b) 
+
+    LOAD A
+    LOAD B
+    SUB
+    GOTRUE L1 //aq se der maior doq 0 a subtração a > b, condição falsa
+    PUSH 1    //se for 0 ou menos > condição verdadeira (1 no topo da pilha)
+    GOTO L2
+    LABEL L1
+    PUSH 0   // 0 no topo da pilha pq a condição é falsa
+    LABEL L2
+    ...      //resto do codigo p testar a condição
+
+## MAIOR IGUAL 
+? (a >= b) 
+
+    LOAD A
+    LOAD B
+    SUB
+    COPY
+    GOTRUE L1   //se der maior doq 0 a subtração a > b, condição verdadeira
+    GOFALSE L2  //se der 0 a subtração a == a, condição verdadeira
+    PUSH 0
+    GOTO L3
+    LABEL L1
+    POP      //pop na primeira p n ter push 1 e duplicado na pilha
+    LABEL L2
+    PUSH 1
+    LABEL L3
+    ...
+
+## MAIOR QUE
+? (a > b)
+    LOAD A 
+    LOAD B
+    SUB 
+    GOTRUE L1  //maior que 0 > condição verdadeira
+    PUSH 0     //se for falsa zero no topo da pilha
+    GOTO L2
+    LABEL L1
+    PUSH 1
+    LABEL L2
+    ...
+
+## MENOR QUE
+? (a < b)
+
+    LOAD A 
+    LAOD B
+    SUB
+    COPY
+    GOTRUE L1   //se for maior que 0, a > b, condição falsa
+    GOFALSE L2  //se 0, a == b, condição falsa
+    PUSH 1      //nenhum desses 2 casos, condição verdadeira 
+    GOTO L2
+    LABEL L1
+    POP
+    LABEL L2
+    PUSH 0
+    LABEL 3
+    ...
+
+## exemplo A = B + 1
+
+    LOAD B
+    PUSH 1
+    ADD
+    STOR A
+
+## exemplo:
+<b>while((a <= b) && ((c > d) || (e == f))){
+    
+a = a + c;
+c = a - b + 2;
+e = d / 5 * c;
+
+}</b>
+<font color=\"red\">Texto com cor vermelha</font>

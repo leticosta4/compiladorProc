@@ -223,25 +223,26 @@ void testaAnalex(){
 
 void testaAnasint(){
     printf("\n\n[Análise Sintática ----------------]\n");
-    if ((arqivoProc = fopen("./files/fatorial-rec.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/idk.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
             printf("\nfim do arquivo fonte encontrado!\n");
+            verificacao_final_var_local();
             printar_tabsimb();
             break;
         }
-        prog(); //iniciando a chamada do analisador sintatico
+        prog(); 
     }
     fclose(arqivoProc);
 }
 
 int main(){
     contLinha = 1;
-    testaAnalex();
+    //testaAnalex();
 
     contLinha = 1;
     testaAnasint();
-    
+
     return 0;
 }

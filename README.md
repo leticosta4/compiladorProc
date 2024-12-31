@@ -3,13 +3,16 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] analisador léxico
 - [x] analisador sintático
 - [x] tabela de símbolos 
-- [ ] integração semântica ~
+- [ ] integração semântica - WIP
 - [ ] geraçao de código
 - [x] bugfix:
     - [x] anasint
     - [x] tabsimb
+- exemplo de <b>fragilidade</b>:
+    
+    se colocar um procedimento novo embaixo do procedimento soma no arquivo `teste3.proc` ele buga a tabela de simbolos e passa a deixar var_local ainda
 
-## gramática
+## analise sintatica - gramática
 - [x] prog
 - [x] decl_list_var
 - [x] decl_def_prot
@@ -76,11 +79,92 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tratamentos chatos
 
 ## dúvidas
-- verificacao da variavel em atrib? como lidar?
 
+## analise semantica    
+### bugs
+- [x] endereço reiniciando nos parametros
+- [x] nomes de procedimentos sendo reescritos
+- [x] tabela resetando
+- [x] coisa de array com {}
+- [x] variavel escalar/vetor n sendo reconhecido mesmo sendo igual => ta dando incopatibilidade EM DEF
+- [x] refinar a busca da declaracao de identificador
+- [x] bug `while(!(b > c))` : para no c e não reconhece (bug do sintatico) > `else if NEGACAO` do `case SNL` em `fator()`
+- [ ] aql ngcio la do contlinha
+- [x] manipulacao de var locais na tabela de simbolos > gambiarra
+    - [x] em `procura_existencia_identificador_em_proced` : reconhecimento identificadores
+    - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada
+- [x] quantidade de parametros na chamada do do
+- [ ] camuflar bug da primeira variavel no print da tabela
 
-## prox etapa > semantica
-- [ ] verificacoes de repeticao de prototipo e procedimento em `def()` e `prot()` de `anasint.c` - base ok
-- [ ] buscar declaracao (constante || prototipo > p o procedimento || variavel > analisar)
-- [ ] ele nao vendo quando é constante p passar no tamanho do array
-- [ ] tratar identificador no tamanho do array
+### regras
+- [x] buscar REDECLARACAO
+    - [x] prototipo
+    - [x] procedimento
+    - [x] variavel global
+    - [x] variavel local - dentro do mesmo procedimento
+    - [x] parametro - dentro do mesmo procedimento
+- [x] constante
+    - [x] redeclaração
+    - [x] deve ser inicializada
+    - [x] passar no array e atribuir o valor da const na dimensao
+    - [x] compatibilidade tipo
+- [x] não pode prototipo sem procedimento
+- [x] verificação do tipo da veriavel com o correspondente na DECLARAÇÃO 
+    - [x] inteiro com ele mesmo e char, e vice-versa
+    - [x] bool com int e char
+    - [x] resto com resto
+- [x] verificação do tipo da variavel com o correspondente na ATRIBUIÇÃO 
+- [x] variaveis locais e globais
+- [x] buscar DECLARACAO 
+    - [x] constante > quando usada na dimensao do array
+    - [x] prototipo > p o procedimento
+    - [x] de identificador ao ser usado em expr
+- [x] ele nao vendo quando é constante p passar no tamanho do array ?
+- [x] declaração de var globais antes de procedimento
+- [x] declaração de var locais antes de comandos
+- [x] quando chamar o do verificar se o procedimento tem um prototipo (é obrigatorio)
+- [x] não pode deixar definição de procedimento interno
+- [x] escopo local para os parametros de um procedimento
+- [x] variavel sem ser array n pode ser inicializada com {}
+- [x] quando o procedimento nao tiver prototipo, a declaração dele deve ser antes do init
+- [x] possivel funcao de associaçao de compatibilidade dos tipos int, char e bool
+    - [x] p atrib
+    - [x] adaptar p condicional em expr
+- [x] parametros compatíveis no procedimento
+    - [x] na definicao quando ele tem prototipo
+        - [x] em tipo 
+        - [x] em quantidade 
+        - [x] em ordem
+        - [x] array ou var escalar
+    - [x] na chamada com o do quando ele nao tem prototipo 
+        - [x] em tipo
+        - [x] em quantidade 
+        - [x] em ordem
+        - [x] array ou var escalar
+- [x] não pode ter & na chama do procedimento com o do
+- [x] expr 
+    - [x] se for um id, o tipo dessa expr é o tipo do id 
+    - [x] se for uma constante int, o tipo dessa expr é o tipo do id 
+    - [x] nao pode comparação de variaveis entre tipos nao compativeis
+    - [x] se expr tiver 2 lados e ops relacionais ou logicos o tipo é bool 
+    - [x] se expr é aritmetica o tipo dela é o resultado da operação
+    - [x] uma expressao entre colchetes deve ser do tipo int
+    - [x] tipo boolean para a expr condicional de if, elif e while
+- [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
+- [ ] var (DEPENDE DA MAQ DE PILHA)
+    - [ ] usou TO: expr1 < expr2
+    - [ ] usou DT: expr1 > expr2
+
+## geração de codigo - MP
+- [ ] enderecos corretamente (me fudi)
+- [ ] while
+- [ ] if
+- [ ] elif
+- [ ] else
+- [ ] var
+- [ ] comp igualdade
+- [ ] comp diferença
+- [ ] maior que
+- [ ] menor que
+- [ ] and logico
+- [ ] or logico
