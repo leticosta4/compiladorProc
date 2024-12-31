@@ -123,6 +123,7 @@ para <b>DIFERENTE</b>  é só trocar os `PUSH`es
 
 ## MAIOR QUE
 ? (a > b)
+
     LOAD A 
     LOAD B
     SUB 
@@ -138,7 +139,7 @@ para <b>DIFERENTE</b>  é só trocar os `PUSH`es
 ? (a < b)
 
     LOAD A 
-    LAOD B
+    LOAD B
     SUB
     COPY
     GOTRUE L1   //se for maior que 0, a > b, condição falsa
@@ -160,11 +161,66 @@ para <b>DIFERENTE</b>  é só trocar os `PUSH`es
     STOR A
 
 ## exemplo:
-<b>while((a <= b) && ((c > d) || (e == f))){
+<b>while ( <span style="color: red;">(a <= b)</span>  <span style="color: yellow;">&&</span> ( <span style="color: blue;">(c > d)</span>  <span style="color: orange;">||</span>  <span style="color: green;">(e == f)</span> )) {
     
-a = a + c;
-c = a - b + 2;
-e = d / 5 * c;
+    
+<span style="color: cyan;">a = a + c;</span>
+
+<span style="color: pink;">c = a - b + 2;</span>
+
+<span style="color: magenta;">e = d / 5 * c;</span>
 
 }</b>
-<font color=\"red\">Texto com cor vermelha</font>
+
+<i>INIP</i>
+
+LABEL L1
+
+<span style="color: red;">
+LOAD A<br>LOAD B<br>SUB<br>GOTRUE L2<BR>PUSH 1<BR>GOTO L3<BR>LABEL L2<BR>PUSH 0
+</span>
+
+<span style="color: yellow;">
+LABEL L3<BR>COPY<BR>GOFALSE L4 
+</span>
+<span style="color: gray;">//como é um and, se a primeira pt ja for falsa toda a expr é falsa > sai logo</span>
+<BR><span style="color: yellow;"> POP </span>
+
+<span style="color: blue;">
+LOAD C<br>LOAD D<br>SUB<BR>GOTRUE L5<br>PUSH 0<BR>GOTO L6<BR>LABEL L5<BR>PUSH 1<BR>
+</span>
+
+<span style="color: orange;">
+LABEL L6<BR>COPY<BR>GOTRUE L7
+</span>
+<span style="color: gray;">//como é um or, se a primeira pt ja for verdadeira, ja vale p execução</span>
+<BR><span style="color: orange;"> POP </span>
+
+
+<span style="color: green;">
+LOAD E<BR>LOAD 7<BR>SUB<BR>GOFALSE L8<BR>PUSH 0<BR>GOTO L9<BR>LABEL L8<BR>PUSH 1
+</span>
+
+<br><span style="color: GREEN;">LABEL L9</span>        
+<span style="color: orange;">LABEL L7</span>        <span style="color: gray;">//fim da segunda pt da expressão (t: ||)</span>
+<br><span style="color: yellow;">LABEL L4</span>        <span style="color: gray;">//fim da expressão (t: &&)</span>
+<br>GOFALSE L10      <span style="color: gray;"> //expressao falsa > não executa bloco de comando e vai p o fim do while </span>
+    
+<span style="color: cyan;">
+LOAD A<br>LOAD C<br>ADD<br>STOR A
+</span>
+
+
+<span style="color: pink;">
+LOAD A<br>LOAD B<br>SUB<br>PUSH 2<br>ADD<br>STOR C
+</span>
+
+
+<span style="color: magenta;">
+LOAD D<br>PUSH 5<br>DIV<br>LOAD C<br>MULT<br>STOR E
+</span>
+
+GOTO L1  //continuação do loop while
+<br>LABEL L10 //fim do while
+
+<i>HALT</i>
