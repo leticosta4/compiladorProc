@@ -42,6 +42,51 @@ endi
     LABEL La
 
 ## VAR
+### com TO (expr 1 < expr 2)d
+var a from \<expr1> to \<expr2> [by intcon | idconst] \<cmd>
+
+    [cod expr1]
+    STOR A
+    [cod expr2]
+    LABEL Lx
+    COPY 
+    LOAD A
+    SUB            //expr2 - expr1
+    GOTRUE Ly
+    GOTO Lz       //deu zero, expressoes iguais 
+    LABEL Ly
+    [codigo cmd]
+    LOAD A
+    PUSH [intcon] | LOAD [idconst]
+    ADD
+    STOR A        //precisa?
+    POP           //não esquecer se n dá lixo
+    GOTO Lx       //para repetir o loop for
+    LABEL Lz      //saindo e não executa o loop
+    POP
+
+### com DT (expr 1 > expr 2)
+var a from \<expr1> dt \<expr2> [by intcon | idconst] \<cmd>
+
+    [cod expr1]
+    STOR A 
+    LABEL Lx
+    [cod expr2]  //depois do LABEL Lx p n perder o valor de exp2 e ver se é maior q exp1
+    LOAD A
+    SUB
+    COPY
+    GOTRUE Ly    //expressao falsa pq exp2 > exp1
+    GOFALSE Lz   //se der 0 é falsa tb, sai logo
+    [cod cmd]
+    LOAD A 
+    PUSH [intcon] | LOAD [idconst]
+    SUB
+    STOR A
+    GOTO LX     //continuacao do loop
+    LABEL Ly
+    POP
+    LABEL Lz
+
 
 ## OR lógico
 ? ( \<expr1> || \<expr2>)
@@ -152,6 +197,27 @@ para <b>DIFERENTE</b>  é só trocar os `PUSH`es
     PUSH 0
     LABEL 3
     ...
+
+## PONTAS DO PROGRAMA
+
+    INIP
+    AMEM [qtdVarGlobais]
+    ...
+    DMEM [qtdVarGlobais]
+    HALT
+
+## PONTAS DO PROCEDIMENTO
+    
+    LABEL Lx
+    INIPR 1
+    AMEM [qtdVarLocais]
+    ...
+    DMEM [qtdVarLocais]
+    RET 1, [qtdParametros]
+
+## informações gerais importantes
+- GOTO é específico para LABEL, mas o CALL Lx para procedimento
+- parametros de procedimento possuem endereçõ negativo, sendo que o ultimo deles é o -3
 
 ## exemplo A = B + 1
 
