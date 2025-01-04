@@ -10,7 +10,7 @@
 #include "tabsimb.h"
 
 registro_tabsimb info_token;
-int identificador_bool = -1, label_desvio_call_init = 0;
+int identificador_bool = -1, label_desvio_call_init = 0, variaveis_globais;
 FILE *proc_obj_file;
 
 int valor_var(){
@@ -34,7 +34,7 @@ void confere_atrib_constante(){
 }
 
 void prog(){
-    int var_globais = 0, vg = 0, init_label;
+    int vg = 0, init_label;
     proc_obj_file = fopen("proc_obj_file._obj", "w");
     consome_fim_exp();
 
@@ -42,15 +42,14 @@ void prog(){
     fprintf(proc_obj_file, "INIP\n");
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
-        var_globais++;
         info_token.escopo = GLOBAL;
         info_token.categoria = VAR_GLOBAL;
         info_token.tem_prototipo = NAO_APLICA_PROT;
 
         vg = decl_list_var("");
     }
-    var_globais += vg;
-    if(var_globais != 0){ fprintf(proc_obj_file, "AMEM %d\n", var_globais); }
+   
+    if(variaveis_globais != 0){ fprintf(proc_obj_file, "AMEM %d\n", variaveis_globais); }
     fprintf(proc_obj_file, "GOTO L1\n"); //DESVIO DE LABEL 
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
@@ -64,7 +63,7 @@ void prog(){
     fprintf(proc_obj_file, "\nLABEL %d\n", label_desvio_call_init);
     init_label = busca_retorna_label("init"); 
     if(init_label > 0){ fprintf(proc_obj_file, "CALL L%d\n", init_label); }
-    if(var_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", var_globais); }
+    if(variaveis_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_globais); }
     fprintf(proc_obj_file, "HALT\n");
 }
 
@@ -73,7 +72,7 @@ int decl_list_var(char possivel_proced[]){
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
-    info_token = limpar_dimensoes_array(info_token); 
+    info_token = limpar_dimensoes_array_ou_endereco(info_token, 1); 
     info_token.constante = NAO; //se for dps altera
     //endereço é adicionado na função de inserção na tabela
 
@@ -84,16 +83,19 @@ int decl_list_var(char possivel_proced[]){
     }
 
     tipo();
+    info_token = atribui_endereco_var(info_token);
     decl_var(possivel_proced);
     variaveis+=1;
 
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp(); 
-        decl_var(possivel_proced);   
+        info_token = atribui_endereco_var(info_token);
+        decl_var(possivel_proced);  
         variaveis+=1;
     }
     consome_fim_exp();
+    printf("retorno variavel: %d\n", variaveis);
     return variaveis;
 }
 
@@ -623,6 +625,7 @@ void decl_var(char possivel_proced[]){
 
     printf("variavel declarada: %s\n", rcv_token.lexema);
     strcpy(info_token.lexema, rcv_token.lexema);
+    if(info_token.categoria == VAR_GLOBAL){ variaveis_globais++; }
     verifica_redeclaracao(info_token); //se o escopo for global ja foi definido em prog
 
     rcv_token = AnaLex(arqivoProc);
@@ -704,7 +707,8 @@ void decl_var(char possivel_proced[]){
     
     verifica_redeclaracao(info_token);
     inserir_tabsimb(info_token); //insercao de variavel declarada
-    info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
+    info_token = limpar_dimensoes_array_ou_endereco(info_token, -1); //reinicializando o endereco
+    info_token = limpar_dimensoes_array_ou_endereco(info_token, 1); //limpando as dimensoes do array p n sobrescrever
 }
 
 //vindas do decl_def_prot
@@ -797,7 +801,7 @@ void def(){
         info_token.tem_prototipo = NAO_APLICA_PROT;
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
-        info_token = limpar_dimensoes_array(info_token); 
+        info_token = limpar_dimensoes_array_ou_endereco(info_token, 1); 
         inserir_tabsimb(info_token); //insercao do procedimento init
         info_token.rotulo = 0; //zerando
 
@@ -841,7 +845,7 @@ void def(){
         info_token.rotulo = label_def;
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
-        info_token = limpar_dimensoes_array(info_token); 
+        info_token = limpar_dimensoes_array_ou_endereco(info_token, 1); 
 
         //verifica existencia do prototipo - existe: substitui naquela posicao
         substituir_prot = procura_existencia_prototipo_ou_proced(nome_def);
@@ -876,7 +880,7 @@ void def(){
                             do {
                                 info_token.categoria = PARAMETRO;
                                 info_token.zumbi = VIVO;
-                                info_token = limpar_dimensoes_array(info_token);
+                                info_token = limpar_dimensoes_array_ou_endereco(info_token, 1);
                                 passagem_end_tipo();
 
                                 if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } 

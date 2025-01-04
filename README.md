@@ -155,13 +155,11 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 ## geração de codigo - MP
 - [x] INIP e HALT
-- [ ] INIPR 1 E RET 1, <qtdParams>
-    - [x] randomly
-    - [ ] proper way
+- [x] INIPR 1 E RET 1, <qtdParams>
 - [x] AMEM E DMEM
     - [x] global
     - [x] local 
-- [ ] enderecos corretamente (me fudi)
+- [x] enderecos corretamente
 - [ ] labels
 - [ ] while
 - [ ] if
@@ -178,3 +176,4 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
 - [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM
+- [ ] variaveis globais estavam sendo contadas de forma errada

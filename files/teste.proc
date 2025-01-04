@@ -1,8 +1,12 @@
+int af, gh
+char je
+
 def p(int c)
 	c = 2
 endp
 	
 def init
-	int c  = 2
+	int c = 2
+    int d, e
 	do p(c)
 endp

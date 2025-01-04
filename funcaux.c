@@ -60,3 +60,22 @@ int busca_retorna_label(char nome_busca[]){
     for(int i = 0; i <= tabela_simbolos.topo; i++){
         if(strcmp(tabela_simbolos.linhas[i].lexema, nome_busca) == 0){ return tabela_simbolos.linhas[i].rotulo; }}
 }
+
+registro_tabsimb atribui_endereco_var(registro_tabsimb token_var){
+    static int contVG = 0, contVL = 0;
+    if(token_var.categoria <= 1){
+        switch(token_var.escopo){
+            case GLOBAL:
+                token_var.endereco[0] = 0;
+                token_var.endereco[1] = contVG;
+                contVG++;
+                break;
+            case LOCAL:
+                token_var.endereco[0] = 1;
+                token_var.endereco[1] = contVL;
+                contVL++;
+                break;
+        }
+    }
+    return  token_var;
+}

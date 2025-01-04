@@ -21,16 +21,18 @@ void inserir_tabsimb(registro_tabsimb token_ins){
         exit(1);
     }
 
-    token_ins.endereco = tabela_simbolos.topo;
+    //token_ins.endereco = tabela_simbolos.topo;
     tabela_simbolos.linhas[tabela_simbolos.topo] = token_ins;
     tabela_simbolos.topo++;
 
     printar_tabsimb();
 }
 
-registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token){
-    used_token.dimensoes_array[0] = 0;
-    used_token.dimensoes_array[1] = 0;
+registro_tabsimb limpar_dimensoes_array_ou_endereco(registro_tabsimb used_token, int flag_oq_fzr){
+    if(flag_oq_fzr == VAR_SIMPLES){ 
+        used_token.dimensoes_array[0] = 0;
+        used_token.dimensoes_array[1] = 0;
+    } else{used_token.endereco[0] = -2; }
     return used_token;
 }
 
@@ -106,7 +108,8 @@ int procura_existencia_prototipo_ou_proced(char nome_prot[]){
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     if(posicao_prot >= 0){
-        token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
+        token_proced.endereco[0] = tabela_simbolos.linhas[posicao_prot].endereco[0]; //p n reinicializar
+        token_proced.endereco[1] = tabela_simbolos.linhas[posicao_prot].endereco[1];
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 }
@@ -125,7 +128,8 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
                         }
                     }
                     if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0 && (flag_veio_do != 1)){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
-                        token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
+                        token_param_proced.endereco[0] = tabela_simbolos.linhas[i].endereco[0]; //p n reinicializar
+                        token_param_proced.endereco[1] = tabela_simbolos.linhas[i].endereco[1];
                         tabela_simbolos.linhas[i] = token_param_proced;
                         break;
                     }
@@ -199,10 +203,14 @@ void printar_tabsimb(){
                     break;
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
-        printf(" %-8d | %-15s |", tabela_simbolos.linhas[i].endereco, tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
+        if(tabela_simbolos.linhas[i].endereco[0] != -2){
+            printf("   %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]);   
+        } else{ printf("     -    |"); }
+
+        printf(" %-15s |", tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
         if(tabela_simbolos.linhas[i].rotulo != 0){
             printf(" L%d\n", tabela_simbolos.linhas[i].rotulo);
-        } else{ printf("∅\n "); }
+        } else{ printf("  ∅\n"); }
     printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }
