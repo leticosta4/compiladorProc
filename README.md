@@ -156,6 +156,13 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] usou DT: expr1 > expr2
 
 ## geração de codigo - MP
+- [x] INIP e HALT
+- [ ] INIPR 1 E RET 1, <qtdParams>
+    - [x] randomly
+    - [ ] proper way
+- [ ] AMEM E DMEM
+    - [x] global
+    - [ ] local (começa a dar problema nos parametros de procedimento wtf?)
 - [ ] enderecos corretamente (me fudi)
 - [ ] while
 - [ ] if
