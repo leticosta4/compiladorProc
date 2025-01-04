@@ -25,6 +25,7 @@ def init
 endp
 
 def procedimento(int a, int b)
+    char l
 endp
 
 def oi(int p1, int p2)

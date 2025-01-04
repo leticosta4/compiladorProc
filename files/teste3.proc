@@ -16,3 +16,7 @@ def soma(int n1[1][1], int n2, int n3)
     str[4] = "algo" 
     result = n1 + n2
 endp
+
+def outro()
+    int x, y, w
+endp

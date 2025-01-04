@@ -8,9 +8,6 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] bugfix:
     - [x] anasint
     - [x] tabsimb
-- exemplo de <b>fragilidade</b>:
-    
-    se colocar um procedimento novo embaixo do procedimento soma no arquivo `teste3.proc` ele buga a tabela de simbolos e passa a deixar var_local ainda
 
 ## analise sintatica - gramática
 - [x] prog
@@ -77,6 +74,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] limitar dimensao de array no parametro com def e prot
 - [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
+- [ ] checar inicializaacao de variaveis locais para cada funcao
 
 ## dúvidas
 
@@ -92,9 +90,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] aql ngcio la do contlinha
 - [x] manipulacao de var locais na tabela de simbolos > gambiarra
     - [x] em `procura_existencia_identificador_em_proced` : reconhecimento identificadores
-    - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada
+    - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada > foi refinado
 - [x] quantidade de parametros na chamada do do
-- [ ] camuflar bug da primeira variavel no print da tabela
+- [x] primeira variavel local nao era apagada
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -156,6 +154,13 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] usou DT: expr1 > expr2
 
 ## geração de codigo - MP
+- [x] INIP e HALT
+- [ ] INIPR 1 E RET 1, <qtdParams>
+    - [x] randomly
+    - [ ] proper way
+- [x] AMEM E DMEM
+    - [x] global
+    - [x] local 
 - [ ] enderecos corretamente (me fudi)
 - [ ] while
 - [ ] if
@@ -168,3 +173,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] menor que
 - [ ] and logico
 - [ ] or logico
+
+### bugs
+- [x] em decl_list_var n ta retornando o valor certo de variaveis 
+- [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM

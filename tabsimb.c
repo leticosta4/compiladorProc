@@ -110,8 +110,6 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
         token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
-
-    //printar_tabsimb();
 }
 
 void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_veio_do){
@@ -152,17 +150,6 @@ int contar_params(int posicao_prot_def){
         error("nenhum parametro encontrado"); 
     }
     return cont_param;
-}
-
-void apagar_var_locais(int posicao_def){
-    if(posicao_def >= 0){
-        for(int i = posicao_def; i <= tabela_simbolos.topo; i++){
-            while(tabela_simbolos.linhas[i+1].categoria == PARAMETRO){ i++; } 
-            if(tabela_simbolos.linhas[i+1].categoria == VAR_LOCAL){ remover_tabsimb(); }
-            else{ break; }
-                
-        }
-    }
 }
 
 void transformar_zumbi(int posicao_def){
@@ -276,7 +263,7 @@ registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedim
     }
 }
 
-void verificacao_final_var_local(){
+void apagar_var_locais(){
     for(int i = tabela_simbolos.topo; i >= 0; i--){
         if(tabela_simbolos.linhas[i-1].categoria == VAR_LOCAL){ remover_tabsimb(); }
         else{ break; }

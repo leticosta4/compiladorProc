@@ -11,6 +11,7 @@
 
 registro_tabsimb info_token;
 int identificador_bool = -1;
+FILE *proc_obj_file;
 
 int valor_var(){
     rcv_token = AnaLex(arqivoProc);
@@ -33,15 +34,25 @@ void confere_atrib_constante(){
 }
 
 void prog(){
+    int var_globais = 0, vg = 0;
+    proc_obj_file = fopen("proc_obj_file._obj", "w");
     consome_fim_exp();
 
+    if(proc_obj_file == NULL){ printf("ERRO > problema ao abrir arquivo objeto para o programa\n"); exit(1);} //talvez colocar um exit(1)
+    fprintf(proc_obj_file, "INIP\n");
+
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
+        var_globais++;
         info_token.escopo = GLOBAL;
         info_token.categoria = VAR_GLOBAL;
         info_token.tem_prototipo = NAO_APLICA_PROT;
 
-        decl_list_var("");
+        vg = decl_list_var("");
     }
+    var_globais += vg;
+    if(var_globais != 0){ fprintf(proc_obj_file, "AMEM %d\n", var_globais); }
+
+
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
         decl_def_proc(); 
 
@@ -49,9 +60,14 @@ void prog(){
     }
     busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 0);
     prototipo_sozinho();
+
+    //call da label do init caso exista
+    if(var_globais != 0){ fprintf(proc_obj_file, "\nDMEM %d\n", var_globais); }
+    fprintf(proc_obj_file, "HALT\n");
 }
 
-void decl_list_var(char possivel_proced[]){
+int decl_list_var(char possivel_proced[]){
+    int variaveis = 0;
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
@@ -67,13 +83,16 @@ void decl_list_var(char possivel_proced[]){
 
     tipo();
     decl_var(possivel_proced);
-    
+    variaveis+=1;
+
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp(); 
         decl_var(possivel_proced);   
+        variaveis+=1;
     }
     consome_fim_exp();
+    return variaveis;
 }
 
 void decl_def_proc(){
@@ -688,7 +707,7 @@ void decl_var(char possivel_proced[]){
 
 //vindas do decl_def_prot
 void prot(){
-    int ca, _cd = 1, com_param; 
+    int ca = 0, _cd = 1, com_param = 0; 
 
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
@@ -758,12 +777,13 @@ void prot(){
 }
 
 void def(){
-    int cate, cd = 1, substituir_prot, cont_param_essa_def = 0, cont_param_proto = 0; //substituir_prot é a posição do prototipo
-
+    int cate = 0, cd = 1, substituir_prot = -2, cont_param_essa_def = 0, cont_param_proto = 0, variaveis_locais = 0, vl = 0; //substituir_prot é a posição do prototipo
     rcv_token = AnaLex(arqivoProc); 
     consome_fim_exp();
     
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
+        fprintf(proc_obj_file, "\nINIPR 1\n");
+
         info_token.tem_prototipo = NAO_APLICA_PROT;
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
@@ -777,8 +797,10 @@ void def(){
             info_token.escopo = LOCAL;
             info_token.categoria = VAR_LOCAL;
 
-            decl_list_var("init");
+            vl = decl_list_var("init");
+            variaveis_locais += vl;
         } 
+        if(variaveis_locais != 0){ fprintf(proc_obj_file, "AMEM %d\n", variaveis_locais); }
 
         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
             if(rcv_token.codigo == ENDP){ break; }
@@ -790,13 +812,18 @@ void def(){
         if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
-            apagar_var_locais(procura_posicao_proc("init")); 
+            apagar_var_locais();
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
+
+            if(variaveis_locais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_locais); }
+            fprintf(proc_obj_file, "RET 1, 0\n");
         }
     } else if(rcv_token.categoria == ID){
         char nome_def[TAM_MAX_LEXEMA];
         strcpy(nome_def, rcv_token.lexema);
+
+        fprintf(proc_obj_file, "\nINIPR 1\n");
 
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
@@ -908,9 +935,12 @@ void def(){
     
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     info_token.categoria = VAR_LOCAL;
-                    decl_list_var(nome_def);
+                    vl = decl_list_var(nome_def);
+                    variaveis_locais += vl;
                 } 
-
+                
+                if(variaveis_locais != 0){ fprintf(proc_obj_file, "AMEM %d\n", variaveis_locais); }
+               
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
                     if(rcv_token.codigo == ENDP){ break; }
                     cmd(nome_def);
@@ -920,9 +950,12 @@ void def(){
                     error("ERRO SINTATICO > era esperado o término do procedimento com 'endp'");
                 } else {
                     transformar_zumbi(procura_posicao_proc(nome_def));
-                    apagar_var_locais(procura_posicao_proc(nome_def));
+                    apagar_var_locais();
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
+
+                    if(variaveis_locais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_locais); }
+                    fprintf(proc_obj_file, "RET 1, %d\n", cont_param_essa_def);
                 }
             }
         }
