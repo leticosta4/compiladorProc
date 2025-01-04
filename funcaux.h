@@ -16,4 +16,5 @@ int associa_tipos_compat(int tipo_base, int tipo_cmp);
 int gera_label();
 int busca_retorna_label(char nome_busca[]);
 registro_tabsimb atribui_endereco_var(registro_tabsimb token_var);
+void atribui_endereco_param(int pos);
 #endif

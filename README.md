@@ -160,6 +160,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] global
     - [x] local 
 - [x] enderecos corretamente
+    - [x] variaveis
+    - [x] parametros
 - [ ] labels
 - [ ] while
 - [ ] if

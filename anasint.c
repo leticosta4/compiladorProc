@@ -64,7 +64,7 @@ void prog(){
     init_label = busca_retorna_label("init"); 
     if(init_label > 0){ fprintf(proc_obj_file, "CALL L%d\n", init_label); }
     if(variaveis_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_globais); }
-    fprintf(proc_obj_file, "HALT\n");
+    fprintf(proc_obj_file, "HALT");
 }
 
 int decl_list_var(char possivel_proced[]){
@@ -713,7 +713,7 @@ void decl_var(char possivel_proced[]){
 
 //vindas do decl_def_prot
 void prot(){
-    int ca = 0, _cd = 1, com_param = 0; 
+    int ca = 0, _cd = 1, com_param = 0, pos_prot;
 
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
@@ -723,6 +723,7 @@ void prot(){
     } else if(rcv_token.categoria == ID){ //idproc
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token);
+        pos_prot = tabela_simbolos.topo;
         inserir_tabsimb(info_token); //insercao do prototipo de procedimento
 
         rcv_token = AnaLex(arqivoProc);
@@ -768,7 +769,7 @@ void prot(){
                 if(com_param != 1){ inserir_tabsimb(info_token); } //insercao do parametro de prototipo se realmente tiver
             } while(1);
     
-            if(com_param != 1){ inserir_tabsimb(info_token); } //insercao do parametro de prototipo se realmente tiver - ultimo dps da virgula
+            if(com_param != 1){ inserir_tabsimb(info_token); atribui_endereco_param(pos_prot); } //insercao do parametro de prototipo se realmente tiver - ultimo dps da virgula
 
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado o fechamento do parenteses");
@@ -938,7 +939,9 @@ void def(){
                                 error("ERRO SEMANTICO > a quantidade de parametros de prototipo e de procedimento devem ser a mesma");
                             }
                             verifica_redecl_param(procura_posicao_proc(nome_def), info_token.lexema); //e se esse parametro ta repetido ou n
-                            if(substituir_prot == -1){ inserir_tabsimb(info_token); //insercao do procedimento - NOVO
+                            if(substituir_prot == -1){
+                                inserir_tabsimb(info_token); //insercao do parametro de procedimento - NOVO
+                                atribui_endereco_param(procura_posicao_proc(nome_def));
                             } else{
                                 substituir_parametros_prot_proc_testar_compat_tipos(substituir_prot, info_token, 0); //verificacao da compatibilidae de tipo embutida aqui
                             }

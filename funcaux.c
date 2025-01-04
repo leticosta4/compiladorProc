@@ -79,3 +79,14 @@ registro_tabsimb atribui_endereco_var(registro_tabsimb token_var){
     }
     return  token_var;
 }
+
+void atribui_endereco_param(int pos){
+    int end_param = -3;
+    
+    for(int i = tabela_simbolos.topo - 1; i > pos; i--){
+        if(tabela_simbolos.linhas[i].categoria != PARAMETRO){break;} //talvez tirar dps
+        tabela_simbolos.linhas[i].endereco[0] = 1;
+        tabela_simbolos.linhas[i].endereco[1] = end_param;
+        end_param--;
+    }
+}
