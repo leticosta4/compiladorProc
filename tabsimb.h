@@ -61,11 +61,10 @@ void remover_tabsimb();
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced);
 void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_veio_do);
 int contar_params(int posicao_prot_def);
-void apagar_var_locais(int posicao_def);
 void transformar_zumbi(int posicao_def);
 void printar_tabsimb();
 void verifica_compatibilidade_tipo_decl(TOKEN tk, registro_tabsimb info_tk);
 void prototipo_sozinho();
 registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedimento, char nome_identificador[]);
-void verificacao_final_var_local();
+void apagar_var_locais();
 #endif

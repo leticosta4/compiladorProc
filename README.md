@@ -8,9 +8,6 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] bugfix:
     - [x] anasint
     - [x] tabsimb
-- exemplo de <b>fragilidade</b>:
-    
-    se colocar um procedimento novo embaixo do procedimento soma no arquivo `teste3.proc` ele buga a tabela de simbolos e passa a deixar var_local ainda
 
 ## analise sintatica - gramática
 - [x] prog
@@ -93,9 +90,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] aql ngcio la do contlinha
 - [x] manipulacao de var locais na tabela de simbolos > gambiarra
     - [x] em `procura_existencia_identificador_em_proced` : reconhecimento identificadores
-    - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada
+    - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada > foi refinado
 - [x] quantidade de parametros na chamada do do
-- [ ] camuflar bug da primeira variavel no print da tabela
+- [x] primeira variavel local nao era apagada
 
 ### regras
 - [x] buscar REDECLARACAO

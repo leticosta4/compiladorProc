@@ -812,7 +812,7 @@ void def(){
         if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDP)){
             error("ERRO SINTATICO > era esperado o término do bloco init com 'endp'");
         } else {
-            apagar_var_locais(procura_posicao_proc("init")); 
+            apagar_var_locais();
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
@@ -950,7 +950,7 @@ void def(){
                     error("ERRO SINTATICO > era esperado o término do procedimento com 'endp'");
                 } else {
                     transformar_zumbi(procura_posicao_proc(nome_def));
-                    apagar_var_locais(procura_posicao_proc(nome_def));
+                    apagar_var_locais();
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
 
