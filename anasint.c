@@ -492,7 +492,7 @@ int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
 
 int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
     int cont_d = 1, tipo_fator, tipo_indice_array, cat_temp, rel_logica = 0;
-
+    
     switch (rcv_token.categoria){
         case ID:
             info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema); 
@@ -1068,11 +1068,12 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
 }
 
 void _while(char em_qual_proced[]){
-    int tipo_expr_cond;
+    int tipo_expr_cond, label_while = 0, label_saida_while = 0;
     if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
         error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
     } else {
-        //chamar o print da label do while
+        label_while = gera_label();
+        fprintf(proc_obj_file, "LABEL L%d\n", label_while);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -1084,18 +1085,24 @@ void _while(char em_qual_proced[]){
             if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                 error("ERRO SINTATICO > era esperado um ')' após a expressão no while");
             } else{
+                //verificacao se foi true ou false a expr?
+                label_saida_while = gera_label();
+                fprintf(proc_obj_file, "GOFALSE L%d\n", label_saida_while);
+
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                     cmd(em_qual_proced);
                     consome_fim_exp();
+                    fprintf(proc_obj_file, "GOTO L%d\n", label_while);
                     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){ break; }
                     //analex é chamado de novo no final da função - n precisa chamar aqui
                 }
                 if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
                     error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
                 } 
+                fprintf(proc_obj_file, "LABEL L%d\n", label_saida_while);
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             }

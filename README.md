@@ -74,9 +74,11 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] limitar dimensao de array no parametro com def e prot
 - [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
-- [ ] checar inicializaacao de variaveis locais para cada funcao
+- [ ] checar inicializacao de variaveis locais para cada funcao
+- [ ] resolver coisa de se n colocar o end_
 
 ## dúvidas
+- endereçamento de parametro 
 
 ## analise semantica    
 ### bugs
@@ -163,7 +165,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] variaveis
     - [x] parametros
 - [ ] labels
-- [ ] while
+- [x] while
 - [ ] if
 - [ ] elif
 - [ ] else
@@ -174,6 +176,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] menor que
 - [ ] and logico
 - [ ] or logico
+- [ ] gets
+- [ ] puts
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 

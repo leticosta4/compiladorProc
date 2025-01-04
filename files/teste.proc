@@ -7,6 +7,10 @@ endp
 	
 def init
 	int c = 2
-    int d, e
-	do p(c)
+    //int d, e
+	//do p(c)
+
+    while(c < 10)
+        c = c + 1
+    endw
 endp
