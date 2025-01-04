@@ -151,7 +151,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] uma expressao entre colchetes deve ser do tipo int
     - [x] tipo boolean para a expr condicional de if, elif e while
 - [ ] se n tiver o init ele deve ser só COMPILADO mas n EXECUTADO (?)
-- [ ] var (DEPENDE DA MAQ DE PILHA)
+- [ ] var (DEPENDE DA MAQ DE PILHA)  >> 291 @ `anasiint.c`
     - [ ] usou TO: expr1 < expr2
     - [ ] usou DT: expr1 > expr2
 

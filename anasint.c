@@ -55,7 +55,7 @@ void decl_list_var(char possivel_proced[]){
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
-    info_token = limpar_dimensoes_array(info_token); //algo que limpe as dimensoes do array p n sobrescrever
+    info_token = limpar_dimensoes_array(info_token); 
     info_token.constante = NAO; //se for dps altera
     //endereço é adicionado na função de inserção na tabela
 
@@ -288,7 +288,7 @@ void cmd(char procedimento[]){
                             }
                             tipo_expr_var[1] = expr(procedimento); //expr2
 
-                            //ANALISE SEMANTICA VER A CONDICAO DE QUAL EXPR TEM  SER MAIOR - provavelmente uma funcao(clausula)
+                            //ANALISE SEMANTICA VER A CONDICAO DE QUAL EXPR TEM SER MAIOR - provavelmente uma funcao(clausula) - MAQUINA DE PILHA
 
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == BY){
@@ -327,7 +327,7 @@ void cmd(char procedimento[]){
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         tipo_atrib_id = atrib(procedimento); //esse atrib ja faz o cmd terminar com processamento de token
-        //verificacao da compatibilidade de tipoo aqui
+       
         if(associa_tipos_compat(tipo_identificador, tipo_atrib_id) != 0){
             error("ERRO SEMÂNTICO > identificador deve receber atribuição de tipo compatível");
         }
@@ -341,9 +341,8 @@ void cmd(char procedimento[]){
 }
 
 int atrib(char p[]){ //ja chega processado
-    int d_cont = 1, tipo_atribuicao, tipo_indice_array;
-    //printf("início de uma atribuição: < atrib >\n\n");
-    
+    int d_cont = 1, tipo_atribuicao, tipo_indice_array;    
+
      if(rcv_token.categoria != SNL){ error("ERRO SINTATICO > termo inválido após identificador para atribuição"); }
 
      else{
@@ -356,7 +355,6 @@ int atrib(char p[]){ //ja chega processado
                     error("ERRO SINTATICO > era esperado termo para inicio de epressão");
                 }
 
-                //logica p tabela de simbolos?
                 tipo_indice_array = expr(p); 
                 if(tipo_indice_array != _INT){ //talvez tb possa char
                     error("ERRO SEMANTICO > a expressão usada como índice no array deve ter tipo int");
@@ -384,8 +382,7 @@ int atrib(char p[]){ //ja chega processado
             if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != STRINGCON && rcv_token.categoria != SNL){
                 error("ERRO SINTATICO > era esperado termo para inicio de epressão");
             }
-            tipo_atribuicao = expr(p); 
-            //ja finaliza processado
+            tipo_atribuicao = expr(p); //ja finaliza processado
         } else {
             error("ERRO SINTATICO > era esperado um '=' para atribuição");
         }
@@ -400,9 +397,8 @@ int expr(char p[]){ //ja chega processado
 
     //ja veio processado do final de fator < final de termo < final de expr_simples
     seguir = op_rel();
-    //ja veio processado do final de op_rel
 
-    if(seguir != -1){
+    if(seguir != -1){ //ja veio processado do final de op_rel
         tipo_expressoes[1] = expr_simples(p);
     
         if(associa_tipos_compat(tipo_expressoes[0], tipo_expressoes[1]) != 0){
@@ -478,7 +474,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
         case ID:
             info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema); 
             tipo_fator = info_token.tipo;
-            if(tipo_fator == _BOOL){ identificador_bool = 1; } //temporario
+            if(tipo_fator == _BOOL){ identificador_bool = 1; } 
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
@@ -511,7 +507,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
             }
             break;
         case INTCON:
-            tipo_fator = _INT; //talvez vire bool depois?
+            tipo_fator = _INT; 
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -522,7 +518,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
             break;
         case CHARCON:
         case STRINGCON:
-            tipo_fator = _CHAR; //talvez vire bool depois?
+            tipo_fator = _CHAR; 
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -534,7 +530,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
                     cat_temp = rcv_token.categoria;
                     tipo_fator = expr(p); 
 
-                    if(cat_temp == ID){ if(tipo_fator == _BOOL){ identificador_bool = 1; }} //temporario
+                    if(cat_temp == ID){ if(tipo_fator == _BOOL){ identificador_bool = 1; }} 
 
                     if(rcv_token.codigo != FECHA_PAREN){
                         error("ERRO SINTATICO > era esperado um ')' após a expressão");
@@ -547,9 +543,8 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
                 rel_logica = 1;
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
-                tipo_fator = fator(p); //é isso mesmo?
-                //rcv_token = AnaLex(arqivoProc);
-                //consome_fim_exp();
+                tipo_fator = fator(p);
+                //tinha chamada de analex aqui antes
             } else { error("ERRO SINTATICO > sinal invalido encontrado em fator"); }
             break;
     }
@@ -661,7 +656,7 @@ void decl_var(char possivel_proced[]){
                 if(!(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON)){
                     error("era esperado um charcon, realcon ou intcon após '{'");
                 }
-                verifica_compatibilidade_tipo_decl(rcv_token, info_token); //testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                verifica_compatibilidade_tipo_decl(rcv_token, info_token);
                 do{
                      cat = valor_var();
                     if(rcv_token.categoria = SNL && rcv_token.codigo == VIRGULA){ 
@@ -675,7 +670,7 @@ void decl_var(char possivel_proced[]){
                     consome_fim_exp();
                 } else { error("ERRO SINTATICO > erra esperado fechamento do '{' com '}'"); }
             } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
-                verifica_compatibilidade_tipo_decl(rcv_token, info_token); //testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                verifica_compatibilidade_tipo_decl(rcv_token, info_token); 
                 confere_atrib_constante(); 
 
                 rcv_token = AnaLex(arqivoProc);
@@ -843,7 +838,7 @@ void def(){
                                 info_token = limpar_dimensoes_array(info_token);
                                 passagem_end_tipo();
 
-                                if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } //ISSO NAO É OBRIGATORIO
+                                if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador após a declaração do tipo"); } 
                                 else{
                                     strcpy(info_token.lexema, rcv_token.lexema);//salvar na tabela se for ID
                                     rcv_token = AnaLex(arqivoProc);
@@ -954,7 +949,7 @@ void passagem_end_tipo(){
 
 //vindas do cmd
 void _do(char em_qual_proced[]){ //o token ja chega processado
-    int passou_expr = 0, cont_param_chamada = 0, cont_param_orig = 0, pos, tipo_param; //temporario 
+    int passou_expr = 0, cont_param_chamada = 0, cont_param_orig = 0, pos, tipo_param; 
 
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado identificador para chamada de procedimento");} 
     else{ //idproc  
@@ -1004,7 +999,6 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
                     if(cont_param_chamada != cont_param_orig){
                         error("ERRO SEMANTICO > a quantidade de parametros do procedimento deve ser compatível com a de seu prototipo ou definição");
                     }
-                    //fzr a verificacao do tipo
 
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
