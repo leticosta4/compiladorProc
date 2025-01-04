@@ -77,6 +77,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] limitar dimensao de array no parametro com def e prot
 - [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
+- [ ] checar inicializaacao de variaveis locais para cada funcao
 
 ## dúvidas
 
@@ -160,9 +161,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] INIPR 1 E RET 1, <qtdParams>
     - [x] randomly
     - [ ] proper way
-- [ ] AMEM E DMEM
+- [x] AMEM E DMEM
     - [x] global
-    - [ ] local (começa a dar problema nos parametros de procedimento wtf?)
+    - [x] local 
 - [ ] enderecos corretamente (me fudi)
 - [ ] while
 - [ ] if
@@ -175,3 +176,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] menor que
 - [ ] and logico
 - [ ] or logico
+
+### bugs
+- [x] em decl_list_var n ta retornando o valor certo de variaveis 
+- [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM

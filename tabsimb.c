@@ -111,7 +111,7 @@ void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 
-    //printar_tabsimb();
+    printar_tabsimb();
 }
 
 void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, registro_tabsimb token_param_proced, int flag_veio_do){

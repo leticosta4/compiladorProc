@@ -34,7 +34,7 @@ void confere_atrib_constante(){
 }
 
 void prog(){
-    int var_globais = 0;
+    int var_globais = 0, vg = 0;
     proc_obj_file = fopen("proc_obj_file._obj", "w");
     consome_fim_exp();
 
@@ -42,13 +42,14 @@ void prog(){
     fprintf(proc_obj_file, "INIP\n");
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
+        var_globais++;
         info_token.escopo = GLOBAL;
         info_token.categoria = VAR_GLOBAL;
         info_token.tem_prototipo = NAO_APLICA_PROT;
 
-        decl_list_var("");
-        var_globais++;
+        vg = decl_list_var("");
     }
+    var_globais += vg;
     if(var_globais != 0){ fprintf(proc_obj_file, "AMEM %d\n", var_globais); }
 
 
@@ -65,7 +66,8 @@ void prog(){
     fprintf(proc_obj_file, "HALT\n");
 }
 
-void decl_list_var(char possivel_proced[]){
+int decl_list_var(char possivel_proced[]){
+    int variaveis = 0;
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
@@ -81,13 +83,16 @@ void decl_list_var(char possivel_proced[]){
 
     tipo();
     decl_var(possivel_proced);
-    
+    variaveis+=1;
+
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp(); 
         decl_var(possivel_proced);   
+        variaveis+=1;
     }
     consome_fim_exp();
+    return variaveis;
 }
 
 void decl_def_proc(){
@@ -702,7 +707,7 @@ void decl_var(char possivel_proced[]){
 
 //vindas do decl_def_prot
 void prot(){
-    int ca, _cd = 1, com_param; 
+    int ca = 0, _cd = 1, com_param = 0; 
 
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
@@ -772,8 +777,7 @@ void prot(){
 }
 
 void def(){
-    int cate, cd = 1, substituir_prot, cont_param_essa_def = 0, cont_param_proto = 0; //substituir_prot é a posição do prototipo
-
+    int cate = 0, cd = 1, substituir_prot = -2, cont_param_essa_def = 0, cont_param_proto = 0, variaveis_locais = 0, vl = 0; //substituir_prot é a posição do prototipo
     rcv_token = AnaLex(arqivoProc); 
     consome_fim_exp();
     
@@ -793,9 +797,11 @@ void def(){
             info_token.escopo = LOCAL;
             info_token.categoria = VAR_LOCAL;
 
-            decl_list_var("init");
+            vl = decl_list_var("init");
+            variaveis_locais += vl;
         } 
-        //amem locais
+        if(variaveis_locais != 0){ fprintf(proc_obj_file, "AMEM %d\n", variaveis_locais); }
+
         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
             if(rcv_token.codigo == ENDP){ break; }
             cmd("init");
@@ -810,6 +816,7 @@ void def(){
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
+            if(variaveis_locais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_locais); }
             fprintf(proc_obj_file, "RET 1, 0\n");
         }
     } else if(rcv_token.categoria == ID){
@@ -928,9 +935,12 @@ void def(){
     
                 while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == CONST || rcv_token.codigo == INT || rcv_token.codigo == CHAR || rcv_token.codigo == REAL || rcv_token.codigo == BOOL)){
                     info_token.categoria = VAR_LOCAL;
-                    decl_list_var(nome_def);
+                    vl = decl_list_var(nome_def);
+                    variaveis_locais += vl;
                 } 
-                //amem var locais
+                
+                if(variaveis_locais != 0){ fprintf(proc_obj_file, "AMEM %d\n", variaveis_locais); }
+               
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){ //cmd
                     if(rcv_token.codigo == ENDP){ break; }
                     cmd(nome_def);
@@ -944,6 +954,7 @@ void def(){
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
 
+                    if(variaveis_locais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_locais); }
                     fprintf(proc_obj_file, "RET 1, %d\n", cont_param_essa_def);
                 }
             }
