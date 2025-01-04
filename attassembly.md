@@ -17,10 +17,8 @@ if(\<expr1>)
 { \<cmd1>}
 elif(\<expr2>)
 { \<cmd2>}
-elif(\<expr3>)
-{ \<cmd3>}
 else
-{ \<cmd4>}
+{ \<cmd3>}
 endi
 
     [cod expr1]
