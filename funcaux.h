@@ -12,4 +12,6 @@ void consome_fim_exp();
 void debug(char onde[]);
 void busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(TOKEN sus_token, int escopo_var);
 int associa_tipos_compat(int tipo_base, int tipo_cmp);
+int gera_label();
+int busca_retorna_label(char nome_busca[]);
 #endif

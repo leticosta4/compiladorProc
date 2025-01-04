@@ -49,13 +49,14 @@ int associa_tipos_compat(int tipo_base, int tipo_cmp){
     return 0;
 }
 
-//temporario para a parte da GERACAO DE CODIGO - MAQUINA DE PILHA
-// void gera_label(char *label){
-//     char strcont[10];
-//     static int cont = 1;
+//ver como modelar ainda
+int gera_label(){
+    static int cont_label = 1; //a 1 ja foi colocada estaticamente 
+    cont_label++;
+    return cont_label; //esse retorno vai ser concatenado com o 
+}
 
-//     strcpy(label, "L");
-//     itoa(cont, strcont, 10);
-//     strcat(label, strcont);
-//     cont++;
-// }
+int busca_retorna_label(char nome_busca[]){
+    for(int i = 0; i <= tabela_simbolos.topo; i++){
+        if(strcmp(tabela_simbolos.linhas[i].lexema, nome_busca) == 0){ return tabela_simbolos.linhas[i].rotulo; }}
+}

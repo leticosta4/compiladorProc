@@ -10,7 +10,7 @@
 #include "tabsimb.h"
 
 registro_tabsimb info_token;
-int identificador_bool = -1;
+int identificador_bool = -1, label_desvio_call_init = 0;
 FILE *proc_obj_file;
 
 int valor_var(){
@@ -34,7 +34,7 @@ void confere_atrib_constante(){
 }
 
 void prog(){
-    int var_globais = 0, vg = 0;
+    int var_globais = 0, vg = 0, init_label;
     proc_obj_file = fopen("proc_obj_file._obj", "w");
     consome_fim_exp();
 
@@ -51,7 +51,7 @@ void prog(){
     }
     var_globais += vg;
     if(var_globais != 0){ fprintf(proc_obj_file, "AMEM %d\n", var_globais); }
-
+    fprintf(proc_obj_file, "GOTO L1\n"); //DESVIO DE LABEL 
 
     while(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == PROT || rcv_token.codigo == DEF)) {
         decl_def_proc(); 
@@ -61,8 +61,10 @@ void prog(){
     busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 0);
     prototipo_sozinho();
 
-    //call da label do init caso exista
-    if(var_globais != 0){ fprintf(proc_obj_file, "\nDMEM %d\n", var_globais); }
+    fprintf(proc_obj_file, "\nLABEL %d\n", label_desvio_call_init);
+    init_label = busca_retorna_label("init"); 
+    if(init_label > 0){ fprintf(proc_obj_file, "CALL L%d\n", init_label); }
+    if(var_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", var_globais); }
     fprintf(proc_obj_file, "HALT\n");
 }
 
@@ -777,18 +779,27 @@ void prot(){
 }
 
 void def(){
-    int cate = 0, cd = 1, substituir_prot = -2, cont_param_essa_def = 0, cont_param_proto = 0, variaveis_locais = 0, vl = 0; //substituir_prot é a posição do prototipo
+    int cate = 0, cd = 1, substituir_prot = -2, cont_param_essa_def = 0, cont_param_proto = 0, variaveis_locais = 0, vl = 0, label_init = 0, label_def = 0; //substituir_prot é a posição do prototipo
     rcv_token = AnaLex(arqivoProc); 
     consome_fim_exp();
     
     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == INIT){
-        fprintf(proc_obj_file, "\nINIPR 1\n");
+        fprintf(proc_obj_file, "\nLABEL L1\n");
+        label_desvio_call_init = gera_label();
+        fprintf(proc_obj_file, "GOTO L%d\n", label_desvio_call_init); //DESVIO DE LABEL 
+        
+        label_init = gera_label();
+        fprintf(proc_obj_file, "\nLABEL L%d\n", label_init); //a label da main
+        fprintf(proc_obj_file, "INIPR 1\n");
 
+        //atribuicoa de endereco correta e
+        info_token.rotulo = label_init;
         info_token.tem_prototipo = NAO_APLICA_PROT;
         strcpy(info_token.lexema, "init");
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); 
         inserir_tabsimb(info_token); //insercao do procedimento init
+        info_token.rotulo = 0; //zerando
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -823,8 +834,11 @@ void def(){
         char nome_def[TAM_MAX_LEXEMA];
         strcpy(nome_def, rcv_token.lexema);
 
-        fprintf(proc_obj_file, "\nINIPR 1\n");
+        label_def = gera_label();
+        fprintf(proc_obj_file, "\nLABEL L%d\n", label_def); 
+        fprintf(proc_obj_file, "INIPR 1\n");
 
+        info_token.rotulo = label_def;
         strcpy(info_token.lexema, rcv_token.lexema);
         verifica_redeclaracao(info_token); //verifica redeclaração do procedimento (lexema e dps categoria)
         info_token = limpar_dimensoes_array(info_token); 
@@ -840,7 +854,7 @@ void def(){
             cont_param_proto = contar_params(substituir_prot); //tem prototipo
             substituir_prot_proc(substituir_prot, info_token);
         }
-        
+        info_token.rotulo = 0;
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -1051,6 +1065,8 @@ void _while(char em_qual_proced[]){
     if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
         error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
     } else {
+        //chamar o print da label do while
+
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         if(rcv_token.categoria == SNL || rcv_token.categoria == ID || rcv_token.categoria == INTCON || rcv_token.categoria == REALCON || rcv_token.categoria == CHARCON){

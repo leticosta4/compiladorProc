@@ -39,7 +39,7 @@ typedef struct{
     EH_CONST constante;
     VALOR_CONST valor_constante;
     int endereco;
-    //rotulo;
+    int rotulo;
     TEM_PROT tem_prototipo;
 }registro_tabsimb;
 
