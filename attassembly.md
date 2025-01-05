@@ -188,12 +188,12 @@ para <b>DIFERENTE</b>  é só trocar os `PUSH`es
     GOTRUE L1   //se for maior que 0, a > b, condição falsa
     GOFALSE L2  //se 0, a == b, condição falsa
     PUSH 1      //nenhum desses 2 casos, condição verdadeira 
-    GOTO L2
+    GOTO L3
     LABEL L1
     POP
     LABEL L2
     PUSH 0
-    LABEL 3
+    LABEL L3
     ...
 
 ## PONTAS DO PROGRAMA

@@ -60,7 +60,7 @@ void prog(){
     busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(rcv_token, 0);
     prototipo_sozinho();
 
-    fprintf(proc_obj_file, "\nLABEL %d\n", label_desvio_call_init);
+    fprintf(proc_obj_file, "\nLABEL L%d\n", label_desvio_call_init);
     init_label = busca_retorna_label("init"); 
     if(init_label > 0){ fprintf(proc_obj_file, "CALL L%d\n", init_label); }
     if(variaveis_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_globais); }
@@ -430,7 +430,7 @@ int atrib(char p[]){ //ja chega processado
 }
 
 int expr(char p[]){ //ja chega processado
-    int seguir, tipo_expressoes[2], tipo_final_expr;
+    int seguir, tipo_expressoes[2], tipo_final_expr, labels_op_rel[2], label_extra_comp = 0;
     
     tipo_expressoes[0] = expr_simples(p);
 
@@ -443,6 +443,33 @@ int expr(char p[]){ //ja chega processado
         if(associa_tipos_compat(tipo_expressoes[0], tipo_expressoes[1]) != 0){
             error("ERRO SEMÂNTICO > não é possível comparação entre tipos não compatíveis");
         } else { tipo_final_expr = _BOOL; }
+
+        //adaptar ainda como lidar com expr1 e expr2
+        labels_op_rel[0] = gera_label();
+        labels_op_rel[1] = gera_label();
+        
+        switch(seguir){
+            case COMP_IGUALDADE:
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                break;
+            case COMP_DIFERENTE:
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                break;
+            case MAIOR_IGUAL:
+                label_extra_comp = gera_label();
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 1\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
+                break;
+            case MENOR_QUE:
+                label_extra_comp = gera_label();
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 0\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
+                break;
+            case MENOR_IGUAL:
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOTRUE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                break;
+            case MAIOR_QUE:
+                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOTRUE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                break;
+        }
     } else {tipo_final_expr = tipo_expressoes[0]; }
 
     printf("\nteste tipo expr: %d\n", tipo_final_expr);
@@ -592,6 +619,7 @@ int fator(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
 }
 
 int op_rel(){ //ja chega processado de expr
+    int codigo_operador = 0;
     if(rcv_token.categoria == SNL && (
         rcv_token.codigo == COMP_IGUALDADE ||
         rcv_token.codigo == COMP_DIFERENTE ||
@@ -600,10 +628,11 @@ int op_rel(){ //ja chega processado de expr
         rcv_token.codigo == MENOR_IGUAL ||
         rcv_token.codigo == MENOR_QUE
     )){
+        codigo_operador = rcv_token.codigo;
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
 
-        return rcv_token.codigo;
+        return codigo_operador;
     } else{ return -1; }
 }
 
@@ -1089,7 +1118,7 @@ void _while(char em_qual_proced[]){
         error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
     } else {
         label_while = gera_label();
-        fprintf(proc_obj_file, "LABEL L%d\n", label_while);
+        fprintf(proc_obj_file, "\nLABEL L%d\n", label_while);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -1103,7 +1132,7 @@ void _while(char em_qual_proced[]){
             } else{
                 //verificacao se foi true ou false a expr?
                 label_saida_while = gera_label();
-                fprintf(proc_obj_file, "GOFALSE L%d\n", label_saida_while);
+                fprintf(proc_obj_file, "\nGOFALSE L%d\n", label_saida_while);
 
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
@@ -1118,7 +1147,7 @@ void _while(char em_qual_proced[]){
                 if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
                     error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
                 } 
-                fprintf(proc_obj_file, "LABEL L%d\n", label_saida_while);
+                fprintf(proc_obj_file, "\nLABEL L%d\n", label_saida_while);
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             }

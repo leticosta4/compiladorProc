@@ -170,17 +170,22 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] elif ~
 - [x] else
 - [ ] var
-- [ ] comp igualdade
-- [ ] comp diferença
-- [ ] maior que
-- [ ] menor que
-- [ ] and logico
-- [ ] or logico
+- [x] comp igualdade 
+- [x] comp diferença 
+- [x] maior que 
+- [x] menor que 
+- [ ] and logico ~ 
+- [ ] or logico ~
+- [ ] negacao
 - [ ] gets
 - [ ] puts
+- [ ] aritmetica
+- [ ] aritmetica ponot flutuante
+- [ ] atribuicao (loads e stor)
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
 - [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM
 - [x] variaveis globais estavam sendo contadas de forma errada
 - [ ] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
+- [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente

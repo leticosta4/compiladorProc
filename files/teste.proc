@@ -6,11 +6,11 @@ def p(int c)
 endp
 	
 def init
-	int c = 2
+	int c = 2, a, b
     //int d, e
 	//do p(c)
 
-    if(c < 10)
+    while(a <= b)
         c = c + 1
-    endi
+    endw
 endp
