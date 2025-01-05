@@ -10,7 +10,7 @@ def init
     //int d, e
 	//do p(c)
 
-    while(a <= b)
+    while(!(a > b))
         c = c + 1
     endw
 endp

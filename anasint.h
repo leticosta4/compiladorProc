@@ -24,7 +24,7 @@ int atrib(char p[]);
 int expr(char p[]);
 int expr_simples(char p[]);
 int termo(char p[]);
-int fator(char p[]);
+int fator(char p[], int negacao);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();
