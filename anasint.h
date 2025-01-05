@@ -36,4 +36,5 @@ void passagem_end_tipo();
 //vindas do cmd
 void _do(char em_qual_proced[]);
 void _while(char em_qual_proced[]);
+void _gets(int tipo_get);
 #endif 

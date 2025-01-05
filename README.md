@@ -76,9 +76,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tratamentos chatos
 - [ ] checar inicializacao de variaveis locais para cada funcao
 - [ ] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
+- [x] modularizar os gets de cmd
 
 ## dúvidas
-- endereçamento de parametro 
+- ainda devo deixar o getstr e o putstr (na maquina de pilha existe comando equivalente p char unico)
 
 ## analise semantica    
 ### bugs
@@ -177,8 +178,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] and logico ~ 
 - [ ] or logico ~
 - [x] negacao
-- [ ] gets
-- [ ] puts
+- [x] gets
+- [x] puts
 - [ ] aritmetica
 - [ ] aritmetica ponot flutuante
 - [ ] atribuicao (loads e stor)

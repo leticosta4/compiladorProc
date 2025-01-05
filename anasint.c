@@ -152,23 +152,23 @@ void cmd(char procedimento[]){
             case GETREAL:
             case GETCHAR:
             case GETSTR:
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador para input com get"); }
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
+                _gets(rcv_token.codigo);
                 break;
             case PUTINT:
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
+                //vai ter o load do identificador ou o push do intcon aqui antes 
+                fprintf(proc_obj_file, "PUT_I\n");
                 rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
+                consome_fim_exp(); 
                 break;
             case PUTREAL:
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
+                //vai ter o load do identificador ou o push do realcon aqui antes 
+                fprintf(proc_obj_file, "PUT_F\n"); 
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 break;
@@ -176,6 +176,8 @@ void cmd(char procedimento[]){
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
+                //vai ter o load do identificador ou o push do charcon aqui antes 
+                fprintf(proc_obj_file, "PUT_C\n");
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 break;
@@ -183,6 +185,8 @@ void cmd(char procedimento[]){
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
+                //vai ter o load do identificador ou o push do stringcon aqui antes 
+                fprintf(proc_obj_file, "PUT_C\n");
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
                 break;
@@ -252,7 +256,7 @@ void cmd(char procedimento[]){
                                         error("ERRO SEMANTICO > o tipo da expressão para o elif deve ser booleana");
                                     }
                                     identificador_bool = -1; //reinicializando p n dar merda
-                                    
+
                                     //ja veio processado do final de fator < final de termo < final de expr_simples
                                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                                         error("ERRO SINTATICO > era esperado um ')' após expressão do elif");
@@ -1162,4 +1166,25 @@ void _while(char em_qual_proced[]){
             }
         } else{ error("ERRO SINTATICO > era esperada uma expressão após '('"); }
     }
+}
+
+void _gets(int tipo_get){
+    switch(tipo_get){
+        case GETINT:
+            fprintf(proc_obj_file, "GET_I\n");
+            break;
+        case GETREAL:
+            fprintf(proc_obj_file, "GET_F\n");
+            break;
+        case GETCHAR:
+        case GETSTR:
+            fprintf(proc_obj_file, "GET_C\n");
+            break;
+    }
+    rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp();
+    if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador para input com get"); }
+    rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp();
+    //vai ter o stor desse identificador consumido
 }

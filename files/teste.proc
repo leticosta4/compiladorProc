@@ -9,8 +9,11 @@ def init
 	int c = 2, a, b
     //int d, e
 	//do p(c)
+    getint a
 
     while(!(a > b))
         c = c + 1
     endw
+
+    putint b
 endp

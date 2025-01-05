@@ -6,3 +6,7 @@ colocar o nome do arquivo desejado para leitura pelo compilador nas segundas lin
 comando para compilar o projeto e rodar o executavel:
 
 - gcc proc.c analex.c anasint.c funcaux.c tabsimb.c -o proclang && ./proclang
+
+observação:
+    por enquanto, já que a minha máquina de pilha ainda não lida com alocação de vetores e matrizes, ao usar uma string (vetor de char), junto com 'getstr' ou 'putstr'
+    é colocado O GET_C UO PUT_C como equivalente
