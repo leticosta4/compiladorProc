@@ -37,4 +37,5 @@ void passagem_end_tipo();
 void _do(char em_qual_proced[]);
 void _while(char em_qual_proced[]);
 void _gets(int tipo_get);
+void _puts(int tipo_put);
 #endif 

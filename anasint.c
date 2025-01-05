@@ -155,40 +155,10 @@ void cmd(char procedimento[]){
                 _gets(rcv_token.codigo);
                 break;
             case PUTINT:
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
-                //vai ter o load do identificador ou o push do intcon aqui antes 
-                fprintf(proc_obj_file, "PUT_I\n");
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp(); 
-                break;
             case PUTREAL:
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
-                //vai ter o load do identificador ou o push do realcon aqui antes 
-                fprintf(proc_obj_file, "PUT_F\n"); 
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                break;
             case PUTCHAR:
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
-                //vai ter o load do identificador ou o push do charcon aqui antes 
-                fprintf(proc_obj_file, "PUT_C\n");
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                break;
             case PUTSTR:
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
-                if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
-                //vai ter o load do identificador ou o push do stringcon aqui antes 
-                fprintf(proc_obj_file, "PUT_C\n");
-                rcv_token = AnaLex(arqivoProc);
-                consome_fim_exp();
+                _puts(rcv_token.codigo);
                 break;
             case DO: 
                 rcv_token = AnaLex(arqivoProc);
@@ -1187,4 +1157,38 @@ void _gets(int tipo_get){
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
     //vai ter o stor desse identificador consumido
+}
+
+void _puts(int tipo_put){
+    rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp();
+    if(rcv_token.categoria == ID){
+        //funcao que retorna o vetor com os endereços relativos
+        //fprintf(proc_obj_file, "LOAD %d, %d", ); //printar o endereço relativo do identificador
+    }  
+
+    switch (tipo_put){
+        case PUTINT:
+            if(rcv_token.categoria == INTCON){ /*fprintf(proc_obj_file, "PUSH %d", ); //tem que printar esse intcon*/ } 
+            if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
+            fprintf(proc_obj_file, "PUT_I\n");
+            break;
+        case PUTREAL:
+            if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
+            //se for realcon n sei como dá push ja q é ponto flutuante 
+            fprintf(proc_obj_file, "PUT_F\n"); 
+            break;
+        case PUTCHAR:
+            if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
+            //se for charcon n sei como dá push 
+            fprintf(proc_obj_file, "PUT_C\n");
+            break;
+        case PUTSTR:
+            if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
+            //se for stringcon n sei como dá push 
+            fprintf(proc_obj_file, "PUT_C\n");
+            break;
+    }
+    rcv_token = AnaLex(arqivoProc);
+    consome_fim_exp(); 
 }

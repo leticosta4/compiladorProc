@@ -76,7 +76,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] tratamentos chatos
 - [ ] checar inicializacao de variaveis locais para cada funcao
 - [ ] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
-- [x] modularizar os gets de cmd
+- [x] modularizar os gets e puts de cmd
 
 ## dúvidas
 - ainda devo deixar o getstr e o putstr (na maquina de pilha existe comando equivalente p char unico)
