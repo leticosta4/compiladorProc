@@ -181,13 +181,15 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] negacao
 - [x] gets
 - [x] puts
-- [ ] aritmetica
-- [ ] aritmetica ponto flutuante
+- [x] aritmetica
+- [x] aritmetica ponto flutuante
 - [x] loads e stor
     - [x] atribuicao 
     - [x] gets e puts
+    - [ ] declaração variavel
 - [x] como fazer os push p quando usa put ?
-- [ ] verificar veracidade do codigo
+- [x] verificar veracidade do codigo
+- [ ] call de procedimento com o do
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
@@ -196,3 +198,5 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
 - [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente
 - [x] tenho que ver `retorna_endereco_relativo` o escopo e quando é parametro ou var_local p retornar o endereço certo;
+- [x] GOTO L%d na volta do loop while - tava duplicado
+    - [ ] bug parecido deve acontecer para as condicionais

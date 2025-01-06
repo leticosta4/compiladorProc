@@ -457,10 +457,12 @@ int expr(char p[]){ //ja chega processado
 
 int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
     int tipo_expr_simples, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_and = 0;
+    char op_arit[3];
 
     if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
         if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
         rcv_token = AnaLex(arqivoProc);
+        if(rcv_token.codigo == ADICAO){ strcpy(op_arit, "ADD");} else{ strcpy(op_arit, "SUB");}
     }
     tipo_expr_simples = termo(p);
 
@@ -469,6 +471,7 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
         if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
             if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
             tipo_aux_arit1 = tipo_expr_simples;
+            if(rcv_token.codigo == ADICAO){ strcpy(op_arit, "ADD");} else{ strcpy(op_arit, "SUB");}
         } else if(rcv_token.categoria == SNL && rcv_token.codigo == AND_LOGICO){
             rel_logica = 1;
             label_saida_and = gera_label();
@@ -488,6 +491,7 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
         if(associa_tipos_compat(tipo_aux_arit1, tipo_aux_arit2) != 0){
             error("ERRO SEMANTICO > não é permitida operação aritmética entre tipos não compatíveis");
         } 
+        if(tipo_aux_arit1 == _REAL){ fprintf(proc_obj_file, "%sF\n", op_arit); } else{ fprintf(proc_obj_file, "%s\n", op_arit); }
     }
 
     return tipo_expr_simples;
@@ -495,13 +499,15 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
 
 int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
     int tipo_termo, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_or = 0;
+    char op_arit[4];
     tipo_termo = fator(p, 0);
     
     //ja veio processado do final de fator
     while(rcv_token.categoria == SNL && (rcv_token.codigo == MULTIPLICACAO || rcv_token.codigo == DIVISAO || rcv_token.codigo == OR_LOGICO)){ 
         if(rcv_token.categoria == SNL && (rcv_token.codigo == MULTIPLICACAO || rcv_token.codigo == DIVISAO)){
-            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
              tipo_aux_arit1 = tipo_termo;
+            if(rcv_token.codigo == MULTIPLICACAO){ strcpy(op_arit, "MULT");} else{ strcpy(op_arit, "DIV");}
         } else if(rcv_token.categoria == SNL && rcv_token.codigo == OR_LOGICO){
             rel_logica = 1;
             label_saida_or = gera_label();
@@ -520,6 +526,7 @@ int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
         if(associa_tipos_compat(tipo_aux_arit1, tipo_aux_arit2) != 0){
             error("ERRO SEMANTICO > não é permitida operação aritmética entre tipos não compatíveis");
         } 
+        if(tipo_aux_arit1 == _REAL){ fprintf(proc_obj_file, "%sF\n", op_arit); } else{ fprintf(proc_obj_file, "%s\n", op_arit); }
     }
     return tipo_termo;
 }
@@ -1144,8 +1151,10 @@ void _while(char em_qual_proced[]){
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                     cmd(em_qual_proced);
                     consome_fim_exp();
-                    fprintf(proc_obj_file, "GOTO L%d\n", label_while);
-                    if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){ break; }
+                    if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
+                        fprintf(proc_obj_file, "GOTO L%d\n", label_while);
+                        break;
+                    }
                     //analex é chamado de novo no final da função - n precisa chamar aqui
                 }
                 if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){

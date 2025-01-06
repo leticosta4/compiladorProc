@@ -7,12 +7,13 @@ endp
 	
 def init
 	int c = 2, a, b
-    //int d, e
+    real f, d, e
 	//do p(c)
     getint a
 
     while((a > b) && (c < b))
-        b = c
+        b = c + a
+        f = d * e
     endw
 
     putint b

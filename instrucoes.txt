@@ -12,4 +12,4 @@ observação:
     é colocado O GET_C UO PUT_C como equivalente
 
     - não localizei comandos equivalentes ao PUSH para valores reais ou literais, ent para o primeiro tipo estou usando PUSHF e para o segundo, assim como para stringcon,
-    usando PUSH mesmo
+    usando PUSH mesmo (já que int e char são compatíveis)
