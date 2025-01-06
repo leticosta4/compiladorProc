@@ -10,7 +10,7 @@
 #include "tabsimb.h"
 
 registro_tabsimb info_token;
-int identificador_bool = -1, label_desvio_call_init = 0, variaveis_globais;
+int identificador_bool = -1, label_desvio_call_init = 0, variaveis_globais, atrib_decl_var = 0;
 FILE *proc_obj_file;
 
 int valor_var(){
@@ -68,7 +68,7 @@ void prog(){
 }
 
 int decl_list_var(char possivel_proced[]){
-    int variaveis = 0;
+    int variaveis = 0, temp_end_var[2];
     info_token.passagem = NAO_APLICA_PARAM;
     info_token.zumbi = NAO_APLICA_ZUMBI;
     info_token.array = VAR_SIMPLES;
@@ -84,7 +84,10 @@ int decl_list_var(char possivel_proced[]){
 
     tipo();
     info_token = atribui_endereco_var(info_token);
+    temp_end_var[0] = info_token.endereco[0];
+    temp_end_var[1] = info_token.endereco[1];
     decl_var(possivel_proced);
+    if(atrib_decl_var != 0){ fprintf(proc_obj_file, "STOR %d, %d\n", temp_end_var[0], temp_end_var[1]); atrib_decl_var = 0;}
     variaveis+=1;
 
     while(rcv_token.categoria == SNL && rcv_token.codigo == VIRGULA){
@@ -95,7 +98,6 @@ int decl_list_var(char possivel_proced[]){
         variaveis+=1;
     }
     consome_fim_exp();
-    printf("retorno variavel: %d\n", variaveis);
     return variaveis;
 }
 
@@ -451,13 +453,12 @@ int expr(char p[]){ //ja chega processado
         }
     } else {tipo_final_expr = tipo_expressoes[0]; }
 
-    printf("\nteste tipo expr: %d\n", tipo_final_expr);
     return tipo_final_expr;
 }
 
 int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
     int tipo_expr_simples, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_and = 0;
-    char op_arit[3];
+    char op_arit[4];
 
     if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
         if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
@@ -499,7 +500,7 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
 
 int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
     int tipo_termo, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_or = 0;
-    char op_arit[4];
+    char op_arit[5];
     tipo_termo = fator(p, 0);
     
     //ja veio processado do final de fator
@@ -581,7 +582,7 @@ int fator(char p[], int negacao){ //ja chega processado de expr_simples (que vem
             break;
         case REALCON:
             tipo_fator = _REAL;
-            fprintf(proc_obj_file, "PUSHF %f\n", rcv_token.valor_real);
+            fprintf(proc_obj_file, "PUSHF %.2f\n", rcv_token.valor_real);
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -726,6 +727,8 @@ void decl_var(char possivel_proced[]){
 
     if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){ //pode ocorrer sendo vetor ou matriz ou variavel normal tb
         int cat = valor_var();
+
+        atrib_decl_var = 1;
         if (cat != 9 && cat != 8){
             if(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_CHAVE){ //agora p o caso de vetor ou matriz especificamente  
                 if(nao_escalar != 1){ error("não é permitido inicialização de variável escalar com '{}'"); }
@@ -751,7 +754,20 @@ void decl_var(char possivel_proced[]){
             } else if(rcv_token.categoria == CHARCON || rcv_token.categoria == REALCON || rcv_token.categoria == INTCON || rcv_token.categoria == STRINGCON){
                 verifica_compatibilidade_tipo_decl(rcv_token, info_token); 
                 confere_atrib_constante(); 
-
+                switch(rcv_token.categoria){
+                    case INTCON:
+                        fprintf(proc_obj_file, "PUSH %d\n", rcv_token.valor_inteiro);
+                        break;
+                    case REALCON:
+                        fprintf(proc_obj_file, "PUSHF %.2f\n", rcv_token.valor_real);
+                        break;
+                    case CHARCON:
+                        fprintf(proc_obj_file, "PUSH %c\n", rcv_token.c);
+                        break;
+                    case STRINGCON:
+                        fprintf(proc_obj_file, "PUSH %s\n", rcv_token.lexema);
+                        break;
+                }
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             } else{ error("ERRO SINTATICO > era esperado um identificador após '='"); }
@@ -1209,7 +1225,7 @@ void _puts(int tipo_put){
             fprintf(proc_obj_file, "PUT_I\n");
             break;
         case PUTREAL:
-            if(rcv_token.categoria == REALCON){ fprintf(proc_obj_file, "PUSHF %f\n", rcv_token.valor_real); } 
+            if(rcv_token.categoria == REALCON){ fprintf(proc_obj_file, "PUSHF %.2f\n", rcv_token.valor_real); } 
             if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
             fprintf(proc_obj_file, "PUT_F\n"); 
             break;

@@ -1,5 +1,6 @@
 int af, gh
-char je
+real uu = 9.1
+char je = 'c' 
 
 def p(int c)
 	c = 2

@@ -40,7 +40,7 @@ void testaAnalex(){
                 printf("<INTCON, %d>\n", rcv_token.valor_inteiro);
                 break;
             case REALCON:
-                printf("<REALCON, %f>\n", rcv_token.valor_real);
+                printf("<REALCON, %.2f>\n", rcv_token.valor_real);
                 break;
             case SNL:
                 switch(rcv_token.codigo){

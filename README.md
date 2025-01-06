@@ -72,7 +72,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
-- [x] no final apagar a funcao debug
+- [ ] no final apagar a funcao debug
 - [ ] tratamentos chatos
 - [ ] checar inicializacao de variaveis locais para cada funcao
 - [ ] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
@@ -186,7 +186,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] loads e stor
     - [x] atribuicao 
     - [x] gets e puts
-    - [ ] declaração variavel
+    - [x] declaração variavel (stor)
 - [x] como fazer os push p quando usa put ?
 - [x] verificar veracidade do codigo
 - [x] call de procedimento com o do
