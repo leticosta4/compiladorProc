@@ -23,5 +23,9 @@ def init
         f = d * e
     endw
 
+    if(a > b)
+        b = a
+    endi
+
     putint b
 endp

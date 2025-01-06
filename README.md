@@ -168,8 +168,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] parametros
 - [x] labels
 - [x] while
-- [ ] if ~
-- [ ] elif ~
+- [x] if 
+- [x] elif 
 - [x] else
 - [ ] var ~ 
     - [x] base MP
@@ -201,7 +201,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
 - [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM
 - [x] variaveis globais estavam sendo contadas de forma errada
-- [ ] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
+- [x] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
 - [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente
 - [x] tenho que ver `retorna_endereco_relativo` o escopo e quando é parametro ou var_local p retornar o endereço certo;
 - [x] GOTO L%d na volta do loop while - tava duplicado

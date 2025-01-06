@@ -132,7 +132,7 @@ void decl_def_proc(){
 
 void cmd(char procedimento[]){
     int clausula, tipo_identificador, tipo_expr_cond, tipo_expr_var[2], tipo_atrib_id, end_relativos_atrib[2], end_relativos_var[2];
-    int label_saida_condicional = 0, label_elif = 0, label_else = 0, labels_var[3], mod_var[2]; 
+    int label_saida_if = 0, label_saida_elif = 0, label_final = 0, labels_var[3], mod_var[2]; 
     //o token ja chega processado p cmd mesmo
     if(rcv_token.categoria == PLV_RSVD){
         switch(rcv_token.codigo){
@@ -183,7 +183,6 @@ void cmd(char procedimento[]){
                         error("ERRO SINTATICO > era esperado termo para inicio de epressão");
                     }
                     tipo_expr_cond = expr(procedimento); 
-                    printf("\nteste fo tipo q a expr_cond ficou > TIPO : %d\n", tipo_expr_cond);
                     if(associa_tipos_compat(tipo_expr_cond, _BOOL) != 0){
                         error("ERRO SEMANTICO > o tipo da expressão para o if deve ser booleana");
                     }
@@ -193,8 +192,8 @@ void cmd(char procedimento[]){
                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                         error("ERRO SINTATICO > era esperado um ')' após expressão do if");
                     } else{
-                            label_elif = gera_label();
-                            fprintf(proc_obj_file, "GOFALSE L%d\n", label_elif);
+                            label_saida_if = gera_label();
+                            fprintf(proc_obj_file, "GOFALSE L%d\n", label_saida_if);
 
                             rcv_token = AnaLex(arqivoProc);
                             consome_fim_exp();
@@ -203,16 +202,19 @@ void cmd(char procedimento[]){
                                 cmd(procedimento);
                                 consome_fim_exp(); 
 
-                                label_saida_condicional = gera_label();
-                                fprintf(proc_obj_file, "GOTO L%d\n", label_saida_condicional);
-
-                                if(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){ break; }
+                                if(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
+                                    if(rcv_token.codigo == ENDI){
+                                        fprintf(proc_obj_file, "LABEL L%d\n", label_saida_if);
+                                    } else {
+                                        label_final = gera_label();
+                                        fprintf(proc_obj_file, "GOTO L%d\nLABEL L%d\n", label_final, label_saida_if);
+                                    }
+                                    break;
+                                }
                                 //analex é chamado de novo no final da função - n precisa chamar aqui
                             }
 
                             while(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ELIF){
-                                fprintf(proc_obj_file, "LABEL L%d\n", label_elif);
-
                                 rcv_token = AnaLex(arqivoProc); 
                                 consome_fim_exp();
                                 if(!(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_PAREN)){
@@ -229,12 +231,15 @@ void cmd(char procedimento[]){
                                     }
                                     identificador_bool = -1; //reinicializando p n dar merda
 
+                                    label_saida_elif = gera_label();
+                                    fprintf(proc_obj_file, "GOFALSE L%d\n", label_saida_if);
+
                                     //ja veio processado do final de fator < final de termo < final de expr_simples
                                     if(!(rcv_token.categoria == SNL && rcv_token.codigo == FECHA_PAREN)){
                                         error("ERRO SINTATICO > era esperado um ')' após expressão do elif");
                                     } else{
-                                        label_else = gera_label();
-                                        fprintf(proc_obj_file, "GOFALSE L%d\n", label_else);
+                                        label_saida_elif = gera_label();
+                                        fprintf(proc_obj_file, "GOFALSE L%d\n", label_saida_elif);
 
                                         rcv_token = AnaLex(arqivoProc);
                                         consome_fim_exp();
@@ -242,9 +247,11 @@ void cmd(char procedimento[]){
                                         while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                             cmd(procedimento);
                                             consome_fim_exp(); 
-                                            fprintf(proc_obj_file, "GOTO L%d\n", label_saida_condicional);
+                                            fprintf(proc_obj_file, "GOTO L%d\n", label_final);
 
-                                            if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){ break; }
+                                            if (rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == ENDI || rcv_token.codigo == ELIF || rcv_token.codigo == ELSE)){
+                                                fprintf(proc_obj_file, "LABEL L%d\n", label_saida_elif);
+                                                break; }
                                             //analex é chamado de novo no final da função - n precisa chamar aqui
                                         }
                                     }
@@ -252,7 +259,6 @@ void cmd(char procedimento[]){
                             }
 
                             while(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ELSE){
-                                fprintf(proc_obj_file, "LABEL L%d\n", label_else);
                                 rcv_token = AnaLex(arqivoProc); 
                                 consome_fim_exp();
                                 
@@ -269,7 +275,7 @@ void cmd(char procedimento[]){
                             if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDI)){
                                 error("ERRO SINTATICO > era esperada a finalização do bloco condicional com endi");
                             } 
-                            fprintf(proc_obj_file, "LABEL L%d\n", label_saida_condicional);
+                            fprintf(proc_obj_file, "LABEL L%d\n", label_final);
                             rcv_token = AnaLex(arqivoProc);
                             consome_fim_exp();
                         }
@@ -933,7 +939,7 @@ void def(){
         strcpy(nome_def, rcv_token.lexema);
 
         label_def = gera_label();
-        fprintf(proc_obj_file, "\nLABEL L%d\n", label_def); 
+        fprintf(proc_obj_file, "LABEL L%d\n", label_def); 
         fprintf(proc_obj_file, "INIPR 1\n");
 
         info_token.rotulo = label_def;
@@ -1166,7 +1172,7 @@ void _while(char em_qual_proced[]){
         error("ERRO SINTATICO > era esperado abertura de parenteses após o 'while'");
     } else {
         label_while = gera_label();
-        fprintf(proc_obj_file, "\nLABEL L%d\n", label_while);
+        fprintf(proc_obj_file, "LABEL L%d\n", label_while);
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
@@ -1188,7 +1194,6 @@ void _while(char em_qual_proced[]){
                 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                     cmd(em_qual_proced);
-                    printf("oi\n");
                     consome_fim_exp();
                     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
                         fprintf(proc_obj_file, "GOTO L%d\n", label_while);
@@ -1199,7 +1204,7 @@ void _while(char em_qual_proced[]){
                 if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW)){
                     error("ERRO SINTATICO > era esperada a finalização do loop while com endw");
                 } 
-                fprintf(proc_obj_file, "\nLABEL L%d\n", label_saida_while);
+                fprintf(proc_obj_file, "LABEL L%d\n", label_saida_while);
                 rcv_token = AnaLex(arqivoProc);
                 consome_fim_exp();
             }
