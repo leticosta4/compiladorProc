@@ -1067,7 +1067,7 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
             error("ERRO SEMANTICO > o procedimento a ser chamado com o 'do' precisa ter seu prototipo assinado ou ja ter sido definido");
         }
         cont_param_orig = contar_params(pos);
-
+        
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
 
@@ -1108,7 +1108,7 @@ void _do(char em_qual_proced[]){ //o token ja chega processado
                     if(cont_param_chamada != cont_param_orig){
                         error("ERRO SEMANTICO > a quantidade de parametros do procedimento deve ser compatível com a de seu prototipo ou definição");
                     }
-
+                    fprintf(proc_obj_file, "CALL L%d\n", tabela_simbolos.linhas[pos].rotulo);
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
                 }

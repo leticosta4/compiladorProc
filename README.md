@@ -189,7 +189,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [ ] declaração variavel
 - [x] como fazer os push p quando usa put ?
 - [x] verificar veracidade do codigo
-- [ ] call de procedimento com o do
+- [x] call de procedimento com o do
+- [ ] testar com outros arquivos
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 

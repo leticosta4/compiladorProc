@@ -8,7 +8,7 @@ endp
 def init
 	int c = 2, a, b
     real f, d, e
-	//do p(c)
+	do p(c)
     getint a
 
     while((a > b) && (c < b))
