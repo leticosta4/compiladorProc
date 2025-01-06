@@ -8,5 +8,8 @@ comando para compilar o projeto e rodar o executavel:
 - gcc proc.c analex.c anasint.c funcaux.c tabsimb.c -o proclang && ./proclang
 
 observação:
-    por enquanto, já que a minha máquina de pilha ainda não lida com alocação de vetores e matrizes, ao usar uma string (vetor de char), junto com 'getstr' ou 'putstr'
+    - por enquanto, já que a minha máquina de pilha ainda não lida com alocação de vetores e matrizes, ao usar uma string (vetor de char), junto com 'getstr' ou 'putstr'
     é colocado O GET_C UO PUT_C como equivalente
+
+    - não localizei comandos equivalentes ao PUSH para valores reais ou literais, ent para o primeiro tipo estou usando PUSHF e para o segundo, assim como para stringcon,
+    usando PUSH mesmo

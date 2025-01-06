@@ -129,7 +129,7 @@ void decl_def_proc(){
 }
 
 void cmd(char procedimento[]){
-    int clausula, tipo_identificador, tipo_expr_cond, tipo_expr_var[2], tipo_atrib_id;
+    int clausula, tipo_identificador, tipo_expr_cond, tipo_expr_var[2], tipo_atrib_id, end_relativos_atrib[2];
     int label_saida_condicional = 0, label_elif = 0, label_else = 0; 
     //o token ja chega processado p cmd mesmo
     if(rcv_token.categoria == PLV_RSVD){
@@ -339,13 +339,16 @@ void cmd(char procedimento[]){
     
     else if(rcv_token.categoria == ID){
         tipo_identificador = procura_existencia_identificador_em_proced(procura_posicao_proc(procedimento), rcv_token.lexema).tipo;
+        retorna_endereco_relativo(end_relativos_atrib, rcv_token.lexema);
+        
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         tipo_atrib_id = atrib(procedimento); //esse atrib ja faz o cmd terminar com processamento de token
-       
+
         if(associa_tipos_compat(tipo_identificador, tipo_atrib_id) != 0){
             error("ERRO SEMÂNTICO > identificador deve receber atribuição de tipo compatível");
         }
+        fprintf(proc_obj_file, "STOR %d, %d\n", end_relativos_atrib[0], end_relativos_atrib[1]);
     } 
 
     else if(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); consome_fim_exp(); }
@@ -426,24 +429,24 @@ int expr(char p[]){ //ja chega processado
         
         switch(seguir){
             case COMP_IGUALDADE:
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                fprintf(proc_obj_file, "SUB\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
                 break;
             case COMP_DIFERENTE:
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                fprintf(proc_obj_file, "SUB\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
                 break;
             case MAIOR_IGUAL:
                 label_extra_comp = gera_label();
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 1\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
+                fprintf(proc_obj_file, "SUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 1\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
                 break;
             case MENOR_QUE:
                 label_extra_comp = gera_label();
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 0\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
+                fprintf(proc_obj_file, "SUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPOP\nLABEL L%d\nPUSH 0\nLABEL L%d\n",  labels_op_rel[0], labels_op_rel[1], label_extra_comp, labels_op_rel[0], labels_op_rel[1], label_extra_comp);
                 break;
             case MENOR_IGUAL:
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOTRUE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                fprintf(proc_obj_file, "SUB\nGOTRUE L%d\nPUSH 1\nGOTO L%d\nLABEL L%d\nPUSH 0\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
                 break;
             case MAIOR_QUE:
-                fprintf(proc_obj_file, "[exp1]\n[exp2]\nSUB\nGOTRUE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
+                fprintf(proc_obj_file, "SUB\nGOTRUE L%d\nPUSH 0\nGOTO L%d\nLABEL L%d\nPUSH 1\nLABEL L%d\n", labels_op_rel[0], labels_op_rel[1], labels_op_rel[0], labels_op_rel[1]);
                 break;
         }
     } else {tipo_final_expr = tipo_expressoes[0]; }
@@ -510,13 +513,16 @@ int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
 }
 
 int fator(char p[], int negacao){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
-    int cont_d = 1, tipo_fator, tipo_indice_array, cat_temp, rel_logica = 0, labels_not[2];
+    int cont_d = 1, tipo_fator, tipo_indice_array, cat_temp, rel_logica = 0, labels_not[2], end_relativos_id[2];
     
     switch (rcv_token.categoria){
         case ID:
             info_token = procura_existencia_identificador_em_proced(procura_posicao_proc(p), rcv_token.lexema); 
             tipo_fator = info_token.tipo;
             if(tipo_fator == _BOOL){ identificador_bool = 1; } 
+            retorna_endereco_relativo(end_relativos_id, rcv_token.lexema);
+            fprintf(proc_obj_file, "LOAD %d, %d\n", end_relativos_id[0], end_relativos_id[1]);
+
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
 
@@ -550,17 +556,20 @@ int fator(char p[], int negacao){ //ja chega processado de expr_simples (que vem
             break;
         case INTCON:
             tipo_fator = _INT; 
+            fprintf(proc_obj_file, "PUSH %d\n", rcv_token.valor_inteiro);
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
         case REALCON:
             tipo_fator = _REAL;
+            fprintf(proc_obj_file, "PUSHF %f\n", rcv_token.valor_real);
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
         case CHARCON:
         case STRINGCON:
             tipo_fator = _CHAR; 
+            if(rcv_token.categoria == CHARCON){fprintf(proc_obj_file, "PUSH %c\n", rcv_token.c);}else{fprintf(proc_obj_file, "PUSH %s\n", rcv_token.lexema);}
             rcv_token = AnaLex(arqivoProc);
             consome_fim_exp();
             break;
@@ -1172,25 +1181,25 @@ void _puts(int tipo_put){
         fprintf(proc_obj_file, "LOAD %d, %d\n", endereco_relativo_load[0], endereco_relativo_load[1]);
     }  
 
-    switch (tipo_put){
+    switch(tipo_put){
         case PUTINT:
-            if(rcv_token.categoria == INTCON){ /*fprintf(proc_obj_file, "PUSH %d", ); //tem que printar esse intcon*/ } 
-            if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
+            if(rcv_token.categoria == INTCON){ fprintf(proc_obj_file, "PUSH %d\n", rcv_token.valor_inteiro); } 
+            if(rcv_token.categoria != ID && rcv_token.categoria != INTCON){ error("ERRO SINTATICO > era esperado um identificador ou constante inteiro para output do intcon com put"); }
             fprintf(proc_obj_file, "PUT_I\n");
             break;
         case PUTREAL:
+            if(rcv_token.categoria == REALCON){ fprintf(proc_obj_file, "PUSHF %f\n", rcv_token.valor_real); } 
             if(rcv_token.categoria != ID && rcv_token.categoria != REALCON){ error("ERRO SINTATICO > era esperado um identificador ou constante real para output do realcon com put"); }
-            //se for realcon n sei como dá push ja q é ponto flutuante 
             fprintf(proc_obj_file, "PUT_F\n"); 
             break;
         case PUTCHAR:
+            if(rcv_token.categoria == CHARCON){ fprintf(proc_obj_file, "PUSH %c\n", rcv_token.c); } 
             if(rcv_token.categoria != ID && rcv_token.categoria != CHARCON){ error("ERRO SINTATICO > era esperado um identificador ou constante char para output do charcon com put"); }
-            //se for charcon n sei como dá push 
             fprintf(proc_obj_file, "PUT_C\n");
             break;
         case PUTSTR:
+            if(rcv_token.categoria == STRINGCON){ fprintf(proc_obj_file, "PUSH %s\n", rcv_token.lexema); } 
             if(rcv_token.categoria != ID && rcv_token.categoria != STRINGCON){ error("ERRO SINTATICO > era esperado um identificador ou constante literal para output do stringcon com put"); }
-            //se for stringcon n sei como dá push 
             fprintf(proc_obj_file, "PUT_C\n");
             break;
     }

@@ -80,6 +80,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 ## dúvidas
 - ainda devo deixar o getstr e o putstr (na maquina de pilha existe comando equivalente p char unico)
+- comando máquina de pilha equivalente ao PUSH para valores reais e literais
 
 ## analise semantica    
 ### bugs
@@ -165,7 +166,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] enderecos corretamente
     - [x] variaveis
     - [x] parametros
-- [ ] labels
+- [x] labels
 - [x] while
 - [ ] if ~
 - [ ] elif ~
@@ -175,16 +176,17 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] comp diferença 
 - [x] maior que 
 - [x] menor que 
-- [ ] and logico ~ 
-- [ ] or logico ~
+- [ ] and logico 
+- [ ] or logico 
 - [x] negacao
 - [x] gets
 - [x] puts
 - [ ] aritmetica
 - [ ] aritmetica ponto flutuante
-- [ ] loads e stor
-    - [ ] atribuicao 
+- [x] loads e stor
+    - [x] atribuicao 
     - [x] gets e puts
+- [x] como fazer os push p quando usa put ?
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 

@@ -12,7 +12,7 @@ def init
     getint a
 
     while(!(a > b))
-        c = c + 1
+        b = c
     endw
 
     putint b
