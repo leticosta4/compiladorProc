@@ -171,7 +171,9 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] if ~
 - [ ] elif ~
 - [x] else
-- [ ] var
+- [ ] var ~ 
+    - [x] base MP
+    - [ ] comparação da maior expr
 - [x] comp igualdade 
 - [x] comp diferença 
 - [x] maior que 
@@ -190,7 +192,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] como fazer os push p quando usa put ?
 - [x] verificar veracidade do codigo
 - [x] call de procedimento com o do
-- [ ] testar com outros arquivos
+- [x] testar com outros arquivos
+- [ ] se der tempo/tiver com vontade
+    - [ ] passagem e acesso a variaveis por ref & > LDA, LOADI, STORI
+    - [ ] arrays > LDDLC, LDSTK, STSTK
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 

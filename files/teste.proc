@@ -3,7 +3,13 @@ real uu = 9.1
 char je = 'c' 
 
 def p(int c)
+    int g
 	c = 2
+
+    var c from 6 dt 1
+        g = 2
+    endv
+
 endp
 	
 def init

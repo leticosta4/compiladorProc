@@ -131,8 +131,8 @@ void decl_def_proc(){
 }
 
 void cmd(char procedimento[]){
-    int clausula, tipo_identificador, tipo_expr_cond, tipo_expr_var[2], tipo_atrib_id, end_relativos_atrib[2];
-    int label_saida_condicional = 0, label_elif = 0, label_else = 0; 
+    int clausula, tipo_identificador, tipo_expr_cond, tipo_expr_var[2], tipo_atrib_id, end_relativos_atrib[2], end_relativos_var[2];
+    int label_saida_condicional = 0, label_elif = 0, label_else = 0, labels_var[3], mod_var[2]; 
     //o token ja chega processado p cmd mesmo
     if(rcv_token.categoria == PLV_RSVD){
         switch(rcv_token.codigo){
@@ -281,6 +281,7 @@ void cmd(char procedimento[]){
                 consome_fim_exp();
                 if(rcv_token.categoria != ID || (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == VAR)){ error("ERRO SINTATICO > era esperado identificador para expressao após o 'var'"); }
                 else{
+                    retorna_endereco_relativo(end_relativos_var, rcv_token.lexema);
                     rcv_token = AnaLex(arqivoProc);
                     consome_fim_exp();
                     if(!(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == FROM)){ error("ERRO SINTATICO > era esperada a palavra reservada 'from' após o identificador"); }
@@ -292,11 +293,15 @@ void cmd(char procedimento[]){
                         }
                         tipo_expr_var[0] = expr(procedimento); //expr1
 
+                        fprintf(proc_obj_file, "STOR %d, %d\n", end_relativos_var[0], end_relativos_var[1]);
                         //ja veio processado do final de fator < final de termo < final de expr_simples
                         if(!(rcv_token.categoria == PLV_RSVD && (rcv_token.codigo == TO || rcv_token.codigo == DT))){
                             error("ERRO SINTATICO > eram esperadas as palavras reservadas 'to' ou 'dt' após a expressão");
                         } else{
                             clausula = (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == TO)? 0 : 1; //0: to; 1: dt
+
+                            labels_var[0] = gera_label();
+                            if(clausula == 1){ fprintf(proc_obj_file, "LABEL L%d\n", labels_var[0]); }
 
                             rcv_token = AnaLex(arqivoProc);
                             consome_fim_exp();
@@ -305,22 +310,37 @@ void cmd(char procedimento[]){
                             }
                             tipo_expr_var[1] = expr(procedimento); //expr2
 
+                            labels_var[1] = gera_label(); labels_var[2] = gera_label();
+                            if(clausula == 0){ fprintf(proc_obj_file, "LABEL L%d\nCOPY\nLOAD %d, %d\nSUB\nGOTRUE L%d\nGOTO L%d\nLABEL L%d\n", labels_var[0], end_relativos_var[0], end_relativos_var[1], labels_var[1], labels_var[2], labels_var[1]); }
+                            else{ fprintf(proc_obj_file, "LOAD %d, %d\nSUB\nCOPY\nGOTRUE L%d\nGOFALSE L%d\n", end_relativos_var[0], end_relativos_var[1], labels_var[1], labels_var[2]); }
                             //ANALISE SEMANTICA VER A CONDICAO DE QUAL EXPR TEM SER MAIOR - provavelmente uma funcao(clausula) - MAQUINA DE PILHA
+
 
                             //ja veio processado do final de fator < final de termo < final de expr_simples
                             if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == BY){
                                 rcv_token = AnaLex(arqivoProc);
                                 consome_fim_exp();
-                                if(!(rcv_token.categoria == INTCON || rcv_token.categoria == ID)){ error("ERRO SINTATICO > era esperado um valor inteiro ou identificador após 'by'"); }
+                                if(rcv_token.categoria == INTCON){ mod_var[0] = rcv_token.valor_inteiro; mod_var[1] = -1;
+                                } else if(rcv_token.categoria == ID){ retorna_endereco_relativo(mod_var, rcv_token.lexema);
+                                } else { error("ERRO SINTATICO > era esperado um valor inteiro ou identificador após 'by'"); }
+                                
                                 rcv_token = AnaLex(arqivoProc);
                                 consome_fim_exp();
-                            }
+                            } else{ mod_var[1] = -2; }
 
                             while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                                 cmd(procedimento);
+                                
                                 consome_fim_exp(); 
                                 if (rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDV){
-                                    printf("SAINDO var\n\n");
+                                    fprintf(proc_obj_file, "LOAD %d, %d\n", end_relativos_var[0], end_relativos_var[1]);
+
+                                    if(mod_var[1] == -1){ fprintf(proc_obj_file, "PUSH %d\n", mod_var[0]);
+                                    } else if(mod_var[1] == -2){ fprintf(proc_obj_file, "PUSH 1\n"); //para caso não tenha o var
+                                    } else{ fprintf(proc_obj_file, "LOAD %d, %d\n", mod_var[0], mod_var[1]); }
+
+                                    if(clausula == 0){ fprintf(proc_obj_file, "ADD\nSTOR %d, %d\nPOP\nGOTO L%d\nLABEL %d\nPOP\n", end_relativos_var[0], end_relativos_var[1], labels_var[0], labels_var[2]);
+                                    } else{ fprintf(proc_obj_file, "SUB\nSTOR %d, %d\nGOTO L%d\nLABEL %d\nPOP\nLABEL L%d\n", end_relativos_var[0], end_relativos_var[1], labels_var[0], labels_var[1], labels_var[2]);}
                                     break;
                                 }
                                 //analex é chamado de novo no final da função - n precisa chamar aqui
@@ -334,7 +354,6 @@ void cmd(char procedimento[]){
                         }
                     }
                 }
-                printf("fim do var\n\n");
                 break;
         }
     }
