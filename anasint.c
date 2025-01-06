@@ -355,6 +355,9 @@ void cmd(char procedimento[]){
                     }
                 }
                 break;
+            default:
+                error("ERRO SINTATICO > era esperado fim do bloco");
+                break;
         }
     }
     
@@ -1185,6 +1188,7 @@ void _while(char em_qual_proced[]){
                 
                 while(rcv_token.categoria == PLV_RSVD || rcv_token.categoria == ID){
                     cmd(em_qual_proced);
+                    printf("oi\n");
                     consome_fim_exp();
                     if(rcv_token.categoria == PLV_RSVD && rcv_token.codigo == ENDW){
                         fprintf(proc_obj_file, "GOTO L%d\n", label_while);

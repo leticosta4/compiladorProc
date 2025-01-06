@@ -75,7 +75,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [ ] no final apagar a funcao debug
 - [ ] tratamentos chatos
 - [ ] checar inicializacao de variaveis locais para cada funcao
-- [ ] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
+- [x] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
 - [x] modularizar os gets e puts de cmd
 
 ## dúvidas
