@@ -11,7 +11,7 @@ def init
 	//do p(c)
     getint a
 
-    while(!(a > b))
+    while((a > b) && (c < b))
         b = c
     endw
 

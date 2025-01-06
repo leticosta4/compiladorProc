@@ -170,7 +170,7 @@ void transformar_zumbi(int posicao_def){
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
     printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-6s | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s | %-12s | %-12s\n", 
+    printf("| %-6s | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-10s | %-12s | %-12s\n", 
            "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço", "Tem prototipo?", "Rótulo");
     printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
@@ -204,8 +204,9 @@ void printar_tabsimb(){
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
         if(tabela_simbolos.linhas[i].endereco[0] != -2){
-            printf("   %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]);   
-        } else{ printf("     -    |"); }
+            if(tabela_simbolos.linhas[i].endereco[1] >= 0){ printf("    %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]);}
+            else{ printf("   %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]); }   
+        } else{ printf("     --    |"); }
 
         printf(" %-15s |", tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
         if(tabela_simbolos.linhas[i].rotulo != 0){
@@ -283,7 +284,7 @@ void apagar_var_locais(){
 void retorna_endereco_relativo(int *endereco_relativo, char lexema[]){
     int i;
     for(i = 0; i < tabela_simbolos.topo; i++){
-        if(strcmp(lexema, tabela_simbolos.linhas[i].lexema) == 0 && (tabela_simbolos.linhas[i].categoria == VAR_GLOBAL || tabela_simbolos.linhas[i].categoria == VAR_LOCAL || tabela_simbolos.linhas[i].categoria == PARAMETRO)){ //categoria <= 1 : 0 é var_global e 1 var_local
+        if(strcmp(lexema, tabela_simbolos.linhas[i].lexema) == 0 && (tabela_simbolos.linhas[i].categoria == VAR_GLOBAL || tabela_simbolos.linhas[i].categoria == VAR_LOCAL || (tabela_simbolos.linhas[i].categoria == PARAMETRO && tabela_simbolos.linhas[i].zumbi == VIVO))){ //categoria <= 1 : 0 é var_global e 1 var_local
             endereco_relativo[0] = tabela_simbolos.linhas[i].endereco[0];
             endereco_relativo[1] = tabela_simbolos.linhas[i].endereco[1];
             break;

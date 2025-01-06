@@ -456,10 +456,10 @@ int expr(char p[]){ //ja chega processado
 }
 
 int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
-    int tipo_expr_simples, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2;
+    int tipo_expr_simples, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_and = 0;
 
     if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
-        if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+        if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
         rcv_token = AnaLex(arqivoProc);
     }
     tipo_expr_simples = termo(p);
@@ -467,15 +467,22 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
     //ja veio processado do final de termo < final de fator
     while(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO || rcv_token.codigo == AND_LOGICO)){
         if(rcv_token.categoria == SNL && (rcv_token.codigo == ADICAO || rcv_token.codigo == SUBTRACAO)){
-            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } //temp
+            if(identificador_bool != -1){ error("ERRO SEMANTICO > não é permitida operação aritmetica com operando do tipo bool"); } 
             tipo_aux_arit1 = tipo_expr_simples;
-        } else if(rcv_token.categoria == SNL && rcv_token.codigo == AND_LOGICO){ rel_logica = 1; }
+        } else if(rcv_token.categoria == SNL && rcv_token.codigo == AND_LOGICO){
+            rel_logica = 1;
+            label_saida_and = gera_label();
+            fprintf(proc_obj_file, "COPY\nGOFALSE L%d\nPOP\n", label_saida_and);
+        }
 
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         tipo_aux_arit2 = termo(p);
     }
-    if(rel_logica != 0){ tipo_expr_simples = _BOOL; }
+    if(rel_logica != 0){
+        tipo_expr_simples = _BOOL;
+        fprintf(proc_obj_file, "LABEL L%d\n", label_saida_and);
+    }
     
     if(tipo_aux_arit1 != -1){ //foi expressao aritmetica e os tipos precisam ser compativeis
         if(associa_tipos_compat(tipo_aux_arit1, tipo_aux_arit2) != 0){
@@ -487,7 +494,7 @@ int expr_simples(char p[]){ //ja chega processado de expr que vem de cmd
 }
 
 int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou do sinal + || -)
-    int tipo_termo, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2;
+    int tipo_termo, rel_logica = 0, tipo_aux_arit1 = -1, tipo_aux_arit2, label_saida_or = 0;
     tipo_termo = fator(p, 0);
     
     //ja veio processado do final de fator
@@ -497,13 +504,18 @@ int termo(char p[]){ //ja chega processado de expr_simples (que vem de expr ou d
              tipo_aux_arit1 = tipo_termo;
         } else if(rcv_token.categoria == SNL && rcv_token.codigo == OR_LOGICO){
             rel_logica = 1;
+            label_saida_or = gera_label();
+            fprintf(proc_obj_file, "COPY\nGOTRUE L%d\nPOP\n", label_saida_or);
         }
        
         rcv_token = AnaLex(arqivoProc);
         consome_fim_exp();
         tipo_aux_arit2 = fator(p, 0);
     }
-    if(rel_logica != 0){ tipo_termo = _BOOL; }
+    if(rel_logica != 0){
+        tipo_termo = _BOOL;
+        fprintf(proc_obj_file, "LABEL L%d\n", label_saida_or);
+    }
     if(tipo_aux_arit1 != -1){ //foi expressao aritmetica e os tipos precisam ser compativeis
         if(associa_tipos_compat(tipo_aux_arit1, tipo_aux_arit2) != 0){
             error("ERRO SEMANTICO > não é permitida operação aritmética entre tipos não compatíveis");

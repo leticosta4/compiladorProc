@@ -176,8 +176,8 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] comp diferença 
 - [x] maior que 
 - [x] menor que 
-- [ ] and logico 
-- [ ] or logico 
+- [x] and logico 
+- [x] or logico 
 - [x] negacao
 - [x] gets
 - [x] puts
@@ -187,6 +187,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] atribuicao 
     - [x] gets e puts
 - [x] como fazer os push p quando usa put ?
+- [ ] verificar veracidade do codigo
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
@@ -194,3 +195,4 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] variaveis globais estavam sendo contadas de forma errada
 - [ ] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
 - [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente
+- [x] tenho que ver `retorna_endereco_relativo` o escopo e quando é parametro ou var_local p retornar o endereço certo;
