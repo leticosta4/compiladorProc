@@ -181,8 +181,10 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] gets
 - [x] puts
 - [ ] aritmetica
-- [ ] aritmetica ponot flutuante
-- [ ] atribuicao (loads e stor)
+- [ ] aritmetica ponto flutuante
+- [ ] loads e stor
+    - [ ] atribuicao 
+    - [x] gets e puts
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 

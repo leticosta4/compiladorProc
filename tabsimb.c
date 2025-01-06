@@ -279,3 +279,15 @@ void apagar_var_locais(){
         else{ break; }
     }
 }
+
+void retorna_endereco_relativo(int *endereco_relativo, char lexema[]){
+    int i;
+    for(i = 0; i < tabela_simbolos.topo; i++){
+        if(strcmp(lexema, tabela_simbolos.linhas[i].lexema) == 0 && (tabela_simbolos.linhas[i].categoria <= 1)){ //categoria <= 1 : 0 é var_global e 1 var_local
+            endereco_relativo[0] = tabela_simbolos.linhas[i].endereco[0];
+            endereco_relativo[1] = tabela_simbolos.linhas[i].endereco[1];
+            break;
+        }
+    }
+    if(i >= tabela_simbolos.topo){ printf("\nlexema incopatível ou caterogia de variável global ou local não encontrada\n"); exit(1); }
+}

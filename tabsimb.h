@@ -67,4 +67,5 @@ void verifica_compatibilidade_tipo_decl(TOKEN tk, registro_tabsimb info_tk);
 void prototipo_sozinho();
 registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedimento, char nome_identificador[]);
 void apagar_var_locais();
+void retorna_endereco_relativo(int *endereco_relativo, char lexema[]);
 #endif

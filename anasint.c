@@ -395,7 +395,7 @@ int atrib(char p[]){ //ja chega processado
             consome_fim_exp();
 
             if(rcv_token.categoria != ID && rcv_token.categoria != INTCON && rcv_token.categoria != REALCON && rcv_token.categoria != CHARCON && rcv_token.categoria != STRINGCON && rcv_token.categoria != SNL){
-                error("ERRO SINTATICO > era esperado termo para inicio de epressão");
+                error("ERRO SINTATICO > era esperado termo para inicio de expressão");
             }
             tipo_atribuicao = expr(p); //ja finaliza processado
         } else {
@@ -1139,6 +1139,7 @@ void _while(char em_qual_proced[]){
 }
 
 void _gets(int tipo_get){
+    int endereco_relativo_stor[2];
     switch(tipo_get){
         case GETINT:
             fprintf(proc_obj_file, "GET_I\n");
@@ -1154,17 +1155,21 @@ void _gets(int tipo_get){
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
     if(rcv_token.categoria != ID){ error("ERRO SINTATICO > era esperado um identificador para input com get"); }
+    retorna_endereco_relativo(endereco_relativo_stor, rcv_token.lexema);
+    fprintf(proc_obj_file, "STOR %d, %d\n", endereco_relativo_stor[0], endereco_relativo_stor[1]);
+
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
-    //vai ter o stor desse identificador consumido
 }
 
 void _puts(int tipo_put){
+    int endereco_relativo_load[2];
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
+
     if(rcv_token.categoria == ID){
-        //funcao que retorna o vetor com os endereços relativos
-        //fprintf(proc_obj_file, "LOAD %d, %d", ); //printar o endereço relativo do identificador
+        retorna_endereco_relativo(endereco_relativo_load, rcv_token.lexema);
+        fprintf(proc_obj_file, "LOAD %d, %d\n", endereco_relativo_load[0], endereco_relativo_load[1]);
     }  
 
     switch (tipo_put){
