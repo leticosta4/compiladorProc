@@ -72,11 +72,15 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
-- [x] no final apagar a funcao debug
+- [ ] no final apagar a funcao debug
 - [ ] tratamentos chatos
-- [ ] checar inicializaacao de variaveis locais para cada funcao
+- [ ] checar inicializacao de variaveis locais para cada funcao
+- [x] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
+- [x] modularizar os gets e puts de cmd
 
 ## dúvidas
+- ainda devo deixar o getstr e o putstr (na maquina de pilha existe comando equivalente p char unico)
+- comando máquina de pilha equivalente ao PUSH para valores reais e literais
 
 ## analise semantica    
 ### bugs
@@ -155,25 +159,50 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 ## geração de codigo - MP
 - [x] INIP e HALT
-- [ ] INIPR 1 E RET 1, <qtdParams>
-    - [x] randomly
-    - [ ] proper way
+- [x] INIPR 1 E RET 1, <qtdParams>
 - [x] AMEM E DMEM
     - [x] global
     - [x] local 
-- [ ] enderecos corretamente (me fudi)
-- [ ] while
-- [ ] if
-- [ ] elif
-- [ ] else
-- [ ] var
-- [ ] comp igualdade
-- [ ] comp diferença
-- [ ] maior que
-- [ ] menor que
-- [ ] and logico
-- [ ] or logico
+- [x] enderecos corretamente
+    - [x] variaveis
+    - [x] parametros
+- [x] labels
+- [x] while
+- [x] if 
+- [x] elif 
+- [x] else
+- [ ] var ~ 
+    - [x] base MP
+    - [ ] comparação da maior expr
+- [x] comp igualdade 
+- [x] comp diferença 
+- [x] maior que 
+- [x] menor que 
+- [x] and logico 
+- [x] or logico 
+- [x] negacao
+- [x] gets
+- [x] puts
+- [x] aritmetica
+- [x] aritmetica ponto flutuante
+- [x] loads e stor
+    - [x] atribuicao 
+    - [x] gets e puts
+    - [x] declaração variavel (stor)
+- [x] como fazer os push p quando usa put ?
+- [x] verificar veracidade do codigo
+- [x] call de procedimento com o do
+- [x] testar com outros arquivos
+- [ ] se der tempo/tiver com vontade
+    - [ ] passagem e acesso a variaveis por ref & > LDA, LOADI, STORI
+    - [ ] arrays > LDDLC, LDSTK, STSTK
 
 ### bugs
 - [x] em decl_list_var n ta retornando o valor certo de variaveis 
 - [x] depois de init é como se os outros procedimentos não tivessem variaveis locais p o DMEM
+- [x] variaveis globais estavam sendo contadas de forma errada
+- [x] oq fazer no if quando não tem um elif e no elif quando não tem um else - ver as labels
+- [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente
+- [x] tenho que ver `retorna_endereco_relativo` o escopo e quando é parametro ou var_local p retornar o endereço certo;
+- [x] GOTO L%d na volta do loop while - tava duplicado
+    - [ ] bug parecido deve acontecer para as condicionais

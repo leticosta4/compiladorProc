@@ -21,16 +21,18 @@ void inserir_tabsimb(registro_tabsimb token_ins){
         exit(1);
     }
 
-    token_ins.endereco = tabela_simbolos.topo;
+    //token_ins.endereco = tabela_simbolos.topo;
     tabela_simbolos.linhas[tabela_simbolos.topo] = token_ins;
     tabela_simbolos.topo++;
 
     printar_tabsimb();
 }
 
-registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token){
-    used_token.dimensoes_array[0] = 0;
-    used_token.dimensoes_array[1] = 0;
+registro_tabsimb limpar_dimensoes_array_ou_endereco(registro_tabsimb used_token, int flag_oq_fzr){
+    if(flag_oq_fzr == VAR_SIMPLES){ 
+        used_token.dimensoes_array[0] = 0;
+        used_token.dimensoes_array[1] = 0;
+    } else{used_token.endereco[0] = -2; }
     return used_token;
 }
 
@@ -100,14 +102,14 @@ int procura_existencia_prototipo_ou_proced(char nome_prot[]){
         }
     }
     if(j >= tabela_simbolos.topo){
-        printf("não existe assinatura de prototipo para esse procedimento nem a definição do mesmo\n");
         return -1;
     }
 }
 
 void substituir_prot_proc(int posicao_prot, registro_tabsimb token_proced){
     if(posicao_prot >= 0){
-        token_proced.endereco = tabela_simbolos.linhas[posicao_prot].endereco; //p n reinicializar
+        token_proced.endereco[0] = tabela_simbolos.linhas[posicao_prot].endereco[0]; //p n reinicializar
+        token_proced.endereco[1] = tabela_simbolos.linhas[posicao_prot].endereco[1];
         tabela_simbolos.linhas[posicao_prot] = token_proced;
     }
 }
@@ -126,7 +128,8 @@ void substituir_parametros_prot_proc_testar_compat_tipos(int posicao_prot, regis
                         }
                     }
                     if(strcmp(tabela_simbolos.linhas[i].lexema, "") == 0 && (flag_veio_do != 1)){ //essa verificacao do lexema vazio é especifico p substituicao dos params no prototipo
-                        token_param_proced.endereco = tabela_simbolos.linhas[i].endereco; //p n reinicializar
+                        token_param_proced.endereco[0] = tabela_simbolos.linhas[i].endereco[0]; //p n reinicializar
+                        token_param_proced.endereco[1] = tabela_simbolos.linhas[i].endereco[1];
                         tabela_simbolos.linhas[i] = token_param_proced;
                         break;
                     }
@@ -166,10 +169,10 @@ void transformar_zumbi(int posicao_def){
 
 void printar_tabsimb(){
     printf("\nTabela de Símbolos:\n");
-    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-6s | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-8s | %-12s  |\n", 
-           "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço", "Tem prototipo?");
-    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-6s | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6s | %-6s | %-6s | %-15s | %-10s | %-12s | %-12s\n", 
+           "ID", "Lexema", "Escopo", "Tipo", "Categoria", "Passagem", "Zumbi", "Array?", "Dim-1", "Dim-2", "Constante?", "Valor Constante", "Endereço", "Tem prototipo?", "Rótulo");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < tabela_simbolos.topo; i++){
         printf("| %-6d | %-16s | %-13s | %-16s | %-15s | %-16s | %-16s | %-16s | %-6d | %-6d | %-10s",
@@ -200,8 +203,16 @@ void printar_tabsimb(){
                     break;
             } 
         } else{ printf(" | %-15d |", (i * 0)); }
-        printf(" %-8d | %-15s |\n", tabela_simbolos.linhas[i].endereco, tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
-    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        if(tabela_simbolos.linhas[i].endereco[0] != -2){
+            if(tabela_simbolos.linhas[i].endereco[1] >= 0){ printf("    %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]);}
+            else{ printf("   %d, %d   |", tabela_simbolos.linhas[i].endereco[0], tabela_simbolos.linhas[i].endereco[1]); }   
+        } else{ printf("     --    |"); }
+
+        printf(" %-15s |", tem_prototipos[tabela_simbolos.linhas[i].tem_prototipo]);
+        if(tabela_simbolos.linhas[i].rotulo != 0){
+            printf(" L%d\n", tabela_simbolos.linhas[i].rotulo);
+        } else{ printf("  ∅\n"); }
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 }
 
@@ -268,4 +279,16 @@ void apagar_var_locais(){
         if(tabela_simbolos.linhas[i-1].categoria == VAR_LOCAL){ remover_tabsimb(); }
         else{ break; }
     }
+}
+
+void retorna_endereco_relativo(int *endereco_relativo, char lexema[]){
+    int i;
+    for(i = 0; i < tabela_simbolos.topo; i++){
+        if(strcmp(lexema, tabela_simbolos.linhas[i].lexema) == 0 && (tabela_simbolos.linhas[i].categoria == VAR_GLOBAL || tabela_simbolos.linhas[i].categoria == VAR_LOCAL || (tabela_simbolos.linhas[i].categoria == PARAMETRO && tabela_simbolos.linhas[i].zumbi == VIVO))){ //categoria <= 1 : 0 é var_global e 1 var_local
+            endereco_relativo[0] = tabela_simbolos.linhas[i].endereco[0];
+            endereco_relativo[1] = tabela_simbolos.linhas[i].endereco[1];
+            break;
+        }
+    }
+    if(i >= tabela_simbolos.topo){ printf("\nlexema incopatível ou caterogia de variável global ou local não encontrada para %s\n", lexema); exit(1); }
 }

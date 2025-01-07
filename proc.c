@@ -40,7 +40,7 @@ void testaAnalex(){
                 printf("<INTCON, %d>\n", rcv_token.valor_inteiro);
                 break;
             case REALCON:
-                printf("<REALCON, %f>\n", rcv_token.valor_real);
+                printf("<REALCON, %.2f>\n", rcv_token.valor_real);
                 break;
             case SNL:
                 switch(rcv_token.codigo){
@@ -223,7 +223,7 @@ void testaAnalex(){
 
 void testaAnasint(){
     printf("\n\n[Análise Sintática ----------------]\n");
-    if ((arqivoProc = fopen("./files/idk.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){

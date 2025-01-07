@@ -1,0 +1,31 @@
+int af, gh
+real uu = 9.1
+char je = 'c' 
+
+def p(int c)
+    int g
+	c = 2
+
+    var c from 6 dt 1
+        g = 2
+    endv
+
+endp
+	
+def init
+	int c = 2, a, b
+    real f, d, e
+	do p(c)
+    getint a
+
+    while((a > b) && (c < b))
+        b = c + a
+        f = d * e
+    endw
+
+    if(a > b)
+        b = a
+    endi
+
+    putint b
+endp

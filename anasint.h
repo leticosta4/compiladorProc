@@ -24,7 +24,7 @@ int atrib(char p[]);
 int expr(char p[]);
 int expr_simples(char p[]);
 int termo(char p[]);
-int fator(char p[]);
+int fator(char p[], int negacao);
 int op_rel();
 //vindas do decl_list_var:
 void tipo();
@@ -36,4 +36,6 @@ void passagem_end_tipo();
 //vindas do cmd
 void _do(char em_qual_proced[]);
 void _while(char em_qual_proced[]);
+void _gets(int tipo_get);
+void _puts(int tipo_put);
 #endif 

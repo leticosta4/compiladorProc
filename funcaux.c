@@ -49,13 +49,44 @@ int associa_tipos_compat(int tipo_base, int tipo_cmp){
     return 0;
 }
 
-//temporario para a parte da GERACAO DE CODIGO - MAQUINA DE PILHA
-// void gera_label(char *label){
-//     char strcont[10];
-//     static int cont = 1;
+//ver como modelar ainda
+int gera_label(){
+    static int cont_label = 1; //a 1 ja foi colocada estaticamente 
+    cont_label++;
+    return cont_label; //esse retorno vai ser concatenado com o 
+}
 
-//     strcpy(label, "L");
-//     itoa(cont, strcont, 10);
-//     strcat(label, strcont);
-//     cont++;
-// }
+int busca_retorna_label(char nome_busca[]){
+    for(int i = 0; i <= tabela_simbolos.topo; i++){
+        if(strcmp(tabela_simbolos.linhas[i].lexema, nome_busca) == 0){ return tabela_simbolos.linhas[i].rotulo; }}
+}
+
+registro_tabsimb atribui_endereco_var(registro_tabsimb token_var){
+    static int contVG = 0, contVL = 0;
+    if(token_var.categoria <= 1){
+        switch(token_var.escopo){
+            case GLOBAL:
+                token_var.endereco[0] = 0;
+                token_var.endereco[1] = contVG;
+                contVG++;
+                break;
+            case LOCAL:
+                token_var.endereco[0] = 1;
+                token_var.endereco[1] = contVL;
+                contVL++;
+                break;
+        }
+    }
+    return  token_var;
+}
+
+void atribui_endereco_param(int pos){
+    int end_param = -3;
+    
+    for(int i = tabela_simbolos.topo - 1; i > pos; i--){
+        if(tabela_simbolos.linhas[i].categoria != PARAMETRO){break;} //talvez tirar dps
+        tabela_simbolos.linhas[i].endereco[0] = 1;
+        tabela_simbolos.linhas[i].endereco[1] = end_param;
+        end_param--;
+    }
+}

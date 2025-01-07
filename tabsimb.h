@@ -38,8 +38,8 @@ typedef struct{
     int dimensoes_array[2];
     EH_CONST constante;
     VALOR_CONST valor_constante;
-    int endereco;
-    //rotulo;
+    int endereco[2];
+    int rotulo;
     TEM_PROT tem_prototipo;
 }registro_tabsimb;
 
@@ -52,7 +52,7 @@ extern tipo_tab_simb tabela_simbolos;
 extern TOKEN rcv_token;
 
 void inserir_tabsimb(registro_tabsimb token_ins);
-registro_tabsimb limpar_dimensoes_array(registro_tabsimb used_token);
+registro_tabsimb limpar_dimensoes_array_ou_endereco(registro_tabsimb used_token, int flag_oq_fzr);
 void verifica_redeclaracao(registro_tabsimb token_aux);
 void verifica_redecl_param(int pos_proced, char nome_param[]);
 int procura_posicao_proc(char nome_def[]);
@@ -67,4 +67,5 @@ void verifica_compatibilidade_tipo_decl(TOKEN tk, registro_tabsimb info_tk);
 void prototipo_sozinho();
 registro_tabsimb procura_existencia_identificador_em_proced(int posicao_procedimento, char nome_identificador[]);
 void apagar_var_locais();
+void retorna_endereco_relativo(int *endereco_relativo, char lexema[]);
 #endif
