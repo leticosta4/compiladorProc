@@ -19,7 +19,7 @@ void testaAnasint();
 
 void testaAnalex(){
     printf("\n\n[Análise Léxica -------------------]\n");
-    if ((arqivoProc = fopen("./files/teste2.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
 
     printf("\nLINHA: %d\n\n", contLinha);
 

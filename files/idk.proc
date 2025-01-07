@@ -16,11 +16,15 @@ def init
 
     do procedimento(a, b) //testar passar a var 'de' como parametro para apontar erro
 
-    while(!(b > c)) //erro aqui
+    while(!(b > c)) 
     endw
 
     if(b)
     elif(c)
+        c = 45
+    elif(a)
+    else
+        b = 100
     endi
 endp
 
