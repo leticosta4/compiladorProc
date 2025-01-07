@@ -24,10 +24,6 @@ void consome_fim_exp(){
     while(rcv_token.categoria == FINAL_EXP){ rcv_token = AnaLex(arqivoProc); }
 }
 
-void debug(char onde[]){
-    printf("\n\n%s: cat: %d | codigo: %d\n\n", onde, rcv_token.categoria, rcv_token.codigo);
-}
-
 void busca_erro_decl_var_dps_decl_prot_proc_ou_cmd(TOKEN sus_token, int escopo_var){
     if(sus_token.categoria == PLV_RSVD && (sus_token.codigo == CONST || sus_token.codigo == INT || sus_token.codigo == REAL || sus_token.codigo == CHAR || sus_token.codigo == BOOL)){
         switch(escopo_var){
@@ -49,7 +45,6 @@ int associa_tipos_compat(int tipo_base, int tipo_cmp){
     return 0;
 }
 
-//ver como modelar ainda
 int gera_label(){
     static int cont_label = 1; //a 1 ja foi colocada estaticamente 
     cont_label++;
@@ -84,7 +79,7 @@ void atribui_endereco_param(int pos){
     int end_param = -3;
     
     for(int i = tabela_simbolos.topo - 1; i > pos; i--){
-        if(tabela_simbolos.linhas[i].categoria != PARAMETRO){break;} //talvez tirar dps
+        if(tabela_simbolos.linhas[i].categoria != PARAMETRO){break;} 
         tabela_simbolos.linhas[i].endereco[0] = 1;
         tabela_simbolos.linhas[i].endereco[1] = end_param;
         end_param--;

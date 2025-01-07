@@ -65,14 +65,14 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 
 
 ## outros
-- [ ] limpar prints
-- [ ] limpei os comentarios
+- [x] limpar prints
+- [x] limpei alguns comentarios
 - [x] tabela de simbolos
 - [x] talvez tirar a função `printa_valor_token()`
 - [x] ajeitar dimensao array
 - [x] ajeitar coisa do bool
 - [x] limitar dimensao de array no parametro com def e prot
-- [ ] no final apagar a funcao debug
+- [x] no final apagar a funcao debug
 - [ ] tratamentos chatos
 - [ ] checar inicializacao de variaveis locais para cada funcao
 - [x] resolver coisa de se n colocar o end_ <b>IMPORTANTE</b>
@@ -97,6 +97,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada > foi refinado
 - [x] quantidade de parametros na chamada do do
 - [x] primeira variavel local nao era apagada
+- [x] quando uma matriz ou vetor era inicializada com const crashava
 
 ### regras
 - [x] buscar REDECLARACAO
@@ -205,4 +206,4 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
 - [x] p expr n ta printando os comandos da maquina de pilha, mas gera as labels certas aparentemente
 - [x] tenho que ver `retorna_endereco_relativo` o escopo e quando é parametro ou var_local p retornar o endereço certo;
 - [x] GOTO L%d na volta do loop while - tava duplicado
-    - [ ] bug parecido deve acontecer para as condicionais
+- [x] quando while, if, elif, else e var não tinha corpo de cmd ele apontava erro -> possivel bomba
