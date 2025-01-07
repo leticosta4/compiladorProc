@@ -712,8 +712,6 @@ void decl_var(char possivel_proced[]){
     rcv_token = AnaLex(arqivoProc);
     consome_fim_exp();
 
-    if(info_token.constante == SIM && !(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO)){ error("era esperada inicialização da constante"); }
-
     while(rcv_token.categoria == SNL && rcv_token.codigo == ABRE_COL){ //vetor ou matriz
         nao_escalar = 1;
         if(cont_dim < 3){
@@ -744,6 +742,7 @@ void decl_var(char possivel_proced[]){
             }
         } else{ error("ERRO SINTATICO > foi encontrado array com número de dimensões superior a 2"); }
     }
+    if(info_token.constante == SIM && !(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO)){ error("era esperada inicialização da constante"); }
 
     if(rcv_token.categoria == SNL && rcv_token.codigo == ATRIBUICAO){ //pode ocorrer sendo vetor ou matriz ou variavel normal tb
         int cat = valor_var();

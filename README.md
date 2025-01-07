@@ -97,6 +97,7 @@ compilador feito em C para a linguagem Proc - 2024.2 Fundamentos de Compiladores
     - [x] em `apagar_var_locais` : deixava smp a primeira var local declarada > foi refinado
 - [x] quantidade de parametros na chamada do do
 - [x] primeira variavel local nao era apagada
+- [x] quando uma matriz ou vetor era inicializada com const crashava
 
 ### regras
 - [x] buscar REDECLARACAO

@@ -14,6 +14,8 @@ observação:
     - não localizei comandos equivalentes ao PUSH para valores reais ou literais, ent para o primeiro tipo estou usando PUSHF e para o segundo, assim como para stringcon,
     usando PUSH mesmo (já que int e char são compatíveis)
 
+    - quando é declarado um vetor ou matriz com const, o valor dessa constante não é adicionado na tabela de símbolos
+
     - ficou faltando:
         - gerar código de máquina de pilha para manipulação de váriaveis com passagem por referência (LDA, LOADI, STORI), e para vetores e matrizes (LDDLC, LDSTK, STSTK)
         - fazer a comparação entre expr1 e expr2 em var para decidir qual cláusula (to ou dt) é a correta
