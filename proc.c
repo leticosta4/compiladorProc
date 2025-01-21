@@ -223,7 +223,7 @@ void testaAnalex(){
 
 void testaAnasint(){
     printf("\n\n[Análise Sintática ----------------]\n");
-    if ((arqivoProc = fopen("./files/teste.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
+    if ((arqivoProc = fopen("./files/fatorial-iter.proc", "r")) == NULL){ printf("Arquivo de entrada da expressao nao encontrado!"); }
     while(true){
         rcv_token = AnaLex(arqivoProc);
         if(rcv_token.categoria == FINAL_ARQ){
@@ -238,7 +238,7 @@ void testaAnasint(){
 
 int main(){
     contLinha = 1;
-    //testaAnalex();
+    testaAnalex();
 
     contLinha = 1;
     testaAnasint();
