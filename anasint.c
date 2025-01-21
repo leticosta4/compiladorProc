@@ -65,6 +65,8 @@ void prog(){
     if(init_label > 0){ fprintf(proc_obj_file, "CALL L%d\n", init_label); }
     if(variaveis_globais != 0){ fprintf(proc_obj_file, "DMEM %d\n", variaveis_globais); }
     fprintf(proc_obj_file, "HALT");
+
+    fclose(proc_obj_file);
 }
 
 int decl_list_var(char possivel_proced[]){
